@@ -45,6 +45,6 @@ def test_pCO2(op_data):
 
 def test_temp_correction(op_data):
     temp_equ = op_data['waterTemp']
-    test_sst = temp_equ - 1
+    test_sst = temp_equ - .25  # creat artificial difference in temperature
     op_data['pCO2_wet_sst'] = temperature_correction(op_data['pCO2_wet_equ'], test_sst, temp_equ)
     assert np.allclose(op_data['pCO2_wet_sst'], op_data['pCO2_wet_equ'], rtol=.05), "pCO2_wet_equ and pCO2_wet_sst not close enough"
