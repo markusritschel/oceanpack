@@ -120,10 +120,12 @@ def pressure2atm(p):
     p = copy(p)
     if np.ceil(order_of_magnitude(p).mean()) == 4:
         p /= 1013.25
+        print('\nPressure is assumed to be in hPa and was converted to atm')
     elif np.ceil(order_of_magnitude(p).mean()) == 6:
         p /= 101325
+        print('\nPressure is assumed to be in Pa and was converted to atm')
     elif -1 <= np.ceil(order_of_magnitude(p).mean()) <= 1:
-        pass
+        print('\nPressure is assumed to be already in atm (no conversion)')
     else:
         raise IOError("Pressure must be given in hPa, Pa or atm")
     return p
@@ -133,8 +135,8 @@ def temperature2K(T):
     """Converts temperature given in °C into Kelvin"""
     T = copy(T)
     if isinstance(T,pd.Series):
-        T.loc[order_of_magnitude(T) < 3] += 273.15
-    elif order_of_magnitude(T) < 3:
+        T.loc[T < 200] += 273.15
+    elif T < 200:
         T += 273.15
     return T
 
