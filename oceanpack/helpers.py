@@ -100,15 +100,12 @@ def order_of_magnitude(x, roundto=None):
     2.0
     >>> order_of_magnitude(234)
     3.0
-    >>> order_of_magnitude(1, roundto=1)
+    >>> order_of_magnitude(1)
     1.0
     >>> order_of_magnitude(.15)
-    -0.0
+    0.0
     """
-    if roundto:
-        x = roundup(x, roundto)
-        x += 1e-5  # to avoid for example 10 being of magnitude 0
-    return np.ceil(np.log10(x))
+    return np.rint(np.log10(np.abs(x))) + 1
 
 
 def roundup(x, to=1):
@@ -118,13 +115,13 @@ def roundup(x, to=1):
 def pressure2atm(p):
     """Converts pressure given in hPa, Pa or atm into atm"""
     p = copy(p)
-    if np.ceil(order_of_magnitude(p).mean()) == 4:
+    if np.rint(order_of_magnitude(p).mean()) == 4:
         p /= 1013.25
         print('\nPressure is assumed to be in hPa and was converted to atm')
-    elif np.ceil(order_of_magnitude(p).mean()) == 6:
+    elif np.rint(order_of_magnitude(p).mean()) == 6:
         p /= 101325
         print('\nPressure is assumed to be in Pa and was converted to atm')
-    elif -1 <= np.ceil(order_of_magnitude(p).mean()) <= 1:
+    elif -1 <= np.rint(order_of_magnitude(p).mean()) <= 1:
         print('\nPressure is assumed to be already in atm (no conversion)')
     else:
         raise IOError("Pressure must be given in hPa, Pa or atm")
