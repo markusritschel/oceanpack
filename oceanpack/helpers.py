@@ -28,7 +28,7 @@ def __dm_split(x):
 
 
 def decimal_degrees(x):
-    """Convert dd, mm.mmmm tuple into dd.dddd
+    """Convert coordinates in 'ddmm.mmmm' format into 'dd.dddd'
     >>> x = (12.0, 45.5)
     >>> decimal_degrees(x)
     array([0.2       , 0.75833333])
