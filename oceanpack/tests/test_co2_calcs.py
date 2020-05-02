@@ -21,8 +21,8 @@ base_dir = os.path.dirname(os.path.abspath(__file__))
 all_files = glob.glob(os.path.join(base_dir, '*.log'))
 
 
-
 press_factors = [1, 100, 1/1013.25]   # hand over pressure as hPa, Pa, atm
+
 @pytest.mark.skipif(not all_files, reason="needs to find file for testing")
 @pytest.fixture(scope="session", params=press_factors)
 def op_data(request):
