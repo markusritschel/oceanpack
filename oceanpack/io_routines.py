@@ -14,7 +14,7 @@ import numpy as np
 import pandas as pd
 
 
-def _read_oceanpack_file(file: str, **kwargs):
+def _read_oceanpack_file(file, **kwargs):
     """Read an OceanPack log file. (Files are Windows-formatted.)"""
     with open(file, 'r', encoding='Windows 1252') as f:
         line_counter = 0
