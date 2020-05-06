@@ -25,5 +25,5 @@ jobs:
     - name: Python testing
       run: |
         pip install pytest
-        echo $PWD
-        echo `ls`
+        echo `ls oceanpack/tests/`
+        python -m pytest oceanpack/tests/
