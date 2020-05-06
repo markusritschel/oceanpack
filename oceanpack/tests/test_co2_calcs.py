@@ -28,7 +28,7 @@ press_factors = [1, 100, 1/1013.25]   # hand over pressure as hPa, Pa, atm
 def op_data(request):
     df = read_oceanpack(all_files)
     # df = set_nonoperating_to_nan(df, col=[x for x in df.columns if 'CO2' in x], shift="1min", status_var='STATUS')
-    pressure_equ = df['CellPress'] + df['DPressInt'].rolling('2min').mean()  # in mBar
+    pressure_equ = df['CellPress'] - df['DPressInt'].rolling('2min').mean()  # in mBar
     df['p_equ'] = pressure_equ * request.param
     df['pCO2_wet_equ'] = ppm2µatm(df['CO2'], p_equ=df['p_equ'])
 
@@ -40,7 +40,7 @@ def test_format(op_data):
 
 
 def test_pCO2(op_data):
-    assert np.allclose(op_data['pCO2_wet_equ'], op_data['CO2'], rtol=.1), "pCO2 and xCO2 values are not close enough"
+    assert np.allclose(op_data['pCO2_wet_equ'], op_data['CO2'], rtol=.05), "pCO2 and xCO2 values are not close enough"
 
 
 def test_temp_correction(op_data):
