@@ -24,6 +24,6 @@ jobs:
         architecture: x64
     - name: Python testing
       run: |
-        pip install pytest # numpy pandas
-        python -m pytest # oceanpack/tests/
+        pip install pytest numpy pandas
+        pytest # oceanpack/tests/
       # python -m pytest
