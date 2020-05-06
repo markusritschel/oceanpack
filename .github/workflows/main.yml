@@ -25,5 +25,5 @@ jobs:
     - name: Python testing
       run: |
         pip install pytest
-        python -m pytest
-      # python -m pytest oceanpack/tests/
+        python -m pytest oceanpack/tests/
+      # python -m pytest
