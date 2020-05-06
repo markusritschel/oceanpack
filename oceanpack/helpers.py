@@ -128,6 +128,22 @@ def pressure2atm(p):
     return p
 
 
+def pressure2mbar(p):
+    """Converts pressure given in hPa, Pa or atm into mbar (or hPa)"""
+    p = copy(p)
+    if np.rint(order_of_magnitude(p).mean()) == 4:
+        print('\nPressure is assumed to be already in mbar (no conversion)')
+    elif np.rint(order_of_magnitude(p).mean()) == 6:
+        p /= 100
+        print('\nPressure is assumed to be in Pa and was converted to mbar (hPa)')
+    elif -1 <= np.rint(order_of_magnitude(p).mean()) <= 1:
+        print('\nPressure is assumed to be in atm and was converted to mbar (hPa)')
+        p *= 1013.25
+    else:
+        raise IOError("Pressure must be given in hPa, Pa or atm")
+    return p
+
+
 def temperature2K(T):
     """Converts temperature given in °C into Kelvin"""
     T = copy(T)
@@ -135,6 +151,16 @@ def temperature2K(T):
         T.loc[T < 200] += 273.15
     elif T < 200:
         T += 273.15
+    return T
+
+
+def temperature2C(T):
+    """Converts temperature given in Kelvin into °C"""
+    T = copy(T)
+    if isinstance(T,pd.Series):
+        T.loc[T > 200] -= 273.15
+    elif T > 200:
+        T -= 273.15
     return T
 
 
