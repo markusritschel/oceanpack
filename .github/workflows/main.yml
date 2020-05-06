@@ -25,3 +25,4 @@ jobs:
     - name: Python testing
       run: |
         pip install pytest
+        python -m pytest oceanpack/tests/test_oceanpack.py
