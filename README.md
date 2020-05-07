@@ -1,5 +1,5 @@
 # oceanpack
-![OceanPack routine testing](https://github.com/markusritschel/oceanpack/workflows/OceanPack%20routine%20testing/badge.svg)
+![build](https://github.com/markusritschel/oceanpack/workflows/OceanPack%20routine%20testing/badge.svg)
 
 This repository contains routines for the evaluation of data from the OceanPack&trade; AUMS (Autonomous Underwater Measuring System) by _SubCtech&reg;_.
 The routines were written during my job as research assistant at the Max-Planck-Institute for Meteorology in Hamburg, working in the group of Dr. Peter Landschützer.
