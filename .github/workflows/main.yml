@@ -2,8 +2,7 @@
 
 name: OceanPack routine testing
 
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
+# Controls when the action will run.
 on: [push, pull_request]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -39,6 +38,5 @@ jobs:
 
       - name: Test with pytest
         run: |
-          pip install pytest # numpy pandas
-          pytest # oceanpack/tests/
-        # python -m pytest
+          pip install pytest
+          pytest
