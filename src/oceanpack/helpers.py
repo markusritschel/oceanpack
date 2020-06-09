@@ -45,7 +45,8 @@ def cond2sal(C, T, p):
     >>> cond2sal(C=52, T=25, p=1013)
     34.206423378894655
     """
-    p = p / 100  # convert hPa -> dbar
+    p = pressure2mbar(p) / 100  # convert hPa (mbar) -> dbar
+    T = temperature2C(T)
 
     a0 = 0.008
     a1 = -0.1692
@@ -61,7 +62,7 @@ def cond2sal(C, T, p):
     b4 = 0.0636
     b5 = -0.0144
 
-    c0 = 6.766098e-1
+    c0 = 6.766097e-1
     c1 = 2.00564e-2
     c2 = 1.104259e-4
     c3 = -6.9698e-7
@@ -85,9 +86,11 @@ def cond2sal(C, T, p):
 
     RT = R / (rT*Rp)
 
+    k = 0.0162  # TODO: check sign! +/-?
+
     xi = np.sqrt(RT)
     psi = b0 + b1*xi + b2*xi**2 + b3*xi**3 + b4*xi**4 + b5*xi**5
-    dSal = psi*(T - 15) / (1 - 0.0162*(T - 15))
+    dSal = psi*(T - 15) / (1 + k*(T - 15))
 
     salinity = a0 + a1*xi + a2*xi**2 + a3*xi**3 + a4*xi**4 + a5*xi**5 + dSal
 
@@ -189,6 +192,8 @@ def ppm2µatm(xCO2,p_equ,input='wet',T=None,S=None):
         pH2O = 0
     elif input== "dry":
         pH2O = water_vapor_pressure(T,S)
+    else:
+        raise IOError("Input must be either 'dry' or 'wet'.")
 
     pCO2_wet_equ = xCO2 * (p_equ - pH2O)
 
@@ -235,6 +240,8 @@ def temperature_correction(xCO2, T_insitu, T_equ, method='Takahashi2009'):
         xCO2_out = xCO2 * np.exp(0.0433*(T_insitu - T_equ) - 4.35e-5*(T_insitu**2 - T_equ**2))
     elif method=="Takahashi1993":
         xCO2_out = xCO2 * np.exp(0.0423*(T_insitu - T_equ))
+    else:
+        raise IOError("Unknown method for temperature conversion.")
 
     return xCO2_out
 
