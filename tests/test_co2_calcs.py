@@ -15,7 +15,7 @@ import os
 import glob
 import pytest
 
-from oceanpack import read_oceanpack, ppm2µatm, temperature_correction
+from oceanpack import read_oceanpack, ppm2uatm, temperature_correction
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
 all_files = glob.glob(os.path.join(base_dir, '*.log'))
@@ -30,7 +30,7 @@ def op_data(request):
     # df = set_nonoperating_to_nan(df, col=[x for x in df.columns if 'CO2' in x], shift="1min", status_var='STATUS')
     pressure_equ = df['CellPress'] - df['DPressInt'].rolling('2min').mean()  # in mBar
     df['p_equ'] = pressure_equ * request.param
-    df['pCO2_wet_equ'] = ppm2µatm(df['CO2'], p_equ=df['p_equ'])
+    df['pCO2_wet_equ'] = ppm2uatm(df['CO2'], p_equ=df['p_equ'])
 
     return df
 

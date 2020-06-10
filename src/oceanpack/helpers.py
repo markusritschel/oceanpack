@@ -167,7 +167,7 @@ def temperature2C(T):
     return T
 
 
-def ppm2µatm(xCO2,p_equ,input='wet',T=None,S=None):
+def ppm2uatm(xCO2,p_equ,input='wet',T=None,S=None):
     """Converts a mole fraction concentration (in ppm) into partial pressure (in µatm) following Dickson et al. (2007)
 
     Parameters
