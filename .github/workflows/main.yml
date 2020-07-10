@@ -39,4 +39,11 @@ jobs:
           pip install pyscaffold
           pip install pytest pytest-cov
           python setup.py develop
-          pytest -v --doctest-modules --cov=com --cov-report=xml --cov-report=html
+          pytest -v --doctest-modules --cov=./ --cov-report=xml --cov-report=html
+      - uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+          file: ./coverage.xml # optional
+          flags: pytest # optional
+          name: codecov-umbrella # optional
+          fail_ci_if_error: true # optional (default = false)
