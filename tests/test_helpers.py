@@ -50,3 +50,33 @@ def test_pressure2atm():
 def test_temperature2K():
     assert temperature2K(13) == 286.15, "Temperature correction not correct"
     assert temperature2K(286.15) == 286.15, "Temperature in Kelvin should not be altered"
+
+
+def test_find_nearest():
+    items = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    pivot1 = 4.2
+    pivot2 = 4.8
+
+    assert nearest(items, pivot1) == 4, "Should find 4 as the nearest element for 4.2"
+    assert nearest(items, pivot2) == 5, "Should find 5 as the nearest element for 4.8"
+
+
+def test_bin_creator():
+    x = np.arange(-90, 91)
+    bins = centered_bins(x)
+
+    assert np.alltrue(bins == np.arange(-90.5, 91, 1)), "Bins don't match!"
+    assert len(bins) == len(x) + 1, "Bin edges must be one more than there are labels"
+
+
+def test_gridding_shape():
+    x = np.linspace(-4, 4, 100)
+    y = np.linspace(40, 50, 100)
+    data = np.random.rand(100)
+
+    xi = np.arange(-5, 5, .25)
+    yi = np.arange(40, 60, .25)
+
+    xx, yy, target = grid_dataframe((x, y), data, (xi, yi), export_grid=True)
+
+    assert target.shape == (80, 40), "Shape of the target doesn't match!"
