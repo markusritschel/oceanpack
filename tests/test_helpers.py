@@ -12,7 +12,8 @@ from __future__ import absolute_import, division, print_function, with_statement
 
 import numpy as np
 
-from oceanpack.helpers import __dm_split, decimal_degrees, cond2sal, order_of_magnitude, pressure2atm, temperature2K
+from oceanpack.helpers import (__dm_split, decimal_degrees, cond2sal, order_of_magnitude,
+                               pressure2atm, temperature2K, nearest, centered_bins, grid_dataframe)
 
 
 def test_coordinate_splitting():
