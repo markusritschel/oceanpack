@@ -312,3 +312,61 @@ def set_nonoperating_to_nan(data, col='CO2', shift='30min', status_var='ANA_stat
         # data.loc[i:j, 'takeOut'] = True
 
     return data
+
+
+def nearest(items, pivot):
+    """Find nearest element."""
+    return min(items, key=lambda x: abs(x - pivot))
+
+
+def centered_bins(x):
+    """Creates centered bin boundaries from a given array with the values of the array as centers.
+    >>> x = np.arange(-3, 4)
+    >>> x
+    array([-3, -2, -1,  0,  1,  2,  3])
+    >>> centered_bins(x)
+    array([-3.5, -2.5, -1.5, -0.5,  0.5,  1.5,  2.5,  3.5])
+    """
+    x = np.array(x)
+    # extend x
+    x = np.append(x, x[-1]+np.diff(x[-2:]))
+
+    differences = np.gradient(x, 2)
+
+    return x - differences
+
+
+def grid_dataframe(points, vals, xi, export_grid=False):
+    """Bins the values with `points` coordinates by the given target coordinates `xi` and puts the average of each bin
+    onto the target grid."""
+    x, y = points
+    X, Y = xi
+    xx, yy = np.meshgrid(*xi)
+    target = np.empty(xx.shape) * np.nan
+
+    # flatten target and grid components
+    xx_ = xx.ravel()
+    yy_ = yy.ravel()
+    target_ = target.ravel()
+
+    df = pd.DataFrame({'vals': vals, 'x': x, 'y': y})
+
+    df['x_binned'] = pd.cut(df.x, bins=centered_bins(X), labels=X)
+    df['y_binned'] = pd.cut(df.y, bins=centered_bins(Y), labels=Y)
+    # df['x_binned'] = pd.cut(df.x, bins=X, labels=X[:-1])
+    # df['y_binned'] = pd.cut(df.y, bins=Y, labels=Y[:-1])
+
+    # df['points'] = list(zip(df.x_binned, df.y_binned))
+    df['points'] = df[['x_binned', 'y_binned']].apply(tuple, axis=1)
+
+    df_ = df.groupby(['points']).mean()
+
+    for idx, row in df_.iterrows():
+        target_[(xx_ == idx[0]) & (yy_ == idx[1])] = row.vals
+
+    target = target_.reshape(xx.shape)
+
+    if export_grid:
+        return xx, yy, target
+
+    return target
