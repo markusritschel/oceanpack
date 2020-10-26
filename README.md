@@ -3,6 +3,8 @@
 [![GitHub license](https://img.shields.io/github/license/markusritschel/oceanpack)](https://github.com/markusritschel/oceanpack/blob/master/LICENSE)
 [![codecov](https://codecov.io/gh/markusritschel/oceanpack/branch/master/graph/badge.svg)](https://codecov.io/gh/markusritschel/oceanpack)
 
+**Note:** This is not an official package. The company SubCtech is not involved in the development of the routines provided here. 
+
 This repository contains routines for the evaluation of data from the OceanPack&trade; AUMS (Autonomous Underwater Measuring System) by _SubCtech&reg;_.
 The routines were written during my job as research assistant at the Max-Planck-Institute for Meteorology in Hamburg, working in the group of Dr. Peter Landschützer.
 
