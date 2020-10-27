@@ -39,7 +39,7 @@ def _read_oceanpack_file(file, **kwargs):
     # clear data
     df.drop(['@NAME', 'DATE', 'TIME', 'DATE_TIME'], axis=1, inplace=True, errors='ignore')
 
-    return df
+    return df  # TODO: maybe export as xarray and also add units etc. as attributes
 
 
 def read_oceanpack(files):

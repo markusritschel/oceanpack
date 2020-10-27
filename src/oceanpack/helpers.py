@@ -39,6 +39,7 @@ def decimal_degrees(x):
     return sign*(degrees + minutes / 60)
 
 
+# TODO: compare with "1978 Practical Salinity Scale Equations, from IEEE Journal of Oceanic Engineering, Vol. OE-5, No. 1, January 1980, page 14"
 def cond2sal(C, T, p):
     """Compute salinity from conductivity.
     According to Lewis and Perkin (1978): "The practical salinity scale 1978: conversion of existing data".
@@ -77,6 +78,8 @@ def cond2sal(C, T, p):
     B4 = -3.107e-3
 
     R = C / 42.914  # units: mS/cm
+    # TODO: check input units of Conductivity! "If you are working in conductivity units of Siemens/meter (S/m), multiply your conductivity values by 10 before using the PSS 1978 equations. "
+    # TODO: maybe use units from log file for auto-conversion and print a hint or so (this could be already done during the read routine)
 
     rT = c0 + c1*T + c2*T**2 + c3*T**3 + c4*T**4
 
