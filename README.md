@@ -16,7 +16,7 @@ e.g.
 * computing the fugacity fCO2
 * etc.
 
-In the subdirectory `notebooks` one can also find a [Jupyter Notebook](https://github.com/markusritschel/oceanpack/blob/master/oceanpack/notebooks/examples.ipynb) showing the usage of the various functions based on a short dataset. 
+In the subdirectory `notebooks` one can also find a [Jupyter Notebook](https://github.com/markusritschel/oceanpack/blob/master/src/oceanpack/notebooks/examples.ipynb) showing the usage of the various functions based on a short dataset. 
 
 Contact
 -------
