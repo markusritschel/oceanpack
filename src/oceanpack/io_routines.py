@@ -30,6 +30,7 @@ def _read_oceanpack_file(file, **kwargs):
                 units = line.strip().split(',')
 
     df = pd.read_csv(file, sep=',', skiprows=line_counter, names=names, parse_dates=[['DATE', 'TIME']],
+                     encoding='iso-8859-1',
                      usecols=np.arange(len(names)), **kwargs)  # usecols omits last column which gets created if lines end with a colon
 
     # parse date and time and set as index
