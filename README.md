@@ -16,10 +16,18 @@ e.g.
 * computing the fugacity fCO2
 * etc.
 
+## Installation
+You can install this package on your machine via pip by executing
+```bash
+$ pip install git+https://github.com/markusritschel/oceanpack.git#egg=oceanpack
+```
+in your terminal.
+
+## Examples
 In the subdirectory `notebooks` one can also find a [Jupyter Notebook](https://github.com/markusritschel/oceanpack/blob/master/src/oceanpack/notebooks/examples.ipynb) showing the usage of the various functions based on a short dataset. 
 
-Contact
--------
+
+## Contact
 Feel free to contact me via git@markusritschel.de.
 For problems or feature requests please open an [issue](https://github.com/markusritschel/oceanpack/issues).
 Of course, you are also welcome to contribute and start a pull-request :-)
