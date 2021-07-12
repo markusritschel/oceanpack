@@ -42,13 +42,13 @@ def _read_oceanpack_internal_logfile(file, **kwargs):
             elif line.startswith('@UNIT'):
                 units = line.strip().split(',')
 
-    df = pd.read_csv(file, sep=',', skiprows=line_counter, names=names, parse_dates={'DATE_TIME': ['DATE', 'TIME']},
+    df = pd.read_csv(file, sep=',', skiprows=line_counter, names=names, parse_dates={'datetime': ['DATE', 'TIME']},
                      encoding='iso-8859-1',
                      usecols=np.arange(len(names)), **kwargs)  # usecols omits last column which gets created if lines end with a colon
 
     # parse date and time and set as index
-    # df['DATE_TIME'] = pd.to_datetime(df['DATE_TIME'])
-    df.set_index('DATE_TIME', inplace=True)
+    # df['datetime'] = pd.to_datetime(df['datetime'])
+    df.set_index('datetime', inplace=True)
 
     # clear data
     df.drop(['@NAME', 'DATE', 'TIME', 'DATE_TIME'], axis=1, inplace=True, errors='ignore')
@@ -97,6 +97,16 @@ def read_oceanpack(files):
 
     if len(set(file_types)) > 1:
         logger.warning("Files appear to be not all of the same type. Please check your data!")
+
+    df.index = pd.to_datetime(df.index, errors='coerce')
+    df = df.loc[df.index.dropna()]
+    df = df[~df.index.duplicated(keep='first')]
+
+    for col in df.columns:
+        try:
+            df[col] = df[col].astype('float')
+        except:
+            pass
 
     df.sort_index(axis=0, inplace=True, ascending=True)
 
