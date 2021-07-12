@@ -89,7 +89,7 @@ def read_oceanpack(files):
                 file_types.append('internal')
                 read_routine = _read_oceanpack_internal_logfile
             else:
-                logger.warning(f"Couldn't detect header or stream-file-like format in {file}. File will be skipped.")
+                logger.warning("Couldn't detect header or stream-file-like format in %s. File will be skipped.", file)
                 file_types.append('unknown')
                 continue
         df_ = read_routine(file)
