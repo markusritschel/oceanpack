@@ -14,6 +14,8 @@ import pandas as pd
 import logging
 from tqdm.auto import tqdm
 from pathlib import Path
+from .helpers import check_input_for_duplicates
+
 
 logger = logging.getLogger(__name__)
 
@@ -64,6 +66,7 @@ def _read_oceanview_stream_file(file):
     return df
 
 
+@check_input_for_duplicates
 def read_oceanpack(files):
     """Read a single or multiple log files into a pd.DataFrame dataset."""
     if isinstance(files, str):

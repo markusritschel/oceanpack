@@ -9,8 +9,9 @@
 #
 from __future__ import absolute_import, division, print_function, with_statement
 
-from copy import copy
 import logging
+from copy import copy
+import filecmp
 import numpy as np
 import pandas as pd
 
@@ -372,3 +373,24 @@ def grid_dataframe(points, vals, xi, export_grid=False):
         return xx, yy, target
 
     return target
+
+
+def check_input_for_duplicates(func):
+    """A decorator that checks a list of file paths (the first and only argument of the wrapped function) for duplicates.
+    Detected duplicates are dropped from the list such that the function can deal with the cleaned-up list."""
+    def wrapper(file_list):
+        remove_idx = []
+        for i, f1 in enumerate(file_list):
+            for f2 in file_list[i + 1:]:
+                res = filecmp.cmp(f1,f2, shallow=True)
+                if res:
+                    remove_idx.append(i)
+        filtered_file_list = [i for j, i in enumerate(file_list) if j not in remove_idx]
+        remove_files = [i for j, i in enumerate(file_list) if j in remove_idx]
+        if remove_idx:
+            logger.info("Found and ignored %s duplicates in file list.", len(remove_idx))
+            for entry in remove_files:
+                logger.debug("Ignored %s", entry)
+        return func(filtered_file_list)
+
+    return wrapper
