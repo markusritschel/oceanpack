@@ -1,0 +1,38 @@
+ID,name,unit,comment,device
+1,NMEA,,,System
+2,destination_ID,,,
+3,source_ID,,,
+4,data_mode,,,
+5,format,,,
+6,LDN,,Logical Device No.,
+7,date,1 day,ISO-8601:2000,
+8,time,1 sec,UTC time,
+9,msec,1 msec,Resolution,
+10,runtime,1 sec,Seconds since start,
+11,sensor_state,,,
+12,waterflow,l/min,,
+13,V_in,,,USV
+14,V_out,,,
+15,Puff,,,
+16,I_out,,,
+17,SBE45Temp,°C,,CTD
+18,SBE45Cond,mS/cm,,
+19,SBE45Sal,PSU,,
+20,co2,ppm,,Li-COR gas analyzer
+21,h2o,ppt,,
+22,h2oDew,°C,,
+23,LiCOR_Temp,°C,,
+24,LiCOR_Pres,mBar,,
+25,valves,,?,
+26,ANA_state,,Status/Phase of the Analyzer,
+27,co2_raw,Binary,,
+28,co2_ref_raw,Binary,,
+29,h2o_raw,Binary,,
+30,h2o_ref_raw,Binary,,
+31,ANA_ain6,,?,
+32,lat,,,GPS
+33,lon,,,
+34,speed,,,
+35,course,,,
+36,magn_var,,?,
+37,gps_time,,,
