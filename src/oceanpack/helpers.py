@@ -379,6 +379,8 @@ def check_input_for_duplicates(func):
     """A decorator that checks a list of file paths (the first and only argument of the wrapped function) for duplicates.
     Detected duplicates are dropped from the list such that the function can deal with the cleaned-up list."""
     def wrapper(file_list):
+        if not isinstance(file_list, list) or len(file_list) <= 1:
+            return func(file_list)
         remove_idx = []
         for i, f1 in enumerate(file_list):
             for f2 in file_list[i + 1:]:
