@@ -19,7 +19,11 @@ import pandas as pd
 logger = logging.getLogger(__name__)
 
 def __dm_split(x):
-    """Split 'ddmm.mmmm' format in ('dd', 'mm.mmmm').
+    """Split degrees and minutes from 'ddmm.mmmm' format to ('dd', 'mm.mmmm').
+    This is a helper function for converting (GPS) coordinates.
+
+    Example
+    -------
     >>> x = 1245.5000
     >>> __dm_split(x)
     (12.0, 45.5)
@@ -31,7 +35,10 @@ def __dm_split(x):
 
 
 def decimal_degrees(x):
-    """Convert coordinates in 'ddmm.mmmm' format into 'dd.dddd'
+    """Convert coordinates from 'ddmm.mmmm' format into 'dd.dddd'.
+
+    Example
+    -------
     >>> x = (12.0, 45.5)
     >>> decimal_degrees(x)
     array([0.2       , 0.75833333])
@@ -45,8 +52,11 @@ def decimal_degrees(x):
 def cond2sal(C, T, p):
     """Compute salinity from conductivity.
     According to Lewis and Perkin (1978): "The practical salinity scale 1978: conversion of existing data".
+
+    Example
+    -------
     >>> cond2sal(C=52, T=25, p=1013)
-    34.206423378894655
+    34.20810771080768
     """
     p = pressure2mbar(p) / 100  # convert hPa (mbar) -> dbar
     T = temperature2C(T)
@@ -101,17 +111,25 @@ def cond2sal(C, T, p):
 
 
 def order_of_magnitude(x):
-    """Determine the order of magnitude of the numeric input (int, float or pd.Series).
+    """Determine the order of magnitude of the numeric input (`int`, `float`, :meth:`numpy.array` or :meth:`pandas.Series`).
+
+    Examples
+    --------
     >>> order_of_magnitude(11)
-    2.0
+    array(2)
     >>> order_of_magnitude(234)
-    3.0
+    array(3)
     >>> order_of_magnitude(1)
-    1.0
+    array(1)
     >>> order_of_magnitude(.15)
-    0.0
+    array(0)
+    >>> order_of_magnitude(np.array([24.13, 254.2]))
+    array([2, 3])
+    >>> order_of_magnitude(pd.Series([24.13, 254.2]))
+    array([2, 3])
     """
-    return np.rint(np.log10(np.abs(x))) + 1
+    oom = np.int0(np.rint(np.log10(np.abs(x))) + 1)
+    return np.array(oom)
 
 
 def roundup(x, to=1):
@@ -119,7 +137,21 @@ def roundup(x, to=1):
 
 
 def pressure2atm(p):
-    """Converts pressure given in hPa, Pa or atm into atm"""
+    """Convert pressure given in hPa, Pa or atm into atm.
+
+    Examples
+    --------
+    >>> pressure2atm(1013.25)
+    1.0
+    >>> pressure2atm(101325)
+    1.0
+    >>> pressure2atm(2)
+    2
+    >>> pressure2atm(pd.Series([1013.25, 1024.0]))
+    0    1.000000
+    1    1.010609
+    dtype: float64
+    """
     p = copy(p)
     if np.rint(order_of_magnitude(p).mean()) == 4:
         p /= 1013.25
@@ -135,7 +167,21 @@ def pressure2atm(p):
 
 
 def pressure2mbar(p):
-    """Converts pressure given in hPa, Pa or atm into mbar (or hPa)"""
+    """Convert pressure given in hPa, Pa or atm into mbar (or hPa).
+
+    Examples
+    --------
+    >>> pressure2mbar(1013)
+    1013
+    >>> pressure2mbar(101300)
+    1013.0
+    >>> pressure2mbar(1.0)
+    1013.25
+    >>> pressure2mbar(pd.Series([1.013, 2.034]))
+    0    1026.42225
+    1    2060.95050
+    dtype: float64
+    """
     p = copy(p)
     if np.rint(order_of_magnitude(p).mean()) == 4:
         logger.info('\nPressure is assumed to be already in mbar (no conversion)\n')
@@ -151,9 +197,20 @@ def pressure2mbar(p):
 
 
 def temperature2K(T):
-    """Converts temperature given in °C into Kelvin"""
+    """Convert temperatures given in °C into Kelvin.
+    If `T` is a :meth:`pandas.Series` object, only values larger than 200 are converted. All others are expected to be
+    already in Kelvin.
+
+    Examples
+    --------
+    >>> temperature2K(10)
+    283.15
+    """
     T = copy(T)
     if isinstance(T,pd.Series):
+        if len(T[T > 200]) != 0:
+            logger.warning("Some values seem to be already in Kelvin")
+        # TODO: do this in a better way
         T.loc[T < 200] += 273.15
     elif T < 200:
         T += 273.15
@@ -161,7 +218,15 @@ def temperature2K(T):
 
 
 def temperature2C(T):
-    """Converts temperature given in Kelvin into °C"""
+    """Convert temperatures given in Kelvin into °C.
+    If `T` is a :meth:`pandas.Series` object, only values less than 200 are converted. All others are expected to be
+    already in °C.
+
+    Examples
+    --------
+    >>> temperature2C(283.15)
+    10.0
+    """
     T = copy(T)
     if isinstance(T,pd.Series):
         T.loc[T > 200] -= 273.15
@@ -318,12 +383,21 @@ def set_nonoperating_to_nan(data, col='CO2', shift='30min', status_var='ANA_stat
 
 
 def nearest(items, pivot):
-    """Find nearest element."""
+    """Find nearest element.
+
+    Examples
+    --------
+    >>> nearest(np.array([2,4,5,7,9,10]), 4.6)
+    5
+    """
     return min(items, key=lambda x: abs(x - pivot))
 
 
 def centered_bins(x):
-    """Creates centered bin boundaries from a given array with the values of the array as centers.
+    """Create centered bin boundaries from a given array with the values of the array as centers.
+
+    Example
+    -------
     >>> x = np.arange(-3, 4)
     >>> x
     array([-3, -2, -1,  0,  1,  2,  3])
@@ -331,8 +405,7 @@ def centered_bins(x):
     array([-3.5, -2.5, -1.5, -0.5,  0.5,  1.5,  2.5,  3.5])
     """
     x = np.array(x)
-    # extend x
-    x = np.append(x, x[-1]+np.diff(x[-2:]))
+    x = np.append(x, x[-1] + np.diff(x[-2:]))
 
     differences = np.gradient(x, 2)
 
