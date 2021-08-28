@@ -15,6 +15,7 @@ import filecmp
 import numpy as np
 import pandas as pd
 
+from functools import wraps as _wraps
 
 logger = logging.getLogger(__name__)
 
@@ -451,6 +452,8 @@ def grid_dataframe(points, vals, xi, export_grid=False):
 def check_input_for_duplicates(func):
     """A decorator that checks a list of file paths (the first and only argument of the wrapped function) for duplicates.
     Detected duplicates are dropped from the list such that the function can deal with the cleaned-up list."""
+    # The functools._wraps decorator ensures that `func` can still be parsed by Sphinx. Usually, decorated functions can not be parsed by Sphinx.
+    @_wraps(func)
     def wrapper(file_list):
         if not isinstance(file_list, list) or len(file_list) <= 1:
             return func(file_list)
