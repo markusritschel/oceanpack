@@ -2,36 +2,39 @@
 oceanpack
 =========
 
-This is the documentation of **oceanpack**.
+This is the documentation of the **oceanpack** package.
 
 .. note::
-
-    This is the main page of your project's `Sphinx`_ documentation.
-    It is formatted in `reStructuredText`_. Add additional pages
-    by creating rst-files in ``docs`` and adding them to the `toctree`_ below.
-    Use then `references`_ in order to link them from this page, e.g.
-    :ref:`authors` and :ref:`changes`.
-
-    It is also possible to refer to the documentation of other Python packages
-    with the `Python domain syntax`_. By default you can reference the
-    documentation of `Sphinx`_, `Python`_, `NumPy`_, `SciPy`_, `matplotlib`_,
-    `Pandas`_, `Scikit-Learn`_. You can add more by extending the
-    ``intersphinx_mapping`` in your Sphinx's ``conf.py``.
-
-    The pretty useful extension `autodoc`_ is activated by default and lets
-    you include documentation from docstrings. Docstrings can be written in
-    `Google style`_ (recommended!), `NumPy style`_ and `classical style`_.
+    This is **not** an official package. The company SubCtech is not involved in the development of the routines provided here.
 
 
-Contents
-========
+The ``oceanpack`` package containes routines to read-in log files of the OceanPack as well as various helper functions to help with the data processing, e.g.
+
+* converting coordinates from the Analyzer's format into decimal digits
+* converting xCO2 to pCO2
+* applying temperature corrections
+* computing the fugacity fCO2
+* etc.
+
+
+Installation
+============
+You can install this package on your machine via pip by executing
+
+::
+
+    $ pip install git+https://github.com/markusritschel/oceanpack.git#egg=oceanpack
+
+in your terminal.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
+   :caption: Contents:
 
    License <license>
    Authors <authors>
    Changelog <changelog>
+   examples.ipynb
    Module Reference <api/modules>
 
 
