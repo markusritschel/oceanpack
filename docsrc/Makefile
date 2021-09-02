@@ -27,6 +27,7 @@ I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
 
 github:
 	@make html
+	@mkdir -p ../docs
 	@cp -a $(BUILDDIR)html/. ../docs
 
 help:
