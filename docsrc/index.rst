@@ -2,7 +2,7 @@
 oceanpack
 =========
 
-This is the documentation of the **oceanpack** package.
+This is the documentation of the `oceanpack <https://github.com/markusritschel/oceanpack>`_ package.
 
 .. note::
     This is **not** an official package. The company SubCtech is not involved in the development of the routines provided here.
