@@ -39,4 +39,4 @@ jobs:
           pip install .
           pip install pytest pytest-cov
           pytest -v --doctest-modules --cov=./ --cov-report=xml --cov-report=html
-        uses: codecov/codecov-action@v1
+      - uses: codecov/codecov-action@v1
