@@ -117,19 +117,19 @@ def order_of_magnitude(x):
     Examples
     --------
     >>> order_of_magnitude(11)
-    array(2)
+    array(2.)
     >>> order_of_magnitude(234)
-    array(3)
+    array(3.)
     >>> order_of_magnitude(1)
-    array(1)
+    array(1.)
     >>> order_of_magnitude(.15)
-    array(0)
+    array(0.)
     >>> order_of_magnitude(np.array([24.13, 254.2]))
-    array([2, 3])
+    array([2., 3.])
     >>> order_of_magnitude(pd.Series([24.13, 254.2]))
-    array([2, 3])
+    array([2., 3.])
     """
-    oom = np.int0(np.rint(np.log10(np.abs(x))) + 1)
+    oom = (np.rint(np.log10(np.abs(x))) + 1)
     return np.array(oom)
 
 
@@ -154,13 +154,13 @@ def pressure2atm(p):
     dtype: float64
     """
     p = copy(p)
-    if np.rint(order_of_magnitude(p).mean()) == 4:
+    if 3 <= np.nanmean(np.rint(order_of_magnitude(p))) <= 4:
         p /= 1013.25
         logger.info('\nPressure is assumed to be in hPa and was converted to atm\n')
-    elif np.rint(order_of_magnitude(p).mean()) == 6:
+    elif 5 <= np.nanmean(np.rint(order_of_magnitude(p))) <= 6:
         p /= 101325
         logger.info('\nPressure is assumed to be in Pa and was converted to atm\n')
-    elif -1 <= np.rint(order_of_magnitude(p).mean()) <= 1:
+    elif -1 <= np.nanmean(np.rint(order_of_magnitude(p))) <= 1:
         logger.info('\nPressure is assumed to be already in atm (no conversion)\n')
     else:
         raise IOError("Pressure must be given in hPa, Pa or atm")
@@ -184,12 +184,12 @@ def pressure2mbar(p):
     dtype: float64
     """
     p = copy(p)
-    if np.rint(order_of_magnitude(p).mean()) == 4:
+    if 3 <= np.nanmean(np.rint(order_of_magnitude(p))) <= 4:
         logger.info('\nPressure is assumed to be already in mbar (no conversion)\n')
-    elif np.rint(order_of_magnitude(p).mean()) == 6:
+    elif 5 <= np.nanmean(np.rint(order_of_magnitude(p))) <= 6:
         p /= 100
         logger.info('\nPressure is assumed to be in Pa and was converted to mbar (hPa)\n')
-    elif -1 <= np.rint(order_of_magnitude(p).mean()) <= 1:
+    elif -1 <= np.nanmean(np.rint(order_of_magnitude(p))) <= 1:
         logger.info('\nPressure is assumed to be in atm and was converted to mbar (hPa)\n')
         p *= 1013.25
     else:
