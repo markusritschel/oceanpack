@@ -64,14 +64,17 @@ sys.path.insert(0, os.path.join(__location__, '../src'))
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['nbsphinx', 'myst_parser', 'sphinx.ext.autodoc', 'sphinx.ext.intersphinx', 'sphinx.ext.todo',
+extensions = [ 'myst_nb',  'sphinx.ext.autodoc', 'sphinx.ext.intersphinx', 'sphinx.ext.todo',
               'sphinx.ext.autosummary', 'sphinx.ext.viewcode', 'sphinx.ext.coverage',
               'sphinx.ext.doctest', 'sphinx.ext.ifconfig', 'sphinx.ext.mathjax',
-              'sphinx.ext.napoleon', 'sphinx_rtd_theme', 'sphinx.ext.githubpages', 'sphinx_issues',
+              'sphinx.ext.napoleon', 'sphinx_rtd_theme', 'sphinx.ext.githubpages', 'sphinx_issues', 'sphinxcontrib.bibtex'
               ]
 
 myst_update_mathjax = False
 nbsphinx_execute = 'never'
+jupyter_execute_notebooks = 'off'
+bibtex_bibfiles = ['refs.bib']
+# bibtex_reference_style = 'author_year'
 
 
 def setup(app):
@@ -81,7 +84,12 @@ def setup(app):
 templates_path = ['_templates']
 
 # The suffix of source filenames.
-source_suffix = '.rst'
+#source_suffix = '.rst'
+source_suffix = {
+    '.rst': 'restructuredtext',
+    '.ipynb': 'myst-nb',
+    '.myst': 'myst-nb',
+}
 
 # The encoding of source files.
 # source_encoding = 'utf-8-sig'
