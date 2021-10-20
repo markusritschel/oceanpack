@@ -124,14 +124,14 @@ def roundup(x, to=1):
 def pressure2atm(p):
     """Converts pressure given in hPa, Pa or atm into atm"""
     p = copy(p)
-    if np.rint(order_of_magnitude(p).mean()) == 4:
+    if 3 <= np.nanmedian(np.rint(order_of_magnitude(p))) <= 4:
         p /= 1013.25
-        print('\nPressure is assumed to be in hPa and was converted to atm')
-    elif np.rint(order_of_magnitude(p).mean()) == 6:
+        logger.info('\nPressure is assumed to be in hPa and was converted to atm\n')
+    elif 5 <= np.nanmedian(np.rint(order_of_magnitude(p))) <= 6:
         p /= 101325
-        print('\nPressure is assumed to be in Pa and was converted to atm')
-    elif -1 <= np.rint(order_of_magnitude(p).mean()) <= 1:
-        print('\nPressure is assumed to be already in atm (no conversion)')
+        logger.info('\nPressure is assumed to be in Pa and was converted to atm\n')
+    elif -1 <= np.nanmedian(np.rint(order_of_magnitude(p))) <= 1:
+        logger.info('\nPressure is assumed to be already in atm (no conversion)\n')
     else:
         raise IOError("Pressure must be given in hPa, Pa or atm")
     return p
@@ -140,13 +140,13 @@ def pressure2atm(p):
 def pressure2mbar(p):
     """Converts pressure given in hPa, Pa or atm into mbar (or hPa)"""
     p = copy(p)
-    if np.rint(order_of_magnitude(p).mean()) == 4:
-        print('\nPressure is assumed to be already in mbar (no conversion)')
-    elif np.rint(order_of_magnitude(p).mean()) == 6:
+    if 3 <= np.nanmedian(np.rint(order_of_magnitude(p))) <= 4:
+        logger.info('\nPressure is assumed to be already in mbar (no conversion)\n')
+    elif 5 <= np.nanmedian(np.rint(order_of_magnitude(p))) <= 6:
         p /= 100
-        print('\nPressure is assumed to be in Pa and was converted to mbar (hPa)')
-    elif -1 <= np.rint(order_of_magnitude(p).mean()) <= 1:
-        print('\nPressure is assumed to be in atm and was converted to mbar (hPa)')
+        logger.info('\nPressure is assumed to be in Pa and was converted to mbar (hPa)\n')
+    elif -1 <= np.nanmedian(np.rint(order_of_magnitude(p))) <= 1:
+        logger.info('\nPressure is assumed to be in atm and was converted to mbar (hPa)\n')
         p *= 1013.25
     else:
         raise IOError("Pressure must be given in hPa, Pa or atm")
