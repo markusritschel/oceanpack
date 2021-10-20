@@ -224,35 +224,37 @@ def water_vapor_pressure(T, S):
     return pH2O
 
 
-def temperature_correction(xCO2, T_insitu, T_equ, method='Takahashi2009'):
-    """xCO2 can be one out of [xCO2 (mole fraction), pCO2 (partial pressure), fCO2 (fugacity)]
+def temperature_correction(CO2, T_out=None, T_in=None, method='Takahashi2009', **kwargs):
+    """CO2 can be one out of [xCO2 (mole fraction), pCO2 (partial pressure), fCO2 (fugacity)]
 
     Parameters
     ----------
-    xCO2: float or pd.Series
+    CO2: float or pd.Series
         The CO2 variable, which shall be corrected for temperature differences.
         Can be one out of the following:
         - xCO2 (mole fraction in ppm)
         - pCO2 (partial pressure in hPa, Pa, atm or µatm)
         - fCO2 (fugacity in hPa, Pa, atm or µatm)
-    T_insitu: float or pd.Series
-        The in-situ temperature (°C or K), at which the water was sampled
-    T_equ: float or pd.Series
-        The temperature (°C or K) at the equilibrator, at which the water was measured
+    T_out: float or pd.Series
+        The temperature towards which the data shall be corrected. Typically, the in-situ temperature (°C or K), at which the water was sampled.
+    T_in: float or pd.Series
+        The temperature from which the data shall be corrected. Typically, the temperature (°C or K) at the equilibrator, at which the water was measured.
     method: str
         Either "Takahashi2009" or "Takahashi1993", describing the method of the respectively published paper by Takahashi et al.
     """
+    if T_out is None: T_out = kwargs.pop('T_insitu')
+    if T_in is None: T_in = kwargs.pop('T_equ')
     if method=="Takahashi2009":
-        xCO2_out = xCO2 * np.exp(0.0433*(T_insitu - T_equ) - 4.35e-5*(T_insitu**2 - T_equ**2))
+        CO2_out = CO2 * np.exp(0.0433*(T_out - T_in) - 4.35e-5*(T_out**2 - T_in**2))
     elif method=="Takahashi1993":
-        xCO2_out = xCO2 * np.exp(0.0423*(T_insitu - T_equ))
+        CO2_out = CO2 * np.exp(0.0423*(T_out - T_in))
     else:
         raise IOError("Unknown method for temperature conversion.")
 
-    return xCO2_out
+    return CO2_out
 
 
-def fugacity(pCO2,p_equ,SST,xCO2=None):
+def fugacity(pCO2, p_equ, SST, xCO2=None):
     """Calculate the fugacity of CO2. Can be done either before or after a temperature correction.
     The formulas follow Dickson et al. (2007), mainly SOP 5, Chapter 8. "Calculation and expression of results"
 
