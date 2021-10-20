@@ -29,32 +29,33 @@ sys.path.insert(0, os.path.join(__location__, '../src'))
 # setup.py install" in the RTD Advanced Settings.
 # Additionally it helps us to avoid running apidoc manually
 
-try:  # for Sphinx >= 1.7
-    from sphinx.ext import apidoc
-except ImportError:
-    from sphinx import apidoc
-
-output_dir = os.path.join(__location__, "api")
-module_dir = os.path.join(__location__, "../src/oceanpack")
-try:
-    shutil.rmtree(output_dir)
-except FileNotFoundError:
-    pass
-
-try:
-    import sphinx
-    from pkg_resources import parse_version
-
-    cmd_line_template = "sphinx-apidoc -f -o {outputdir} {moduledir}"
-    cmd_line = cmd_line_template.format(outputdir=output_dir, moduledir=module_dir)
-
-    args = cmd_line.split(" ")
-    if parse_version(sphinx.__version__) >= parse_version('1.7'):
-        args = args[1:]
-
-    apidoc.main(args)
-except Exception as e:
-    print("Running `sphinx-apidoc` failed!\n{}".format(e))
+# # TODO: check if this can stay commented or even be erased
+# try:  # for Sphinx >= 1.7
+#     from sphinx.ext import apidoc
+# except ImportError:
+#     from sphinx import apidoc
+#
+# output_dir = os.path.join(__location__, "api")
+# module_dir = os.path.join(__location__, "../src/oceanpack")
+# try:
+#     shutil.rmtree(output_dir)
+# except FileNotFoundError:
+#     pass
+#
+# try:
+#     import sphinx
+#     from pkg_resources import parse_version
+#
+#     cmd_line_template = "sphinx-apidoc -f -o {outputdir} {moduledir}"
+#     cmd_line = cmd_line_template.format(outputdir=output_dir, moduledir=module_dir)
+#
+#     args = cmd_line.split(" ")
+#     if parse_version(sphinx.__version__) >= parse_version('1.7'):
+#         args = args[1:]
+#
+#     apidoc.main(args)
+# except Exception as e:
+#     print("Running `sphinx-apidoc` failed!\n{}".format(e))
 
 # -- General configuration -----------------------------------------------------
 
@@ -63,11 +64,21 @@ except Exception as e:
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.intersphinx', 'sphinx.ext.todo',
+extensions = ['nbsphinx', 'myst_parser', 'sphinx.ext.autodoc', 'sphinx.ext.intersphinx', 'sphinx.ext.todo',
               'sphinx.ext.autosummary', 'sphinx.ext.viewcode', 'sphinx.ext.coverage',
               'sphinx.ext.doctest', 'sphinx.ext.ifconfig', 'sphinx.ext.mathjax',
-              'sphinx.ext.napoleon']
+              'sphinx.ext.napoleon', 'sphinx_rtd_theme', 'sphinx.ext.githubpages', 'sphinx_issues', 'sphinxcontrib.bibtex'
+              ]
 
+myst_update_mathjax = False
+nbsphinx_execute = 'never'
+bibtex_bibfiles = ['refs.bib']
+# bibtex_reference_style = 'author_year'
+
+
+def setup(app):
+    app.add_stylesheet('custom.css')
+    
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
@@ -105,7 +116,7 @@ release = ''  # Is set by calling `setup.py docs`
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ['_build']
+exclude_patterns = ['_build', '**.ipynb_checkpoints', 'Thumbs.db', '.DS_Store']
 
 # The reST default role (used for this markup: `text`) to use for all documents.
 # default_role = None
@@ -135,15 +146,15 @@ pygments_style = 'sphinx'
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'alabaster'
+html_theme = 'sphinx_rtd_theme'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-html_theme_options = {
-    'sidebar_width': '300px',
-    'page_width': '1200px'
-}
+# html_theme_options = {
+#     'sidebar_width': '300px',
+#     'page_width': '1200px'
+# }
 
 # Add any paths that contain custom themes here, relative to this directory.
 # html_theme_path = []
@@ -173,6 +184,9 @@ else:
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+# Enable HTML5 writer support
+html_experimental_html5_writer = True
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.
