@@ -120,21 +120,24 @@ def order_of_magnitude(x):
     Examples
     --------
     >>> order_of_magnitude(11)
-    array(2.)
-    >>> order_of_magnitude(234)
-    array(3.)
-    >>> order_of_magnitude(1)
     array(1.)
-    >>> order_of_magnitude(.15)
+    >>> order_of_magnitude(234)
+    array(2.)
+    >>> order_of_magnitude(1)
     array(0.)
+    >>> order_of_magnitude(.15)
+    array(-1.)
     >>> order_of_magnitude(np.array([24.13, 254.2]))
-    array([2., 3.])
+    array([1., 2.])
     >>> order_of_magnitude(pd.Series([24.13, 254.2]))
-    array([2., 3.])
+    array([1., 2.])
     """
     x = np.asarray(x)
+    if np.all(x==0):
+        return None
     x = x[x!=0]
-    oom = (np.int32(np.log10(np.abs(x))) + 1)
+    oom = np.floor(np.log10(x))
+    # oom = (np.int32(np.log10(np.abs(x))) + 1)
     return np.array(oom)
 
 
@@ -159,10 +162,10 @@ def pressure2atm(p):
     dtype: float64
     """
     p = copy(p)
-    if 3 <= np.nanmedian(np.rint(order_of_magnitude(p))) <= 4:
+    if 2 <= np.nanmedian(np.rint(order_of_magnitude(p))) <= 3:
         p /= 1013.25
         logger.info('\nPressure is assumed to be in hPa and was converted to atm\n')
-    elif 5 <= np.nanmedian(np.rint(order_of_magnitude(p))) <= 6:
+    elif 4 <= np.nanmedian(np.rint(order_of_magnitude(p))) <= 5:
         p /= 101325
         logger.info('\nPressure is assumed to be in Pa and was converted to atm\n')
     elif -1 <= np.nanmedian(np.rint(order_of_magnitude(p))) <= 1:
@@ -189,9 +192,9 @@ def pressure2mbar(p):
     dtype: float64
     """
     p = copy(p)
-    if 3 <= np.nanmedian(np.rint(order_of_magnitude(p))) <= 4:
+    if 2 <= np.nanmedian(np.rint(order_of_magnitude(p))) <= 3:
         logger.info('\nPressure is assumed to be already in mbar (no conversion)\n')
-    elif 5 <= np.nanmedian(np.rint(order_of_magnitude(p))) <= 6:
+    elif 4 <= np.nanmedian(np.rint(order_of_magnitude(p))) <= 5:
         p /= 100
         logger.info('\nPressure is assumed to be in Pa and was converted to mbar (hPa)\n')
     elif -1 <= np.nanmedian(np.rint(order_of_magnitude(p))) <= 1:
