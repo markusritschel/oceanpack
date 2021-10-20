@@ -111,7 +111,10 @@ def order_of_magnitude(x):
     >>> order_of_magnitude(.15)
     0.0
     """
-    return np.rint(np.log10(np.abs(x))) + 1
+    x = np.asarray(x)
+    x = x[x!=0]
+    oom = (np.int32(np.log10(np.abs(x))) + 1)
+    return np.array(oom)
 
 
 def roundup(x, to=1):
