@@ -34,11 +34,11 @@ def test_cond2sal_converter():
 
 
 def test_order_of_magnitude():
-    assert order_of_magnitude(2) == 1
-    assert order_of_magnitude(10) == 2
-    assert order_of_magnitude(300) == 3
-    assert order_of_magnitude(988) == 4
-    assert order_of_magnitude(1234) == 4
+    assert order_of_magnitude(2) == 0
+    assert order_of_magnitude(10) == 1
+    assert order_of_magnitude(300) == 2
+    assert order_of_magnitude(988) == 2
+    assert order_of_magnitude(1234) == 3
 
 
 def test_pressure2atm():
