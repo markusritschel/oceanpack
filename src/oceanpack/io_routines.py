@@ -107,9 +107,9 @@ def read_oceanpack(files):
 
     for col in df.columns:
         try:
-            df[col] = df[col].astype('float')
+            df[col] = pd.to_numeric(df[col])
         except:
-            pass
+            logger.warning(f'Cannot convert {col} to numeric')
 
     df.sort_index(axis=0, inplace=True, ascending=True)
 
