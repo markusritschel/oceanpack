@@ -75,7 +75,8 @@ def read_oceanpack(files):
         raise IOError("Input must be either str or list")
 
     file_types = []
-    df = pd.DataFrame()
+    df_list = []
+
     for file in tqdm(files, unit='file'):
         logger.debug("Processing %s", file)
         with open(file, 'r', encoding='iso-8859-1') as f:
@@ -93,7 +94,9 @@ def read_oceanpack(files):
                 file_types.append('unknown')
                 continue
         df_ = read_routine(file)
-        df = df.append(df_)
+        df_list.append(df_)
+
+    df = pd.concat(df_list)
 
     if len(set(file_types)) > 1:
         logger.warning("Files appear to be not all of the same type. Please check your data!")
