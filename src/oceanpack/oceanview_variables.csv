@@ -1,26 +1,26 @@
 ID,name,unit,comment,device
 1,NMEA,,,System
-2,destination_ID,,,
-3,source_ID,,,
-4,data_mode,,,
-5,format,,,
-6,LDN,,Logical Device No.,
+2,destination_ID,,normally not used,
+3,source_ID,,normally not used,
+4,data_mode,,Requested action (Request data|Write|Data),
+5,format,,Sub-format for later extensions,
+6,LDN,,Logical Device No. (normally not used),
 7,date,1 day,ISO-8601:2000,
 8,time,1 sec,UTC time,
 9,msec,1 msec,Resolution,
 10,runtime,1 sec,Seconds since start,
-11,sensor_state,,,
-12,waterflow,l/min,,
+11,sensor_state,,System state,
+12,waterflow,l/min,System water flow,
 13,V_in,,,USV
 14,V_out,,,
-15,Puff,,,
-16,I_out,,,
-17,SBE45Temp,°C,,CTD
-18,SBE45Cond,mS/cm,,
-19,SBE45Sal,PSU,,
-20,co2,ppm,,Li-COR gas analyzer
-21,h2o,ppt,,
-22,h2oDew,°C,,
+15,Puff,,Information if system is powered by UPS,
+16,I_out,A,Output current of UPS,
+17,SBE45Temp,°C,Temperature of CTD,CTD
+18,SBE45Cond,mS/cm,Conductivity of CTD,CTD
+19,SBE45Sal,PSU,Salinity of CTD,CTD
+20,co2,ppm,CO2 concentration,Li-COR gas analyzer
+21,h2o,ppt,H2O concentration,Li-COR gas analyzer
+22,h2oDew,°C,H2O Dewpoint,Li-COR gas analyzer
 23,LiCOR_Temp,°C,,
 24,LiCOR_Pres,mBar,,
 25,valves,,?,
