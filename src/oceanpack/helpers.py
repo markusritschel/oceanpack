@@ -164,12 +164,12 @@ def pressure2atm(p):
     p = copy(p)
     if 2 <= np.nanmedian(np.rint(order_of_magnitude(p))) <= 3:
         p /= 1013.25
-        logger.info('\nPressure is assumed to be in hPa and was converted to atm\n')
+        logger.info('Pressure is assumed to be in hPa and was converted to atm')
     elif 4 <= np.nanmedian(np.rint(order_of_magnitude(p))) <= 5:
         p /= 101325
-        logger.info('\nPressure is assumed to be in Pa and was converted to atm\n')
+        logger.info('Pressure is assumed to be in Pa and was converted to atm')
     elif -1 <= np.nanmedian(np.rint(order_of_magnitude(p))) <= 1:
-        logger.info('\nPressure is assumed to be already in atm (no conversion)\n')
+        logger.info('Pressure is assumed to be already in atm (no conversion)')
     else:
         raise IOError("Pressure must be given in hPa, Pa or atm")
     return p
@@ -193,12 +193,12 @@ def pressure2mbar(p):
     """
     p = copy(p)
     if 2 <= np.nanmedian(np.rint(order_of_magnitude(p))) <= 3:
-        logger.info('\nPressure is assumed to be already in mbar (no conversion)\n')
+        logger.info('Pressure is assumed to be already in mbar (no conversion)')
     elif 4 <= np.nanmedian(np.rint(order_of_magnitude(p))) <= 5:
         p /= 100
-        logger.info('\nPressure is assumed to be in Pa and was converted to mbar (hPa)\n')
+        logger.info('Pressure is assumed to be in Pa and was converted to mbar (hPa)')
     elif -1 <= np.nanmedian(np.rint(order_of_magnitude(p))) <= 1:
-        logger.info('\nPressure is assumed to be in atm and was converted to mbar (hPa)\n')
+        logger.info('Pressure is assumed to be in atm and was converted to mbar (hPa)')
         p *= 1013.25
     else:
         raise IOError("Pressure must be given in hPa, Pa or atm")
