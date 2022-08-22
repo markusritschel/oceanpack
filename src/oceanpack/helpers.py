@@ -470,7 +470,7 @@ def check_input_for_duplicates(func):
         remove_idx = []
         for i, f1 in enumerate(file_list):
             for f2 in file_list[i + 1:]:
-                res = filecmp.cmp(f1,f2, shallow=True)
+                res = filecmp.cmp(f1,f2, shallow=True)  # Note: shallow=False would compare the actual file contents
                 if res:
                     remove_idx.append(i)
         filtered_file_list = [i for j, i in enumerate(file_list) if j not in remove_idx]
