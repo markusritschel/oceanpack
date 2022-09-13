@@ -1,0 +1,25 @@
+{
+  "template": "/home/markusritschel/PycharmProjects/cookiecutter-pypackage",
+  "commit": "bee2d3e7e374c4597f866989a0975538262f0875",
+  "context": {
+    "cookiecutter": {
+      "full_name": "Markus Ritschel",
+      "email": "git@markusritschel.de",
+      "github_username": "markusritschel",
+      "project_name": "oceanpack",
+      "project_slug": "oceanpack",
+      "package_name": "oceanpack",
+      "project_short_description": "Routines to handle log files of the OceanPack from SubCtech® ",
+      "project_version": "0.1.0",
+      "use_pytest": "y",
+      "command_line_interface": "Click",
+      "create_author_file": "y",
+      "project_license": "MIT license",
+      "_copy_without_render": [
+        ".github/workflows"
+      ],
+      "_template": "/home/markusritschel/PycharmProjects/cookiecutter-pypackage"
+    }
+  },
+  "directory": null
+}
