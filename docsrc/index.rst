@@ -9,7 +9,7 @@ This is the documentation of the `oceanpack <https://github.com/markusritschel/o
     This is **not** an official package. The company SubCtech is not involved in the development of the routines provided here.
 
 
-The ``oceanpack`` package containes routines to read-in log files of the OceanPack as well as various helper functions to help with the data processing, e.g.
+This package containes routines to read in log files of the SubCtech OceanPack as well as various helper functions to help with the data processing, e.g.
 
 * converting coordinates from the Analyzer's format into decimal digits
 * converting xCO2 to pCO2
@@ -17,6 +17,9 @@ The ``oceanpack`` package containes routines to read-in log files of the OceanPa
 * computing the fugacity fCO2
 * etc.
 
+A full description of the functions and the underlying algorithms can be found in the :ref:`py-modindex`.
+
+.. TODO: Add a more extensive description here. Maybe include photos/images of the OceanPack etc. Mention any pecularities.
 
 Installation
 ============
@@ -30,21 +33,31 @@ in your terminal.
 
 .. toctree::
    :maxdepth: 1
-   :caption: Contents:
-
-   License <license>
-   Authors <authors>
-   Changelog <changelog>
+   :hidden:
+   :caption: Contents
+   
    examples.ipynb
+   License <license>
+   Changelog <changelog>
+
+
+.. toctree::
+   :maxdepth: 1
+   :hidden:
+   :caption: API
+   
    Module Reference <api/modules>
+   genindex
+   py-modindex
 
 
-Indices and tables
-==================
+------------
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+References
+==========
+    .. bibliography::
+
+
 
 .. _toctree: http://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html
 .. _reStructuredText: http://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html

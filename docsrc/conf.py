@@ -67,13 +67,15 @@ sys.path.insert(0, os.path.join(__location__, '../src'))
 extensions = ['nbsphinx', 'myst_parser', 'sphinx.ext.autodoc', 'sphinx.ext.intersphinx', 'sphinx.ext.todo',
               'sphinx.ext.autosummary', 'sphinx.ext.viewcode', 'sphinx.ext.coverage',
               'sphinx.ext.doctest', 'sphinx.ext.ifconfig', 'sphinx.ext.mathjax',
-              'sphinx.ext.napoleon', 'sphinx_rtd_theme', 'sphinx.ext.githubpages', 'sphinx_issues', 'sphinxcontrib.bibtex'
+              'sphinx.ext.napoleon',  'sphinx.ext.githubpages', 'sphinx_issues', 'sphinxcontrib.bibtex'
               ]
 
 myst_update_mathjax = False
 nbsphinx_execute = 'never'
 bibtex_bibfiles = ['refs.bib']
-# bibtex_reference_style = 'author_year'
+#bibtex_encoding = 'latin'
+#bibtex_default_style = 'unsrt'
+bibtex_reference_style = 'author_year'
 
 
 def setup(app):

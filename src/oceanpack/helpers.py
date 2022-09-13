@@ -52,9 +52,8 @@ def decimal_degrees(x):
 
 # TODO: compare with "1978 Practical Salinity Scale Equations, from IEEE Journal of Oceanic Engineering, Vol. OE-5, No. 1, January 1980, page 14"
 def cond2sal(C, T, p):
-    """Compute salinity from conductivity.
-    According to Lewis and Perkin (1978): "The practical salinity scale 1978: conversion of existing data".
-
+    """Compute salinity from conductivity, according to :cite:t:`lewis_practical_1981`.
+    
     Example
     -------
     >>> cond2sal(C=52, T=25, p=1013)
@@ -245,7 +244,10 @@ def temperature2C(T):
 
 
 def ppm2uatm(xCO2,p_equ,input='wet',T=None,S=None):
-    """Converts a mole fraction concentration (in ppm) into partial pressure (in µatm) following Dickson et al. (2007)
+    """Convert mole fraction concentration (in ppm) into partial pressure (in µatm) following :cite:t:`dickson_guide_2007`
+
+    .. math::
+        pCO_2 = xCO_2 \\cdot p_\\text{equ}
 
     Parameters
     ----------
@@ -279,7 +281,7 @@ def ppm2uatm(xCO2,p_equ,input='wet',T=None,S=None):
 
 def water_vapor_pressure(T, S):
     """Computes the water vapor pressure by means of the temperature [K] and the salinity [PSU]
-    following Weiss and Price (1980).
+    following :cite:t:`weiss_nitrous_1980`.
 
     Parameters
     ----------
@@ -296,7 +298,13 @@ def water_vapor_pressure(T, S):
 
 
 def temperature_correction(CO2, T_out=None, T_in=None, method='Takahashi2009', **kwargs):
-    """CO2 can be one out of [xCO2 (mole fraction), pCO2 (partial pressure), fCO2 (fugacity)]
+    """Apply a temperature correction. This might be necessary when the temperatures at the water intake 
+    (often outside the ship) and at the OceanPack CTD differ. The correction used here follows :cite:t:`takahashi_climatological_2009`:
+
+    .. math::
+        {(xCO_2)}_{SST} = {(xCO_2)}_{T_\\text{equ}} \\cdot \\exp{\\Big(0.0433\\cdot(SST - T_\\text{equ}) - 4.35\\times 10^{-5}\\cdot(SST^2 - T_\\text{equ}^2)\\Big)}
+
+    :math:`CO2` can be one out of [xCO2 (mole fraction), pCO2 (partial pressure), fCO2 (fugacity)].
 
     Parameters
     ----------
@@ -326,8 +334,24 @@ def temperature_correction(CO2, T_out=None, T_in=None, method='Takahashi2009', *
 
 
 def fugacity(pCO2, p_equ, SST, xCO2=None):
-    """Calculate the fugacity of CO2. Can be done either before or after a temperature correction.
-    The formulas follow Dickson et al. (2007), mainly SOP 5, Chapter 8. "Calculation and expression of results"
+    """Calculate the fugacity of CO2. Can be done either before or after a :func:`.temperature correction`.
+    The formulas follow :cite:t:`dickson_guide_2007`, mainly SOP 5, Chapter 8. "Calculation and expression of results"
+
+    .. math::
+       (fCO_2)^\\text{wet}_\\text{SST} = (pCO_2)^\\text{wet}_\\text{SST} \\cdot
+            \\exp{\\Big(p_\\text{equ}\\cdot\\frac{\\left[ B(CO_2,SST) + 2\\,\\left(1-(xCO_2)^\\text{wet}_{SST}\\right)^2 \\, \\delta(CO_2,SST)\\right]}{R\\cdot SST}\\Big)}
+
+    where :math:`SST` is the sea surface temperature in K, :math:`R` the gas constant and :math:`B(CO_2,SST)` and 
+    :math:`\delta(CO_2,SST)` are the virial coefficients for :math:`CO_2` (both in :math:`cm^3\\,mol^{-1}`), which are given as
+
+    .. math::
+       B(CO_2,T) = -1636.75 + 12.0408\\,T - 0.0327957\\,T^2 + 0.0000316528\\,T^3
+
+    and
+
+    .. math::
+       \\delta(CO_2,T) = 57.7 - 0.188\\,T
+
 
     Parameters
     ----------
@@ -482,3 +506,4 @@ def check_input_for_duplicates(func):
         return func(filtered_file_list)
 
     return wrapper
+
