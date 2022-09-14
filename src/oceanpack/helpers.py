@@ -459,6 +459,24 @@ def grid_dataframe(points, vals, xi, export_grid=False):
         The actual data values that are meant to be regridded
     xi : tuple[list, list]
         A tuple `(x, y)` consisting of two lists holding the target coordinates.
+
+    Example
+    -------
+    >>> df = pd.DataFrame({'lon': np.linspace(0, 40, 100),
+    >>>                    'lat': np.sin(np.linspace(0, 3, 100))*10 + 40,
+    >>>                    'data': np.linspace(200,240,100)})
+    >>> xi = np.linspace(-5, 45, 40)
+    >>> yi = np.linspace(35, 53, 50)
+    >>> gridded = grid_dataframe((df.lon, df.lat), df.data, (xi, yi))
+    >>> plt.pcolormesh(xi, yi, gridded, shading='auto')
+    >>> plt.xlabel('Longitude')
+    >>> plt.ylabel('Latitude')
+    >>> plt.show()
+
+    .. image:: ../_static/grid_dataframe_plot.png
+       :width: 450px
+       :alt: eample plot
+       :align: left
     """
     x, y = points
     X, Y = xi
