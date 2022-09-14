@@ -280,7 +280,7 @@ def ppm2uatm(xCO2,p_equ,input='wet',T=None,S=None):
 
 
 def water_vapor_pressure(T, S):
-    """Computes the water vapor pressure by means of the temperature [K] and the salinity [PSU]
+    """Compute the water vapor pressure by means of the temperature [K] and the salinity [PSU]
     following :cite:t:`weiss_nitrous_1980`.
 
     Parameters
@@ -304,7 +304,7 @@ def temperature_correction(CO2, T_out=None, T_in=None, method='Takahashi2009', *
     .. math::
         {(xCO_2)}_{SST} = {(xCO_2)}_{T_\\text{equ}} \\cdot \\exp{\\Big(0.0433\\cdot(SST - T_\\text{equ}) - 4.35\\times 10^{-5}\\cdot(SST^2 - T_\\text{equ}^2)\\Big)}
 
-    :math:`CO2` can be one out of [xCO2 (mole fraction), pCO2 (partial pressure), fCO2 (fugacity)].
+    `CO2` can be one out of [xCO2 (mole fraction), pCO2 (partial pressure), fCO2 (fugacity)].
 
     Parameters
     ----------
@@ -342,7 +342,7 @@ def fugacity(pCO2, p_equ, SST, xCO2=None):
             \\exp{\\Big(p_\\text{equ}\\cdot\\frac{\\left[ B(CO_2,SST) + 2\\,\\left(1-(xCO_2)^\\text{wet}_{SST}\\right)^2 \\, \\delta(CO_2,SST)\\right]}{R\\cdot SST}\\Big)}
 
     where :math:`SST` is the sea surface temperature in K, :math:`R` the gas constant and :math:`B(CO_2,SST)` and 
-    :math:`\delta(CO_2,SST)` are the virial coefficients for :math:`CO_2` (both in :math:`cm^3\\,mol^{-1}`), which are given as
+    :math:`\delta(CO_2,SST)` are the virial coefficients for :math:`CO_2` (both in :math:`\\text{cm}^3\\,\\text{mol}^{-1}`), which are given as
 
     .. math::
        B(CO_2,T) = -1636.75 + 12.0408\\,T - 0.0327957\\,T^2 + 0.0000316528\\,T^3
@@ -417,8 +417,8 @@ def set_nonoperating_to_nan(data, col='CO2', shift='30min', status_var='ANA_stat
     return data
 
 
-def nearest(items, pivot):
-    """Find nearest element.
+def nearest(items: list, pivot: float) -> float:
+    """Find the element inside `items` that is closest to the `pivot` element.
 
     Examples
     --------
@@ -448,8 +448,18 @@ def centered_bins(x):
 
 
 def grid_dataframe(points, vals, xi, export_grid=False):
-    """Bins the values with `points` coordinates by the given target coordinates `xi` and puts the average of each bin
-    onto the target grid."""
+    """Bin the values with `points` coordinates by the given target coordinates `xi` and put the average of each bin
+    onto the target grid.
+
+    Parameters
+    ----------
+    points : tuple[list, list]
+        A tuple `(x, y)` consisting of two lists holding the respective x and y coordinates of the source data.
+    values : list
+        The actual data values that are meant to be regridded
+    xi : tuple[list, list]
+        A tuple `(x, y)` consisting of two lists holding the target coordinates.
+    """
     x, y = points
     X, Y = xi
     xx, yy = np.meshgrid(*xi)
@@ -464,10 +474,7 @@ def grid_dataframe(points, vals, xi, export_grid=False):
 
     df['x_binned'] = pd.cut(df.x, bins=centered_bins(X), labels=X)
     df['y_binned'] = pd.cut(df.y, bins=centered_bins(Y), labels=Y)
-    # df['x_binned'] = pd.cut(df.x, bins=X, labels=X[:-1])
-    # df['y_binned'] = pd.cut(df.y, bins=Y, labels=Y[:-1])
 
-    # df['points'] = list(zip(df.x_binned, df.y_binned))
     df['points'] = df[['x_binned', 'y_binned']].apply(tuple, axis=1)
 
     df_ = df.groupby(['points']).mean()
