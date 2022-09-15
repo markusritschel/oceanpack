@@ -12,7 +12,7 @@ Data are usually stored on an SD card but can also be streamed to a computer.
 The routines in this package contain routines for conversion of xCO2 to pCO2, for applying temperature corrections, computing the fugacity, etc.
 
 
-A full description of the functions and the underlying algorithms can be found in the :ref:`py-modindex`.
+A full description of the functions and the underlying algorithms can be found in the Module Reference.
 
 .. TODO: Add a more extensive description here. Maybe include photos/images of the OceanPack etc. Mention any pecularities.
 
@@ -36,7 +36,7 @@ in your terminal.
 .. toctree::
    :maxdepth: 1
    :hidden:
-   :caption: Contents
+   :caption: Content
    
    examples.ipynb
    License <license>
