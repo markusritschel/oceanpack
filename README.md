@@ -24,7 +24,7 @@ $ pip install git+https://github.com/markusritschel/oceanpack.git#egg=oceanpack
 in your terminal.
 
 ## Examples
-In the subdirectory `notebooks` one can also find a [Jupyter Notebook](https://github.com/markusritschel/oceanpack/blob/master/src/oceanpack/notebooks/examples.ipynb) showing the usage of the various functions based on a short dataset. 
+In the subdirectory `notebooks` one can also find a [Jupyter Notebook](https://github.com/markusritschel/oceanpack/blob/master/notebooks/examples.ipynb) showing the usage of the various functions based on a short dataset. 
 
 
 ## Contact
