@@ -17,6 +17,8 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -104,20 +106,20 @@
 </style>
 <section id="oceanpack">
 <h1>oceanpack<a class="headerlink" href="#oceanpack" title="Permalink to this headline"></a></h1>
-<p>This is the documentation of the <a class="reference external" href="https://github.com/markusritschel/oceanpack">oceanpack</a> package.</p>
+<p>The <a class="reference external" href="https://github.com/markusritschel/oceanpack">oceanpack</a> package is a collection of routines that help with the quality control and processing of data collected with the OceanPack ferrybox system of SubCtech.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This is <strong>not</strong> an official package. The company SubCtech is not involved in the development of the routines provided here.</p>
 </div>
-<p>This package containes routines to read in log files of the SubCtech OceanPack as well as various helper functions to help with the data processing, e.g.</p>
-<ul class="simple">
-<li><p>converting coordinates from the Analyzer’s format into decimal digits</p></li>
-<li><p>converting xCO2 to pCO2</p></li>
-<li><p>applying temperature corrections</p></li>
-<li><p>computing the fugacity fCO2</p></li>
-<li><p>etc.</p></li>
-</ul>
+<p>The OceanPack system measures underway <span class="math notranslate nohighlight">\(CO_2\)</span> alongside water temperature, salinity and other parameters.
+Data are usually stored on an SD card but can also be streamed to a computer.
+The routines in this package contain routines for conversion of xCO2 to pCO2, for applying temperature corrections, computing the fugacity, etc.</p>
 <p>A full description of the functions and the underlying algorithms can be found in the <a class="reference external" href="https://www.sphinx-doc.org/en/master/py-modindex.html" title="(in Sphinx v6.0.0)"><span>Python Module Index</span></a>.</p>
+<section id="contribution">
+<h2>Contribution<a class="headerlink" href="#contribution" title="Permalink to this headline"></a></h2>
+<p>The entire code is publicly available on <a class="reference external" href="https://github.com/markusritschel/oceanpack">Github</a>.
+If you feel like contributing, issues and pull requests are welcome :-)</p>
+</section>
 <section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h2>
 <p>You can install this package on your machine via pip by executing</p>
