@@ -591,7 +591,13 @@
 
 <div class="viewcode-block" id="check_input_for_duplicates"><a class="viewcode-back" href="../../api/oceanpack.html#oceanpack.helpers.check_input_for_duplicates">[docs]</a><span class="k">def</span> <span class="nf">check_input_for_duplicates</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A decorator that checks a list of file paths (the first and only argument of the wrapped function) for duplicates.</span>
-<span class="sd">    Detected duplicates are dropped from the list such that the function can deal with the cleaned-up list.&quot;&quot;&quot;</span>
+<span class="sd">    For example, when you call the function :func:`oceanpack.io_routines.read_oceanpack` with a list of many files, the</span>
+<span class="sd">    decorator checks the input for duplicates before the read-in routine actually processes the files.</span>
+<span class="sd">    The decorator makes use of the :func:`os.stat` signatures (file type, size, and modification time) to compare files</span>
+<span class="sd">    pair-wise.</span>
+
+<span class="sd">    Detected duplicates are dropped from the list such that the function can deal with the cleaned-up list.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># The functools._wraps decorator ensures that `func` can still be parsed by Sphinx. Usually, decorated functions can not be parsed by Sphinx.</span>
     <span class="nd">@_wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">file_list</span><span class="p">):</span>

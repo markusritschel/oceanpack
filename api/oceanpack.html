@@ -140,7 +140,11 @@
 <dt class="sig sig-object py" id="oceanpack.helpers.check_input_for_duplicates">
 <span class="sig-prename descclassname"><span class="pre">oceanpack.helpers.</span></span><span class="sig-name descname"><span class="pre">check_input_for_duplicates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/oceanpack/helpers.html#check_input_for_duplicates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oceanpack.helpers.check_input_for_duplicates" title="Permalink to this definition"></a></dt>
 <dd><p>A decorator that checks a list of file paths (the first and only argument of the wrapped function) for duplicates.
-Detected duplicates are dropped from the list such that the function can deal with the cleaned-up list.</p>
+For example, when you call the function <a class="reference internal" href="#oceanpack.io_routines.read_oceanpack" title="oceanpack.io_routines.read_oceanpack"><code class="xref py py-func docutils literal notranslate"><span class="pre">oceanpack.io_routines.read_oceanpack()</span></code></a> with a list of many files, the
+decorator checks the input for duplicates before the read-in routine actually processes the files.
+The decorator makes use of the <a class="reference external" href="https://docs.python.org/3.9/library/os.html#os.stat" title="(in Python v3.9)"><code class="xref py py-func docutils literal notranslate"><span class="pre">os.stat()</span></code></a> signatures (file type, size, and modification time) to compare files
+pair-wise.</p>
+<p>Detected duplicates are dropped from the list such that the function can deal with the cleaned-up list.</p>
 </dd></dl>
 
 <dl class="py function">
