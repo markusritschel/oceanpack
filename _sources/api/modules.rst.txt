@@ -1,0 +1,7 @@
+oceanpack
+=========
+
+.. toctree::
+   :maxdepth: 4
+
+   oceanpack

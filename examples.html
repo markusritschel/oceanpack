@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Examples &mdash; oceanpack 0.1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="License" href="license.html" />
+    <link rel="prev" title="oceanpack" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> oceanpack
+          </a>
+              <div class="version">
+                0.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Read-in-the-file">Read in the file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Convert-coordinates">Convert coordinates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Compute-pressure-at-equilibrator">Compute pressure at equilibrator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Filter-non-operating-phases">Filter non-operating phases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#CO2-calculations">CO2 calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Plot-the-results">Plot the results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/modules.html">Module Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="py-modindex.html">Module Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">oceanpack</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Examples</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/examples.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt .copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+.jp-RenderedHTMLCommon table,
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+.jp-RenderedHTMLCommon thead,
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+.jp-RenderedHTMLCommon tr,
+.jp-RenderedHTMLCommon th,
+.jp-RenderedHTMLCommon td,
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+.jp-RenderedHTMLCommon th,
+div.rendered_html th {
+  font-weight: bold;
+}
+.jp-RenderedHTMLCommon tbody tr:nth-child(odd),
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.jp-RenderedHTMLCommon tbody tr:hover,
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="Examples">
+<h1>Examples<a class="headerlink" href="#Examples" title="Permalink to this headline"></a></h1>
+<p>Here, we use a short excerpt of real underwater CO2 measurements to demonstrate the routines in the <code class="docutils literal notranslate"><span class="pre">oceanpack</span></code> module.</p>
+<section id="Read-in-the-file">
+<h2>Read in the file<a class="headerlink" href="#Read-in-the-file" title="Permalink to this headline"></a></h2>
+<p>First, read the file into a pd.DataFrame and show head and variable names.</p>
+<blockquote>
+<div><p>The <code class="docutils literal notranslate"><span class="pre">read_oceanpack()</span></code> routine can be fed with either a single file path or a list of file paths.</p>
+</div></blockquote>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>!head example_op.log
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+SW Build Datum: Mar 20 2019/12:03:57
+NDI Serial: 00000000
+Internal Analyzer Serial: HGA-2235 27.07.2017
+@SENSOR,,,,,LI840,LI840,LI840,LI840,LI840,LI840,LI840,LI840,LI840,LI840,LI840,LI840,LI840,LI840,LI840,LI840,LI840,LI840,LI840,LI840,LI840,AD24_1,Int.Flow,TCN75A,HWHSC,GPX16,GPX16,GPX16,GPX16,GPX16,GPX16,SS_CTD48,SS_CTD48,Block USV,Block USV,Block USV,Block USV,,,,,,,,,,,,
+@NAME,DATE,TIME,FRAC,SEC,CO2,CO2abs,H2O,H2Oabs,H2Odew,CellTemp,CellPress,VInput,CO2raw,CO2ref,H2Oraw,H2Oref,H2OzCal,CO2zCal,Span1Cal,Span2Cal,SWVers,CO2kzero,CO2kspan1,CO2kspan2,H2Okzero,AIN3_mA/Waterflow,FLOWgas,TempAirInt,DPressInt,Latitude,Longitude,Speed,Course,Magn.Var,GPS Time,waterTemp,waterCond,pvuaVin,pvuaVout,pvuaPuff,pvuaIout,PUMP,VALVE1,VALVE2,VALVE3,VALVE4,VALVE5,VALVE6,VALVE7,VALVE8,VALVE9,STATUS
+@UNIT,YYYY-MM-DD,HH:MM:SS,MS,RUNSEC,ppm,-,ppt,-,-,�C,mbar,VDC,-,-,-,-,date,date,date,date,-,-,-,-,-,mA/l/min,ml/min,�C,mbar,ddmm.mmmm,dddmm.mmmm,knots,�,deg,hhmmss,�C,mS/cm,VDC,VDC,on/off,A,ON/OFF,ON/OFF,ON/OFF,ON/OFF,ON/OFF,ON/OFF,ON/OFF,ON/OFF,ON/OFF,ON/OFF,STATE
+@A0,,,,,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,-3.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,,,,,,,,,,,,
+@A1,,,,,1.000000,1.000000,1.000000,1.000000,1.000000,1.000000,1.000000,1.000000,1.000000,1.000000,1.000000,1.000000,1.000000,1.000000,1.000000,1.000000,1.000000,1.000000,1.000000,1.000000,1.000000,0.950000,1.000000,1.000000,1.000000,1.000000,1.000000,1.000000,1.000000,1.000000,1.000000,1.000000,1.000000,1.000000,1.000000,1.000000,1.000000,,,,,,,,,,,,
+@A2,,,,,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,,,,,,,,,,,,
+@MEAN,,,,,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,10,1,1,1,1,1,1,1,1,1,1,1,1,1,1,,,,,,,,,,,,
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from oceanpack import *
+
+file = &#39;example_op.log&#39;
+df = read_oceanpack(file)
+
+print(df.iloc[:,:6].head())
+print(df.columns)
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "b3003e4fdf4343f487f951b90d7948ae", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+                     FRAC      SEC      CO2    CO2abs      H2O    H2Oabs
+datetime
+2019-05-09 13:00:00   0.0  11530.0  324.070  0.079997  13.2548  0.086408
+2019-05-09 13:00:10   0.0  11540.0  324.191  0.080007  13.2614  0.086425
+2019-05-09 13:00:20   0.0  11550.0  324.126  0.080019  13.2564  0.086426
+2019-05-09 13:00:30   0.0  11560.0  324.335  0.080061  13.2586  0.086441
+2019-05-09 13:00:40   0.0  11570.0  324.320  0.080070  13.2580  0.086449
+Index([&#39;FRAC&#39;, &#39;SEC&#39;, &#39;CO2&#39;, &#39;CO2abs&#39;, &#39;H2O&#39;, &#39;H2Oabs&#39;, &#39;H2Odew&#39;, &#39;CellTemp&#39;,
+       &#39;CellPress&#39;, &#39;VInput&#39;, &#39;CO2raw&#39;, &#39;CO2ref&#39;, &#39;H2Oraw&#39;, &#39;H2Oref&#39;,
+       &#39;H2OzCal&#39;, &#39;CO2zCal&#39;, &#39;Span1Cal&#39;, &#39;Span2Cal&#39;, &#39;SWVers&#39;, &#39;CO2kzero&#39;,
+       &#39;CO2kspan1&#39;, &#39;CO2kspan2&#39;, &#39;H2Okzero&#39;, &#39;AIN3_mA/Waterflow&#39;, &#39;FLOWgas&#39;,
+       &#39;TempAirInt&#39;, &#39;DPressInt&#39;, &#39;Latitude&#39;, &#39;Longitude&#39;, &#39;Speed&#39;, &#39;Course&#39;,
+       &#39;Magn.Var&#39;, &#39;GPS Time&#39;, &#39;waterTemp&#39;, &#39;waterCond&#39;, &#39;pvuaVin&#39;, &#39;pvuaVout&#39;,
+       &#39;pvuaPuff&#39;, &#39;pvuaIout&#39;, &#39;PUMP&#39;, &#39;VALVE1&#39;, &#39;VALVE2&#39;, &#39;VALVE3&#39;, &#39;VALVE4&#39;,
+       &#39;VALVE5&#39;, &#39;VALVE6&#39;, &#39;VALVE7&#39;, &#39;VALVE8&#39;, &#39;VALVE9&#39;, &#39;STATUS&#39;],
+      dtype=&#39;object&#39;)
+</pre></div></div>
+</div>
+<blockquote>
+<div><p>Hint: Depending on the version of the OceanPack not all of the for the following calculations required variables are stored in the log files of the analyzer. It might be necessary to combine datasets both from the Analyzer as well as from the NetDI unit. Both files can be usually read by <code class="docutils literal notranslate"><span class="pre">read_oceanpack()</span></code> and might be combined, for example, via</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>df_combined = pd.merge_asof(data_netdi.sort_index(), data_analyzer.sort_index(),
+                            left_index=True, right_index=True,
+                            tolerance=pd.Timedelta(&#39;2min&#39;), direction=&#39;nearest&#39;)
+</pre></div>
+</div>
+</div></blockquote>
+</section>
+<section id="Convert-coordinates">
+<h2>Convert coordinates<a class="headerlink" href="#Convert-coordinates" title="Permalink to this headline"></a></h2>
+<p>Convert coordinates from ‘ddmm.mmmm’ format into ‘dd.dddd’.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>print(df[&#39;Longitude&#39;].tail(3))
+print(&#39;\nConvert coordinates...\n&#39;)
+df[&#39;Longitude&#39;] = decimal_degrees(df[&#39;Longitude&#39;])
+df[&#39;Latitude&#39;] = decimal_degrees(df[&#39;Longitude&#39;])
+print(df[&#39;Longitude&#39;].tail(3))
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+datetime
+2019-05-09 18:30:30   -453.0803
+2019-05-09 18:30:40   -453.1092
+2019-05-09 18:30:50   -453.1395
+Name: Longitude, dtype: float64
+
+Convert coordinates...
+
+datetime
+2019-05-09 18:30:30   -4.884672
+2019-05-09 18:30:40   -4.885153
+2019-05-09 18:30:50   -4.885658
+Name: Longitude, dtype: float64
+</pre></div></div>
+</div>
+</section>
+<section id="Compute-pressure-at-equilibrator">
+<h2>Compute pressure at equilibrator<a class="headerlink" href="#Compute-pressure-at-equilibrator" title="Permalink to this headline"></a></h2>
+<p>The OceanPack only measures the pressure at the analyzer cell (<span class="math notranslate nohighlight">\(p_\text{cell}\)</span>) as well as the pressure difference <span class="math notranslate nohighlight">\(p_\text{diff}\)</span> at the intake. To retrieve the pressure at the equilibrator (<span class="math notranslate nohighlight">\(p_\text{equ}\)</span>), we build a moving average of the difference pressure (to smooth the fluctuations) and subtract it from the cell pressure. Finally, we convert the pressure into atm units.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>pressure_equ = df[&#39;CellPress&#39;] - df[&#39;DPressInt&#39;].rolling(&#39;1min&#39;).mean()  # in mBar
+df[&#39;press_equ&#39;] = pressure2atm(pressure_equ)
+</pre></div>
+</div>
+</div>
+<blockquote>
+<div><p>Hint: The routine <code class="docutils literal notranslate"><span class="pre">oceanpack.helpers.pressure2atm</span></code> tries to guess the input unit by hands of the order of magnitude of the input values. If this doesn’t work (check the info message above), convert it by hand.</p>
+</div></blockquote>
+</section>
+<section id="Filter-non-operating-phases">
+<h2>Filter non-operating phases<a class="headerlink" href="#Filter-non-operating-phases" title="Permalink to this headline"></a></h2>
+<p>Usually, the OceanPack runs through various phases (such as spin-up, calibration, normal operation). For our final calculation we want to get rid of all the CO2 related values in non-operating phases and also skip the first x minutes after each non-operating phase is finished, since after calibration, the analyzer usually needs some time to get back to normal levels.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>data = df
+status_var = &#39;STATUS&#39;
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>df = set_nonoperating_to_nan(df, col=[x for x in df.columns if &#39;CO2&#39; in x], shift=&quot;20min&quot;, status_var=&#39;STATUS&#39;)
+</pre></div>
+</div>
+</div>
+</section>
+<section id="CO2-calculations">
+<h2>CO2 calculations<a class="headerlink" href="#CO2-calculations" title="Permalink to this headline"></a></h2>
+<p>Now, after all the preparation is done, let’s calculate our CO2 variables of interest.</p>
+<p>First, we need to convert the xCO2 concentration, which is given by the analyzer, into partial pressure.</p>
+<p>According to Dickson et al. (2007), SOP 4, the partial pressure of carbon dioxide in air, which is in equilibrium with a sample of seawater, is defined as the product of the mole fraction of CO2 in the equilibrated gas phase and the total pressure of equilibration <span class="math notranslate nohighlight">\(p_\text{equ}\)</span>:</p>
+<p><span class="math">\begin{equation*}
+pCO_2 = xCO_2 \cdot p_\text{equ}
+\end{equation*}</span></p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>df[&#39;pCO2_wet_equ&#39;] = ppm2uatm(df[&#39;CO2&#39;], df[&#39;press_equ&#39;])
+</pre></div>
+</div>
+</div>
+<p>Second, we want to apply a temperature correction. This might be necessary when the temperatures at the water intake (often outside the ship) and at the OceanPack CTD differ. The correction used here follows Takahashi et al. (2009):</p>
+<p><span class="math">\begin{equation*}
+{(xCO_2)}_{SST} = {(xCO_2)}_{T_\text{equ}} \cdot \exp{\Big(0.0433\cdot(SST - T_\text{equ}) - 4.35\times 10^{-5}\cdot(SST^2 - T_\text{equ}^2)\Big)}
+\end{equation*}</span></p>
+<p>For demonstration purposes, we create an artificial SST, which is slightly cooler than the water temperature measured at the equilibrator.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>df[&#39;insituTemp&#39;] = df[&#39;waterTemp&#39;] - .2
+df[&#39;pCO2_wet_sst&#39;] = temperature_correction(df[&#39;pCO2_wet_equ&#39;], df[&#39;waterTemp&#39;], df[&#39;insituTemp&#39;])
+</pre></div>
+</div>
+</div>
+<p>Finally, we compute the fugacity by hands of the before calculated partial pressure, the pressure at the equilibrator, and the SST.</p>
+<p>According to Weiss (1974), the fugacity can be calculated via</p>
+<div class="math notranslate nohighlight">
+\[\begin{equation*}
+(fCO_2)^\text{wet}_\text{SST} = (pCO_2)^\text{wet}_\text{SST} \cdot
+        \exp{\Big(p_\text{equ}\cdot\frac{\left[ B(CO_2,SST) + 2\,\left(1-(xCO_2)^\text{wet}_{SST}\right)^2 \, \delta(CO_2,SST)\right]}{R\cdot SST}\Big)}
+\end{equation*}\]</div>
+<p>where <span class="math notranslate nohighlight">\(SST\)</span> is the sea surface temperature in K, <span class="math notranslate nohighlight">\(R\)</span> the gas constant and <span class="math notranslate nohighlight">\(B(CO_2,SST)\)</span> and <span class="math notranslate nohighlight">\(\delta(CO_2,SST)\)</span> are the virial coefficients for CO2 (both in <span class="math notranslate nohighlight">\(cm^3\,mol^{-1}\)</span>), which are given as</p>
+<div class="math notranslate nohighlight">
+\[\begin{equation*}
+B(CO_2,T) = -1636.75 + 12.0408\,T - 0.0327957\,T^2 + 0.0000316528\,T^3
+\end{equation*}\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[\begin{equation*}
+\delta(CO_2,T) = 57.7 - 0.188\,T
+\end{equation*}\]</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>df[&#39;fCO2_wet_sst&#39;] = fugacity(df[&#39;pCO2_wet_sst&#39;], df[&#39;press_equ&#39;], df[&#39;insituTemp&#39;])
+<br/></pre></div>
+</div>
+</div>
+</section>
+<section id="Plot-the-results">
+<h2>Plot the results<a class="headerlink" href="#Plot-the-results" title="Permalink to this headline"></a></h2>
+<p>Let’s plot the time series of the pCO2 in wet air both at the equilibrator and at sea-surface temperature as well as the fugacity given in wet air and at sea-surface temperature.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import matplotlib.pyplot as plt
+df[&#39;pCO2_wet_equ&#39;].plot()
+df[&#39;pCO2_wet_sst&#39;].plot()
+df[&#39;fCO2_wet_sst&#39;].plot()
+plt.legend()
+plt.xlabel(&#39;Time&#39;)
+plt.ylabel(&#39;CO2 [µatm]&#39;)
+plt.show()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/examples_20_0.png" src="_images/examples_20_0.png" />
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="oceanpack" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="license.html" class="btn btn-neutral float-right" title="License" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, markusritschel.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

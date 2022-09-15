@@ -1,0 +1,29 @@
+oceanpack package
+=================
+
+Submodules
+----------
+
+oceanpack.helpers module
+------------------------
+
+.. automodule:: oceanpack.helpers
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+oceanpack.io\_routines module
+-----------------------------
+
+.. automodule:: oceanpack.io_routines
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: oceanpack
+   :members:
+   :undoc-members:
+   :show-inheritance:

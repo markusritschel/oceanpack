@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>oceanpack package &mdash; oceanpack 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Index" href="../genindex.html" />
+    <link rel="prev" title="oceanpack" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> oceanpack
+          </a>
+              <div class="version">
+                0.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Module Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">oceanpack package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-oceanpack.helpers">oceanpack.helpers module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-oceanpack.io_routines">oceanpack.io_routines module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-oceanpack">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../py-modindex.html">Module Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">oceanpack</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="modules.html">oceanpack</a> &raquo;</li>
+      <li>oceanpack package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/oceanpack.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="oceanpack-package">
+<h1>oceanpack package<a class="headerlink" href="#oceanpack-package" title="Permalink to this headline"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
+</section>
+<section id="module-oceanpack.helpers">
+<span id="oceanpack-helpers-module"></span><h2>oceanpack.helpers module<a class="headerlink" href="#module-oceanpack.helpers" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="oceanpack.helpers.centered_bins">
+<span class="sig-prename descclassname"><span class="pre">oceanpack.helpers.</span></span><span class="sig-name descname"><span class="pre">centered_bins</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/oceanpack/helpers.html#centered_bins"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oceanpack.helpers.centered_bins" title="Permalink to this definition"></a></dt>
+<dd><p>Create centered bin boundaries from a given array with the values of the array as centers.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span>
+<span class="go">array([-3, -2, -1,  0,  1,  2,  3])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">centered_bins</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">array([-3.5, -2.5, -1.5, -0.5,  0.5,  1.5,  2.5,  3.5])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oceanpack.helpers.check_input_for_duplicates">
+<span class="sig-prename descclassname"><span class="pre">oceanpack.helpers.</span></span><span class="sig-name descname"><span class="pre">check_input_for_duplicates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/oceanpack/helpers.html#check_input_for_duplicates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oceanpack.helpers.check_input_for_duplicates" title="Permalink to this definition"></a></dt>
+<dd><p>A decorator that checks a list of file paths (the first and only argument of the wrapped function) for duplicates.
+Detected duplicates are dropped from the list such that the function can deal with the cleaned-up list.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oceanpack.helpers.cond2sal">
+<span class="sig-prename descclassname"><span class="pre">oceanpack.helpers.</span></span><span class="sig-name descname"><span class="pre">cond2sal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">C</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/oceanpack/helpers.html#cond2sal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oceanpack.helpers.cond2sal" title="Permalink to this definition"></a></dt>
+<dd><p>Compute salinity from conductivity, according to <span id="id1">Lewis and Perkin [<a class="reference internal" href="../index.html#id7" title="E.L. Lewis and R.G. Perkin. The practical salinity scale 1978: conversion of existing data. Deep Sea Research Part A. Oceanographic Research Papers, 28(4):307–328, 1981. doi:10.1016/0198-0149(81)90002-9.">1981</a>]</span>.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cond2sal</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">52</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mi">1013</span><span class="p">)</span>
+<span class="go">34.20810771080768</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oceanpack.helpers.decimal_degrees">
+<span class="sig-prename descclassname"><span class="pre">oceanpack.helpers.</span></span><span class="sig-name descname"><span class="pre">decimal_degrees</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/oceanpack/helpers.html#decimal_degrees"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oceanpack.helpers.decimal_degrees" title="Permalink to this definition"></a></dt>
+<dd><p>Convert coordinates from ‘ddmm.mmmm’ format into ‘dd.dddd’.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="mf">12.0</span><span class="p">,</span> <span class="mf">45.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decimal_degrees</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">array([0.2       , 0.75833333])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oceanpack.helpers.fugacity">
+<span class="sig-prename descclassname"><span class="pre">oceanpack.helpers.</span></span><span class="sig-name descname"><span class="pre">fugacity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pCO2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_equ</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SST</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xCO2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/oceanpack/helpers.html#fugacity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oceanpack.helpers.fugacity" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the fugacity of CO2. Can be done either before or after a <code class="xref py py-func docutils literal notranslate"><span class="pre">temperature</span> <span class="pre">correction()</span></code>.
+The formulas follow <span id="id2">Dickson <em>et al.</em> [<a class="reference internal" href="../index.html#id3" title="Andrew Gilmore Dickson, Christopher L. Sabine, James Robert Christian, Charlene P. Bargeron, and North Pacific Marine Science Organization, editors. Guide to Best Practices for Ocean CO2 Measurements. Number no. 3 in PICES Special Publication. North Pacific Marine Science Organization, 2007. ISBN 978-1-897176-07-8.">2007</a>]</span>, mainly SOP 5, Chapter 8. “Calculation and expression of results”</p>
+<div class="math notranslate nohighlight">
+\[(fCO_2)^\text{wet}_\text{SST} = (pCO_2)^\text{wet}_\text{SST} \cdot
+     \exp{\Big(p_\text{equ}\cdot\frac{\left[ B(CO_2,SST) + 2\,\left(1-(xCO_2)^\text{wet}_{SST}\right)^2 \, \delta(CO_2,SST)\right]}{R\cdot SST}\Big)}\]</div>
+<p>where <span class="math notranslate nohighlight">\(SST\)</span> is the sea surface temperature in K, <span class="math notranslate nohighlight">\(R\)</span> the gas constant and <span class="math notranslate nohighlight">\(B(CO_2,SST)\)</span> and
+<span class="math notranslate nohighlight">\(\delta(CO_2,SST)\)</span> are the virial coefficients for <span class="math notranslate nohighlight">\(CO_2\)</span> (both in <span class="math notranslate nohighlight">\(\text{cm}^3\,\text{mol}^{-1}\)</span>), which are given as</p>
+<div class="math notranslate nohighlight">
+\[B(CO_2,T) = -1636.75 + 12.0408\,T - 0.0327957\,T^2 + 0.0000316528\,T^3\]</div>
+<p>and</p>
+<div class="math notranslate nohighlight">
+\[\delta(CO_2,T) = 57.7 - 0.188\,T\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pCO2</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em> or </em><em>pd.Series</em>) – The partial pressure of CO2 (in µatm).
+Make sure you have converted xCO2 concentration (mole fraction in ppm) into partial pressure (in µatm).</p></li>
+<li><p><strong>p_equ</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em> or </em><em>pd.Series</em>) – The measured pressure (in hPa, Pa or atm) at the equilibrator (hint: you might want to smoothen your time series)</p></li>
+<li><p><strong>SST</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em> or </em><em>pd.Series</em>) – The in-situ measurement temperature (in °C or Kelvin)</p></li>
+<li><p><strong>xCO2</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em> or </em><em>pd.Series</em><em> (</em><em>optional</em><em>)</em>) – CO2 concentration (mole fraction in ppm). If given, the d_CO2 virial coefficient in the numerator in the
+exponential expression is multiplied by (1 - xCO2*1e-6). Else, this term is 1.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oceanpack.helpers.grid_dataframe">
+<span class="sig-prename descclassname"><span class="pre">oceanpack.helpers.</span></span><span class="sig-name descname"><span class="pre">grid_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">export_grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/oceanpack/helpers.html#grid_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oceanpack.helpers.grid_dataframe" title="Permalink to this definition"></a></dt>
+<dd><p>Bin the values with <cite>points</cite> coordinates by the given target coordinates <cite>xi</cite> and put the average of each bin
+onto the target grid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>points</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#tuple" title="(in Python v3.9)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>]</em>) – A tuple <cite>(x, y)</cite> consisting of two lists holding the respective x and y coordinates of the source data.</p></li>
+<li><p><strong>values</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a>) – The actual data values that are meant to be regridded</p></li>
+<li><p><strong>xi</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#tuple" title="(in Python v3.9)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>]</em>) – A tuple <cite>(x, y)</cite> consisting of two lists holding the target coordinates.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;lon&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span>
+<span class="gp">&gt;&gt;&gt; </span>                   <span class="s1">&#39;lat&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span><span class="o">*</span><span class="mi">10</span> <span class="o">+</span> <span class="mi">40</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>                   <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">240</span><span class="p">,</span><span class="mi">200</span><span class="p">,</span><span class="mi">100</span><span class="p">)})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">xi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">yi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">35</span><span class="p">,</span> <span class="mi">53</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gridded</span> <span class="o">=</span> <span class="n">grid_dataframe</span><span class="p">((</span><span class="n">df</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">lat</span><span class="p">),</span> <span class="n">df</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="p">(</span><span class="n">xi</span><span class="p">,</span> <span class="n">yi</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">xi</span><span class="p">,</span> <span class="n">yi</span><span class="p">,</span> <span class="n">gridded</span><span class="p">,</span> <span class="n">shading</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Greens_r&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">.75</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Reds&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;raw data&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Longitude&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Latitude&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/grid_dataframe_plot.png"><img alt="eample plot" class="align-left" src="../_images/grid_dataframe_plot.png" style="width: 450px;" /></a>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oceanpack.helpers.nearest">
+<span class="sig-prename descclassname"><span class="pre">oceanpack.helpers.</span></span><span class="sig-name descname"><span class="pre">nearest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#list" title="(in Python v3.9)"><span class="pre">list</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">pivot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><span class="pre">float</span></a></span></span><a class="reference internal" href="../_modules/oceanpack/helpers.html#nearest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oceanpack.helpers.nearest" title="Permalink to this definition"></a></dt>
+<dd><p>Find the element inside <cite>items</cite> that is closest to the <cite>pivot</cite> element.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">nearest</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span><span class="p">]),</span> <span class="mf">4.6</span><span class="p">)</span>
+<span class="go">5</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oceanpack.helpers.order_of_magnitude">
+<span class="sig-prename descclassname"><span class="pre">oceanpack.helpers.</span></span><span class="sig-name descname"><span class="pre">order_of_magnitude</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/oceanpack/helpers.html#order_of_magnitude"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oceanpack.helpers.order_of_magnitude" title="Permalink to this definition"></a></dt>
+<dd><p>Determine the order of magnitude of the numeric input (<cite>int</cite>, <cite>float</cite>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">numpy.array()</span></code> or <code class="xref py py-meth docutils literal notranslate"><span class="pre">pandas.Series()</span></code>).</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">order_of_magnitude</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span>
+<span class="go">array(1.)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">order_of_magnitude</span><span class="p">(</span><span class="mi">234</span><span class="p">)</span>
+<span class="go">array(2.)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">order_of_magnitude</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">array(0.)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">order_of_magnitude</span><span class="p">(</span><span class="mf">.15</span><span class="p">)</span>
+<span class="go">array(-1.)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">order_of_magnitude</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">24.13</span><span class="p">,</span> <span class="mf">254.2</span><span class="p">]))</span>
+<span class="go">array([1., 2.])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">order_of_magnitude</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mf">24.13</span><span class="p">,</span> <span class="mf">254.2</span><span class="p">]))</span>
+<span class="go">array([1., 2.])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oceanpack.helpers.ppm2uatm">
+<span class="sig-prename descclassname"><span class="pre">oceanpack.helpers.</span></span><span class="sig-name descname"><span class="pre">ppm2uatm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xCO2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p_equ</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'wet'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">S</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/oceanpack/helpers.html#ppm2uatm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oceanpack.helpers.ppm2uatm" title="Permalink to this definition"></a></dt>
+<dd><p>Convert mole fraction concentration (in ppm) into partial pressure (in µatm) following <span id="id3">Dickson <em>et al.</em> [<a class="reference internal" href="../index.html#id3" title="Andrew Gilmore Dickson, Christopher L. Sabine, James Robert Christian, Charlene P. Bargeron, and North Pacific Marine Science Organization, editors. Guide to Best Practices for Ocean CO2 Measurements. Number no. 3 in PICES Special Publication. North Pacific Marine Science Organization, 2007. ISBN 978-1-897176-07-8.">2007</a>]</span></p>
+<div class="math notranslate nohighlight">
+\[pCO_2 = xCO_2 \cdot p_\text{equ}\]</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xCO2</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em> or </em><em>pd.Series</em>) – The measured CO2 concentration (in ppm)</p></li>
+<li><p><strong>p_equ</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em> or </em><em>pd.Series</em>) – The measured pressure (in hPa, Pa or atm) at the equilibrator (hint: you might want to smoothen your time series)</p></li>
+<li><p><strong>input</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> [</em><em>default: &quot;wet&quot;</em><em>]</em>) – Either “wet” or “dry”, specifying the type of air, in which the concentration is measured.
+If the CO2 concentration is measured in dry air, one must correct for the water vapor pressure.
+In this case, make sure to also provide T (temperature in Kelvin) and S (salinity in PSU) as arguments.</p></li>
+<li><p><strong>T</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em> or </em><em>pd.Series</em><em> [</em><em>default: None</em><em>]</em>) – Temperature in Kelvin (needs to be provided if xCO2 is measured in dry air)</p></li>
+<li><p><strong>S</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em> or </em><em>pd.Series</em><em> [</em><em>default: None</em><em>]</em>) – Salinity in PSU (needs to be provided if xCO2 is measured in dry air)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oceanpack.helpers.pressure2atm">
+<span class="sig-prename descclassname"><span class="pre">oceanpack.helpers.</span></span><span class="sig-name descname"><span class="pre">pressure2atm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/oceanpack/helpers.html#pressure2atm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oceanpack.helpers.pressure2atm" title="Permalink to this definition"></a></dt>
+<dd><p>Convert pressure given in hPa, Pa or atm into atm.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pressure2atm</span><span class="p">(</span><span class="mf">1013.25</span><span class="p">)</span>
+<span class="go">1.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pressure2atm</span><span class="p">(</span><span class="mi">101325</span><span class="p">)</span>
+<span class="go">1.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pressure2atm</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pressure2atm</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mf">1013.25</span><span class="p">,</span> <span class="mf">1024.0</span><span class="p">]))</span>
+<span class="go">0    1.000000</span>
+<span class="go">1    1.010609</span>
+<span class="go">dtype: float64</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oceanpack.helpers.pressure2mbar">
+<span class="sig-prename descclassname"><span class="pre">oceanpack.helpers.</span></span><span class="sig-name descname"><span class="pre">pressure2mbar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/oceanpack/helpers.html#pressure2mbar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oceanpack.helpers.pressure2mbar" title="Permalink to this definition"></a></dt>
+<dd><p>Convert pressure given in hPa, Pa or atm into mbar (or hPa).</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pressure2mbar</span><span class="p">(</span><span class="mi">1013</span><span class="p">)</span>
+<span class="go">1013</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pressure2mbar</span><span class="p">(</span><span class="mi">101300</span><span class="p">)</span>
+<span class="go">1013.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pressure2mbar</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="go">1013.25</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pressure2mbar</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mf">1.013</span><span class="p">,</span> <span class="mf">2.034</span><span class="p">]))</span>
+<span class="go">0    1026.42225</span>
+<span class="go">1    2060.95050</span>
+<span class="go">dtype: float64</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oceanpack.helpers.roundup">
+<span class="sig-prename descclassname"><span class="pre">oceanpack.helpers.</span></span><span class="sig-name descname"><span class="pre">roundup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/oceanpack/helpers.html#roundup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oceanpack.helpers.roundup" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oceanpack.helpers.set_nonoperating_to_nan">
+<span class="sig-prename descclassname"><span class="pre">oceanpack.helpers.</span></span><span class="sig-name descname"><span class="pre">set_nonoperating_to_nan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'CO2'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'30min'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status_var</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ANA_state'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/oceanpack/helpers.html#set_nonoperating_to_nan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oceanpack.helpers.set_nonoperating_to_nan" title="Permalink to this definition"></a></dt>
+<dd><p>Set all values from each period, which is ranging from the begin of a certain phase (indicated by the ANA_state flag)
+to the end of the phase, plus a given shift to NaN.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oceanpack.helpers.temperature2C">
+<span class="sig-prename descclassname"><span class="pre">oceanpack.helpers.</span></span><span class="sig-name descname"><span class="pre">temperature2C</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/oceanpack/helpers.html#temperature2C"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oceanpack.helpers.temperature2C" title="Permalink to this definition"></a></dt>
+<dd><p>Convert temperatures given in Kelvin into °C.
+If <cite>T</cite> is a <code class="xref py py-meth docutils literal notranslate"><span class="pre">pandas.Series()</span></code> object, only values less than 200 are converted. All others are expected to be
+already in °C.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">temperature2C</span><span class="p">(</span><span class="mf">283.15</span><span class="p">)</span>
+<span class="go">10.0</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oceanpack.helpers.temperature2K">
+<span class="sig-prename descclassname"><span class="pre">oceanpack.helpers.</span></span><span class="sig-name descname"><span class="pre">temperature2K</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/oceanpack/helpers.html#temperature2K"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oceanpack.helpers.temperature2K" title="Permalink to this definition"></a></dt>
+<dd><p>Convert temperatures given in °C into Kelvin.
+If <cite>T</cite> is a <code class="xref py py-meth docutils literal notranslate"><span class="pre">pandas.Series()</span></code> object, only values larger than 200 are converted. All others are expected to be
+already in Kelvin.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">temperature2K</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="go">283.15</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oceanpack.helpers.temperature_correction">
+<span class="sig-prename descclassname"><span class="pre">oceanpack.helpers.</span></span><span class="sig-name descname"><span class="pre">temperature_correction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">CO2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T_out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T_in</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Takahashi2009'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/oceanpack/helpers.html#temperature_correction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oceanpack.helpers.temperature_correction" title="Permalink to this definition"></a></dt>
+<dd><p>Apply a temperature correction. This might be necessary when the temperatures at the water intake
+(often outside the ship) and at the OceanPack CTD differ. The correction used here follows <span id="id4">Takahashi <em>et al.</em> [<a class="reference internal" href="../index.html#id4" title="Taro Takahashi, Stewart C. Sutherland, Rik Wanninkhof, Colm Sweeney, Richard A. Feely, David W. Chipman, Burke Hales, Gernot Friederich, Francisco Chavez, Christopher Sabine, Andrew Watson, Dorothee C.E. Bakker, Ute Schuster, Nicolas Metzl, Hisayuki Yoshikawa-Inoue, Masao Ishii, Takashi Midorikawa, Yukihiro Nojiri, Arne Körtzinger, Tobias Steinhoff, Mario Hoppema, Jon Olafsson, Thorarinn S. Arnarson, Bronte Tilbrook, Truls Johannessen, Are Olsen, Richard Bellerby, C.S. Wong, Bruno Delille, N.R. Bates, and Hein J.W. de Baar. Climatological mean and decadal change in surface ocean pCO2, and net sea–air CO2 flux over the global oceans. Deep Sea Research Part II: Topical Studies in Oceanography, 56(8-10):554–577, 2009. doi:10.1016/j.dsr2.2008.12.009.">2009</a>]</span>:</p>
+<div class="math notranslate nohighlight">
+\[{(xCO_2)}_{SST} = {(xCO_2)}_{T_\text{equ}} \cdot \exp{\Big(0.0433\cdot(SST - T_\text{equ}) - 4.35\times 10^{-5}\cdot(SST^2 - T_\text{equ}^2)\Big)}\]</div>
+<p><cite>CO2</cite> can be one out of [xCO2 (mole fraction), pCO2 (partial pressure), fCO2 (fugacity)].</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>CO2</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em> or </em><em>pd.Series</em>) – The CO2 variable, which shall be corrected for temperature differences.
+Can be one out of the following:
+- xCO2 (mole fraction in ppm)
+- pCO2 (partial pressure in hPa, Pa, atm or µatm)
+- fCO2 (fugacity in hPa, Pa, atm or µatm)</p></li>
+<li><p><strong>T_out</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em> or </em><em>pd.Series</em>) – The temperature towards which the data shall be corrected. Typically, the in-situ temperature (°C or K), at which the water was sampled.</p></li>
+<li><p><strong>T_in</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em> or </em><em>pd.Series</em>) – The temperature from which the data shall be corrected. Typically, the temperature (°C or K) at the equilibrator, at which the water was measured.</p></li>
+<li><p><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Either “Takahashi2009” or “Takahashi1993”, describing the method of the respectively published paper by Takahashi et al.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="oceanpack.helpers.water_vapor_pressure">
+<span class="sig-prename descclassname"><span class="pre">oceanpack.helpers.</span></span><span class="sig-name descname"><span class="pre">water_vapor_pressure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">S</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/oceanpack/helpers.html#water_vapor_pressure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oceanpack.helpers.water_vapor_pressure" title="Permalink to this definition"></a></dt>
+<dd><p>Compute the water vapor pressure by means of the temperature [K] and the salinity [PSU]
+following <span id="id5">Weiss and Price [<a class="reference internal" href="../index.html#id6" title="R.F. Weiss and B.A. Price. Nitrous oxide solubility in water and seawater. Marine Chemistry, 8(4):347–359, 1980. doi:10.1016/0304-4203(80)90024-9.">1980</a>]</span>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>S</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em> or </em><em>pd.Series</em>) – Salinity in PSU</p></li>
+<li><p><strong>T</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em> or </em><em>pd.Series</em>) – Temperature (°C gets converted into Kelvin)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-oceanpack.io_routines">
+<span id="oceanpack-io-routines-module"></span><h2>oceanpack.io_routines module<a class="headerlink" href="#module-oceanpack.io_routines" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="oceanpack.io_routines.read_oceanpack">
+<span class="sig-prename descclassname"><span class="pre">oceanpack.io_routines.</span></span><span class="sig-name descname"><span class="pre">read_oceanpack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">files</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/oceanpack/io_routines.html#read_oceanpack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oceanpack.io_routines.read_oceanpack" title="Permalink to this definition"></a></dt>
+<dd><p>Read a single or multiple log files into a pd.DataFrame dataset.</p>
+</dd></dl>
+
+</section>
+<section id="module-oceanpack">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-oceanpack" title="Permalink to this headline"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules.html" class="btn btn-neutral float-left" title="oceanpack" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../genindex.html" class="btn btn-neutral float-right" title="Index" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, markusritschel.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

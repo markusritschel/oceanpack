@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>oceanpack.helpers &mdash; oceanpack 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> oceanpack
+          </a>
+              <div class="version">
+                0.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/modules.html">Module Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../py-modindex.html">Module Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">oceanpack</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      <li>oceanpack.helpers</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for oceanpack.helpers</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding utf-8 -*-</span>
+<span class="c1">#</span>
+<span class="c1"># %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="c1"># Author: Markus Ritschel</span>
+<span class="c1"># eMail:  kontakt@markusritschel.de</span>
+<span class="c1"># Date:   23/04/2020</span>
+<span class="c1"># %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+<span class="c1">#</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">with_statement</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">copy</span>
+<span class="kn">import</span> <span class="nn">filecmp</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span> <span class="k">as</span> <span class="n">_wraps</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">__dm_split</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Split degrees and minutes from &#39;ddmm.mmmm&#39; format to (&#39;dd&#39;, &#39;mm.mmmm&#39;).</span>
+<span class="sd">    This is a helper function for converting (GPS) coordinates.</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; x = 1245.5000</span>
+<span class="sd">    &gt;&gt;&gt; __dm_split(x)</span>
+<span class="sd">    (12.0, 45.5)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">degrees</span> <span class="o">=</span> <span class="n">x</span> <span class="o">//</span> <span class="mi">100</span>
+    <span class="n">minutes</span> <span class="o">=</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">100</span>
+
+    <span class="k">return</span> <span class="n">degrees</span><span class="p">,</span> <span class="n">minutes</span>
+
+
+<div class="viewcode-block" id="decimal_degrees"><a class="viewcode-back" href="../../api/oceanpack.html#oceanpack.helpers.decimal_degrees">[docs]</a><span class="k">def</span> <span class="nf">decimal_degrees</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert coordinates from &#39;ddmm.mmmm&#39; format into &#39;dd.dddd&#39;.</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; x = (12.0, 45.5)</span>
+<span class="sd">    &gt;&gt;&gt; decimal_degrees(x)</span>
+<span class="sd">    array([0.2       , 0.75833333])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sign</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">degrees</span><span class="p">,</span> <span class="n">minutes</span> <span class="o">=</span> <span class="n">__dm_split</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sign</span><span class="o">*</span><span class="p">(</span><span class="n">degrees</span> <span class="o">+</span> <span class="n">minutes</span> <span class="o">/</span> <span class="mi">60</span><span class="p">)</span></div>
+
+
+<span class="c1"># TODO: compare with &quot;1978 Practical Salinity Scale Equations, from IEEE Journal of Oceanic Engineering, Vol. OE-5, No. 1, January 1980, page 14&quot;</span>
+<div class="viewcode-block" id="cond2sal"><a class="viewcode-back" href="../../api/oceanpack.html#oceanpack.helpers.cond2sal">[docs]</a><span class="k">def</span> <span class="nf">cond2sal</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute salinity from conductivity, according to :cite:t:`lewis_practical_1981`.</span>
+<span class="sd">    </span>
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; cond2sal(C=52, T=25, p=1013)</span>
+<span class="sd">    34.20810771080768</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">pressure2mbar</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">/</span> <span class="mi">100</span>  <span class="c1"># convert hPa (mbar) -&gt; dbar</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">temperature2C</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+
+    <span class="n">a0</span> <span class="o">=</span> <span class="mf">0.008</span>
+    <span class="n">a1</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.1692</span>
+    <span class="n">a2</span> <span class="o">=</span> <span class="mf">25.3851</span>
+    <span class="n">a3</span> <span class="o">=</span> <span class="mf">14.0941</span>
+    <span class="n">a4</span> <span class="o">=</span> <span class="o">-</span><span class="mf">7.0261</span>
+    <span class="n">a5</span> <span class="o">=</span> <span class="mf">2.7081</span>
+
+    <span class="n">b0</span> <span class="o">=</span> <span class="mf">0.0005</span>
+    <span class="n">b1</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.0056</span>
+    <span class="n">b2</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.0066</span>
+    <span class="n">b3</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.0375</span>
+    <span class="n">b4</span> <span class="o">=</span> <span class="mf">0.0636</span>
+    <span class="n">b5</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.0144</span>
+
+    <span class="n">c0</span> <span class="o">=</span> <span class="mf">6.766097e-1</span>
+    <span class="n">c1</span> <span class="o">=</span> <span class="mf">2.00564e-2</span>
+    <span class="n">c2</span> <span class="o">=</span> <span class="mf">1.104259e-4</span>
+    <span class="n">c3</span> <span class="o">=</span> <span class="o">-</span><span class="mf">6.9698e-7</span>
+    <span class="n">c4</span> <span class="o">=</span> <span class="mf">1.0031e-9</span>
+
+    <span class="n">A1</span> <span class="o">=</span> <span class="mf">2.070e-5</span>
+    <span class="n">A2</span> <span class="o">=</span> <span class="o">-</span><span class="mf">6.370e-10</span>
+    <span class="n">A3</span> <span class="o">=</span> <span class="mf">3.989e-15</span>
+    <span class="n">B1</span> <span class="o">=</span> <span class="mf">3.426e-2</span>
+    <span class="n">B2</span> <span class="o">=</span> <span class="mf">4.464e-4</span>
+    <span class="n">B3</span> <span class="o">=</span> <span class="mf">4.215e-1</span>
+    <span class="n">B4</span> <span class="o">=</span> <span class="o">-</span><span class="mf">3.107e-3</span>
+
+    <span class="n">R</span> <span class="o">=</span> <span class="n">C</span> <span class="o">/</span> <span class="mf">42.914</span>  <span class="c1"># units: mS/cm</span>
+    <span class="c1"># TODO: check input units of Conductivity! &quot;If you are working in conductivity units of Siemens/meter (S/m), multiply your conductivity values by 10 before using the PSS 1978 equations. &quot;</span>
+    <span class="c1"># TODO: maybe use units from log file for auto-conversion and print a hint or so (this could be already done during the read routine)</span>
+
+    <span class="n">rT</span> <span class="o">=</span> <span class="n">c0</span> <span class="o">+</span> <span class="n">c1</span><span class="o">*</span><span class="n">T</span> <span class="o">+</span> <span class="n">c2</span><span class="o">*</span><span class="n">T</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">c3</span><span class="o">*</span><span class="n">T</span><span class="o">**</span><span class="mi">3</span> <span class="o">+</span> <span class="n">c4</span><span class="o">*</span><span class="n">T</span><span class="o">**</span><span class="mi">4</span>
+
+    <span class="n">alpha</span> <span class="o">=</span> <span class="p">(</span><span class="n">A1</span><span class="o">*</span><span class="n">p</span> <span class="o">+</span> <span class="n">A2</span><span class="o">*</span><span class="n">p</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">A3</span><span class="o">*</span><span class="n">p</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">B1</span><span class="o">*</span><span class="n">T</span> <span class="o">+</span> <span class="n">B2</span><span class="o">*</span><span class="n">T</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">B3</span><span class="o">*</span><span class="n">R</span> <span class="o">+</span> <span class="n">B4</span><span class="o">*</span><span class="n">T</span><span class="o">*</span><span class="n">R</span><span class="p">)</span>
+
+    <span class="n">Rp</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">alpha</span>
+
+    <span class="n">RT</span> <span class="o">=</span> <span class="n">R</span> <span class="o">/</span> <span class="p">(</span><span class="n">rT</span><span class="o">*</span><span class="n">Rp</span><span class="p">)</span>
+
+    <span class="n">k</span> <span class="o">=</span> <span class="mf">0.0162</span>  <span class="c1"># TODO: check sign! +/-?</span>
+
+    <span class="n">xi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">RT</span><span class="p">)</span>
+    <span class="n">psi</span> <span class="o">=</span> <span class="n">b0</span> <span class="o">+</span> <span class="n">b1</span><span class="o">*</span><span class="n">xi</span> <span class="o">+</span> <span class="n">b2</span><span class="o">*</span><span class="n">xi</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">b3</span><span class="o">*</span><span class="n">xi</span><span class="o">**</span><span class="mi">3</span> <span class="o">+</span> <span class="n">b4</span><span class="o">*</span><span class="n">xi</span><span class="o">**</span><span class="mi">4</span> <span class="o">+</span> <span class="n">b5</span><span class="o">*</span><span class="n">xi</span><span class="o">**</span><span class="mi">5</span>
+    <span class="n">dSal</span> <span class="o">=</span> <span class="n">psi</span><span class="o">*</span><span class="p">(</span><span class="n">T</span> <span class="o">-</span> <span class="mi">15</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">k</span><span class="o">*</span><span class="p">(</span><span class="n">T</span> <span class="o">-</span> <span class="mi">15</span><span class="p">))</span>
+
+    <span class="n">salinity</span> <span class="o">=</span> <span class="n">a0</span> <span class="o">+</span> <span class="n">a1</span><span class="o">*</span><span class="n">xi</span> <span class="o">+</span> <span class="n">a2</span><span class="o">*</span><span class="n">xi</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">a3</span><span class="o">*</span><span class="n">xi</span><span class="o">**</span><span class="mi">3</span> <span class="o">+</span> <span class="n">a4</span><span class="o">*</span><span class="n">xi</span><span class="o">**</span><span class="mi">4</span> <span class="o">+</span> <span class="n">a5</span><span class="o">*</span><span class="n">xi</span><span class="o">**</span><span class="mi">5</span> <span class="o">+</span> <span class="n">dSal</span>
+
+    <span class="k">return</span> <span class="n">salinity</span></div>
+
+
+<div class="viewcode-block" id="order_of_magnitude"><a class="viewcode-back" href="../../api/oceanpack.html#oceanpack.helpers.order_of_magnitude">[docs]</a><span class="k">def</span> <span class="nf">order_of_magnitude</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Determine the order of magnitude of the numeric input (`int`, `float`, :meth:`numpy.array` or :meth:`pandas.Series`).</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; order_of_magnitude(11)</span>
+<span class="sd">    array(1.)</span>
+<span class="sd">    &gt;&gt;&gt; order_of_magnitude(234)</span>
+<span class="sd">    array(2.)</span>
+<span class="sd">    &gt;&gt;&gt; order_of_magnitude(1)</span>
+<span class="sd">    array(0.)</span>
+<span class="sd">    &gt;&gt;&gt; order_of_magnitude(.15)</span>
+<span class="sd">    array(-1.)</span>
+<span class="sd">    &gt;&gt;&gt; order_of_magnitude(np.array([24.13, 254.2]))</span>
+<span class="sd">    array([1., 2.])</span>
+<span class="sd">    &gt;&gt;&gt; order_of_magnitude(pd.Series([24.13, 254.2]))</span>
+<span class="sd">    array([1., 2.])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">x</span><span class="o">==</span><span class="mi">0</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">x</span><span class="o">!=</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">oom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+    <span class="c1"># oom = (np.int32(np.log10(np.abs(x))) + 1)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">oom</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="roundup"><a class="viewcode-back" href="../../api/oceanpack.html#oceanpack.helpers.roundup">[docs]</a><span class="k">def</span> <span class="nf">roundup</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="n">to</span><span class="p">)</span> <span class="o">//</span> <span class="mi">1</span><span class="o">*</span><span class="n">to</span></div>
+
+
+<div class="viewcode-block" id="pressure2atm"><a class="viewcode-back" href="../../api/oceanpack.html#oceanpack.helpers.pressure2atm">[docs]</a><span class="k">def</span> <span class="nf">pressure2atm</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert pressure given in hPa, Pa or atm into atm.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; pressure2atm(1013.25)</span>
+<span class="sd">    1.0</span>
+<span class="sd">    &gt;&gt;&gt; pressure2atm(101325)</span>
+<span class="sd">    1.0</span>
+<span class="sd">    &gt;&gt;&gt; pressure2atm(2)</span>
+<span class="sd">    2</span>
+<span class="sd">    &gt;&gt;&gt; pressure2atm(pd.Series([1013.25, 1024.0]))</span>
+<span class="sd">    0    1.000000</span>
+<span class="sd">    1    1.010609</span>
+<span class="sd">    dtype: float64</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+    <span class="k">if</span> <span class="mi">2</span> <span class="o">&lt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">order_of_magnitude</span><span class="p">(</span><span class="n">p</span><span class="p">)))</span> <span class="o">&lt;=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">p</span> <span class="o">/=</span> <span class="mf">1013.25</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Pressure is assumed to be in hPa and was converted to atm&#39;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="mi">4</span> <span class="o">&lt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">order_of_magnitude</span><span class="p">(</span><span class="n">p</span><span class="p">)))</span> <span class="o">&lt;=</span> <span class="mi">5</span><span class="p">:</span>
+        <span class="n">p</span> <span class="o">/=</span> <span class="mi">101325</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Pressure is assumed to be in Pa and was converted to atm&#39;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="o">-</span><span class="mi">1</span> <span class="o">&lt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">order_of_magnitude</span><span class="p">(</span><span class="n">p</span><span class="p">)))</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Pressure is assumed to be already in atm (no conversion)&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Pressure must be given in hPa, Pa or atm&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">p</span></div>
+
+
+<div class="viewcode-block" id="pressure2mbar"><a class="viewcode-back" href="../../api/oceanpack.html#oceanpack.helpers.pressure2mbar">[docs]</a><span class="k">def</span> <span class="nf">pressure2mbar</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert pressure given in hPa, Pa or atm into mbar (or hPa).</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; pressure2mbar(1013)</span>
+<span class="sd">    1013</span>
+<span class="sd">    &gt;&gt;&gt; pressure2mbar(101300)</span>
+<span class="sd">    1013.0</span>
+<span class="sd">    &gt;&gt;&gt; pressure2mbar(1.0)</span>
+<span class="sd">    1013.25</span>
+<span class="sd">    &gt;&gt;&gt; pressure2mbar(pd.Series([1.013, 2.034]))</span>
+<span class="sd">    0    1026.42225</span>
+<span class="sd">    1    2060.95050</span>
+<span class="sd">    dtype: float64</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+    <span class="k">if</span> <span class="mi">2</span> <span class="o">&lt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">order_of_magnitude</span><span class="p">(</span><span class="n">p</span><span class="p">)))</span> <span class="o">&lt;=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Pressure is assumed to be already in mbar (no conversion)&#39;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="mi">4</span> <span class="o">&lt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">order_of_magnitude</span><span class="p">(</span><span class="n">p</span><span class="p">)))</span> <span class="o">&lt;=</span> <span class="mi">5</span><span class="p">:</span>
+        <span class="n">p</span> <span class="o">/=</span> <span class="mi">100</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Pressure is assumed to be in Pa and was converted to mbar (hPa)&#39;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="o">-</span><span class="mi">1</span> <span class="o">&lt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">order_of_magnitude</span><span class="p">(</span><span class="n">p</span><span class="p">)))</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Pressure is assumed to be in atm and was converted to mbar (hPa)&#39;</span><span class="p">)</span>
+        <span class="n">p</span> <span class="o">*=</span> <span class="mf">1013.25</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Pressure must be given in hPa, Pa or atm&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">p</span></div>
+
+
+<div class="viewcode-block" id="temperature2K"><a class="viewcode-back" href="../../api/oceanpack.html#oceanpack.helpers.temperature2K">[docs]</a><span class="k">def</span> <span class="nf">temperature2K</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert temperatures given in °C into Kelvin.</span>
+<span class="sd">    If `T` is a :meth:`pandas.Series` object, only values larger than 200 are converted. All others are expected to be</span>
+<span class="sd">    already in Kelvin.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; temperature2K(10)</span>
+<span class="sd">    283.15</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">T</span><span class="p">[</span><span class="n">T</span> <span class="o">&gt;</span> <span class="mi">200</span><span class="p">])</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Some values seem to be already in Kelvin&quot;</span><span class="p">)</span>
+        <span class="c1"># TODO: do this in a better way</span>
+        <span class="n">T</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">T</span> <span class="o">&lt;</span> <span class="mi">200</span><span class="p">]</span> <span class="o">+=</span> <span class="mf">273.15</span>
+    <span class="k">elif</span> <span class="n">T</span> <span class="o">&lt;</span> <span class="mi">200</span><span class="p">:</span>
+        <span class="n">T</span> <span class="o">+=</span> <span class="mf">273.15</span>
+    <span class="k">return</span> <span class="n">T</span></div>
+
+
+<div class="viewcode-block" id="temperature2C"><a class="viewcode-back" href="../../api/oceanpack.html#oceanpack.helpers.temperature2C">[docs]</a><span class="k">def</span> <span class="nf">temperature2C</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert temperatures given in Kelvin into °C.</span>
+<span class="sd">    If `T` is a :meth:`pandas.Series` object, only values less than 200 are converted. All others are expected to be</span>
+<span class="sd">    already in °C.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; temperature2C(283.15)</span>
+<span class="sd">    10.0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">):</span>
+        <span class="n">T</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">T</span> <span class="o">&gt;</span> <span class="mi">200</span><span class="p">]</span> <span class="o">-=</span> <span class="mf">273.15</span>
+    <span class="k">elif</span> <span class="n">T</span> <span class="o">&gt;</span> <span class="mi">200</span><span class="p">:</span>
+        <span class="n">T</span> <span class="o">-=</span> <span class="mf">273.15</span>
+    <span class="k">return</span> <span class="n">T</span></div>
+
+
+<div class="viewcode-block" id="ppm2uatm"><a class="viewcode-back" href="../../api/oceanpack.html#oceanpack.helpers.ppm2uatm">[docs]</a><span class="k">def</span> <span class="nf">ppm2uatm</span><span class="p">(</span><span class="n">xCO2</span><span class="p">,</span><span class="n">p_equ</span><span class="p">,</span><span class="nb">input</span><span class="o">=</span><span class="s1">&#39;wet&#39;</span><span class="p">,</span><span class="n">T</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">S</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert mole fraction concentration (in ppm) into partial pressure (in µatm) following :cite:t:`dickson_guide_2007`</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        pCO_2 = xCO_2 \\cdot p_\\text{equ}</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    xCO2: float or pd.Series</span>
+<span class="sd">        The measured CO2 concentration (in ppm)</span>
+<span class="sd">    p_equ: float or pd.Series</span>
+<span class="sd">        The measured pressure (in hPa, Pa or atm) at the equilibrator (hint: you might want to smoothen your time series)</span>
+<span class="sd">    input: str [default: &quot;wet&quot;]</span>
+<span class="sd">        Either &quot;wet&quot; or &quot;dry&quot;, specifying the type of air, in which the concentration is measured.</span>
+<span class="sd">        If the CO2 concentration is measured in dry air, one must correct for the water vapor pressure.</span>
+<span class="sd">        In this case, make sure to also provide T (temperature in Kelvin) and S (salinity in PSU) as arguments.</span>
+<span class="sd">    T: float or pd.Series [default: None]</span>
+<span class="sd">        Temperature in Kelvin (needs to be provided if xCO2 is measured in dry air)</span>
+<span class="sd">    S: float or pd.Series [default: None]</span>
+<span class="sd">        Salinity in PSU (needs to be provided if xCO2 is measured in dry air)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Pa or hPa -&gt; atm</span>
+    <span class="n">p_equ</span> <span class="o">=</span> <span class="n">pressure2atm</span><span class="p">(</span><span class="n">p_equ</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">input</span><span class="o">==</span><span class="s2">&quot;wet&quot;</span><span class="p">:</span>
+        <span class="n">pH2O</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">elif</span> <span class="nb">input</span><span class="o">==</span> <span class="s2">&quot;dry&quot;</span><span class="p">:</span>
+        <span class="n">pH2O</span> <span class="o">=</span> <span class="n">water_vapor_pressure</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">S</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Input must be either &#39;dry&#39; or &#39;wet&#39;.&quot;</span><span class="p">)</span>
+
+    <span class="n">pCO2_wet_equ</span> <span class="o">=</span> <span class="n">xCO2</span> <span class="o">*</span> <span class="p">(</span><span class="n">p_equ</span> <span class="o">-</span> <span class="n">pH2O</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pCO2_wet_equ</span></div>
+
+
+<div class="viewcode-block" id="water_vapor_pressure"><a class="viewcode-back" href="../../api/oceanpack.html#oceanpack.helpers.water_vapor_pressure">[docs]</a><span class="k">def</span> <span class="nf">water_vapor_pressure</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">S</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the water vapor pressure by means of the temperature [K] and the salinity [PSU]</span>
+<span class="sd">    following :cite:t:`weiss_nitrous_1980`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    S: float or pd.Series</span>
+<span class="sd">        Salinity in PSU</span>
+<span class="sd">    T: float or pd.Series</span>
+<span class="sd">        Temperature (°C gets converted into Kelvin)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># °C -&gt; K</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">temperature2K</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+
+    <span class="n">pH2O</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mf">24.4543</span> <span class="o">-</span> <span class="mf">67.4509</span><span class="o">*</span><span class="p">(</span><span class="mi">100</span><span class="o">/</span><span class="n">T</span><span class="p">)</span> <span class="o">-</span> <span class="mf">4.8489</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">T</span><span class="o">/</span><span class="mi">100</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.000544</span><span class="o">*</span><span class="n">S</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pH2O</span></div>
+
+
+<div class="viewcode-block" id="temperature_correction"><a class="viewcode-back" href="../../api/oceanpack.html#oceanpack.helpers.temperature_correction">[docs]</a><span class="k">def</span> <span class="nf">temperature_correction</span><span class="p">(</span><span class="n">CO2</span><span class="p">,</span> <span class="n">T_out</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">T_in</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;Takahashi2009&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Apply a temperature correction. This might be necessary when the temperatures at the water intake </span>
+<span class="sd">    (often outside the ship) and at the OceanPack CTD differ. The correction used here follows :cite:t:`takahashi_climatological_2009`:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        {(xCO_2)}_{SST} = {(xCO_2)}_{T_\\text{equ}} \\cdot \\exp{\\Big(0.0433\\cdot(SST - T_\\text{equ}) - 4.35\\times 10^{-5}\\cdot(SST^2 - T_\\text{equ}^2)\\Big)}</span>
+
+<span class="sd">    `CO2` can be one out of [xCO2 (mole fraction), pCO2 (partial pressure), fCO2 (fugacity)].</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    CO2: float or pd.Series</span>
+<span class="sd">        The CO2 variable, which shall be corrected for temperature differences.</span>
+<span class="sd">        Can be one out of the following:</span>
+<span class="sd">        - xCO2 (mole fraction in ppm)</span>
+<span class="sd">        - pCO2 (partial pressure in hPa, Pa, atm or µatm)</span>
+<span class="sd">        - fCO2 (fugacity in hPa, Pa, atm or µatm)</span>
+<span class="sd">    T_out: float or pd.Series</span>
+<span class="sd">        The temperature towards which the data shall be corrected. Typically, the in-situ temperature (°C or K), at which the water was sampled.</span>
+<span class="sd">    T_in: float or pd.Series</span>
+<span class="sd">        The temperature from which the data shall be corrected. Typically, the temperature (°C or K) at the equilibrator, at which the water was measured.</span>
+<span class="sd">    method: str</span>
+<span class="sd">        Either &quot;Takahashi2009&quot; or &quot;Takahashi1993&quot;, describing the method of the respectively published paper by Takahashi et al.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">T_out</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">T_out</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;T_insitu&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">T_in</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">T_in</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;T_equ&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">method</span><span class="o">==</span><span class="s2">&quot;Takahashi2009&quot;</span><span class="p">:</span>
+        <span class="n">CO2_out</span> <span class="o">=</span> <span class="n">CO2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mf">0.0433</span><span class="o">*</span><span class="p">(</span><span class="n">T_out</span> <span class="o">-</span> <span class="n">T_in</span><span class="p">)</span> <span class="o">-</span> <span class="mf">4.35e-5</span><span class="o">*</span><span class="p">(</span><span class="n">T_out</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">T_in</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">method</span><span class="o">==</span><span class="s2">&quot;Takahashi1993&quot;</span><span class="p">:</span>
+        <span class="n">CO2_out</span> <span class="o">=</span> <span class="n">CO2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mf">0.0423</span><span class="o">*</span><span class="p">(</span><span class="n">T_out</span> <span class="o">-</span> <span class="n">T_in</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Unknown method for temperature conversion.&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">CO2_out</span></div>
+
+
+<div class="viewcode-block" id="fugacity"><a class="viewcode-back" href="../../api/oceanpack.html#oceanpack.helpers.fugacity">[docs]</a><span class="k">def</span> <span class="nf">fugacity</span><span class="p">(</span><span class="n">pCO2</span><span class="p">,</span> <span class="n">p_equ</span><span class="p">,</span> <span class="n">SST</span><span class="p">,</span> <span class="n">xCO2</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the fugacity of CO2. Can be done either before or after a :func:`.temperature correction`.</span>
+<span class="sd">    The formulas follow :cite:t:`dickson_guide_2007`, mainly SOP 5, Chapter 8. &quot;Calculation and expression of results&quot;</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">       (fCO_2)^\\text{wet}_\\text{SST} = (pCO_2)^\\text{wet}_\\text{SST} \\cdot</span>
+<span class="sd">            \\exp{\\Big(p_\\text{equ}\\cdot\\frac{\\left[ B(CO_2,SST) + 2\\,\\left(1-(xCO_2)^\\text{wet}_{SST}\\right)^2 \\, \\delta(CO_2,SST)\\right]}{R\\cdot SST}\\Big)}</span>
+
+<span class="sd">    where :math:`SST` is the sea surface temperature in K, :math:`R` the gas constant and :math:`B(CO_2,SST)` and </span>
+<span class="sd">    :math:`\delta(CO_2,SST)` are the virial coefficients for :math:`CO_2` (both in :math:`\\text{cm}^3\\,\\text{mol}^{-1}`), which are given as</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">       B(CO_2,T) = -1636.75 + 12.0408\\,T - 0.0327957\\,T^2 + 0.0000316528\\,T^3</span>
+
+<span class="sd">    and</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">       \\delta(CO_2,T) = 57.7 - 0.188\\,T</span>
+
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pCO2: float or pd.Series</span>
+<span class="sd">        The partial pressure of CO2 (in µatm).</span>
+<span class="sd">        Make sure you have converted xCO2 concentration (mole fraction in ppm) into partial pressure (in µatm).</span>
+<span class="sd">    p_equ: float or pd.Series</span>
+<span class="sd">        The measured pressure (in hPa, Pa or atm) at the equilibrator (hint: you might want to smoothen your time series)</span>
+<span class="sd">    SST: float or pd.Series</span>
+<span class="sd">        The in-situ measurement temperature (in °C or Kelvin)</span>
+<span class="sd">    xCO2: float or pd.Series (optional)</span>
+<span class="sd">        CO2 concentration (mole fraction in ppm). If given, the d_CO2 virial coefficient in the numerator in the</span>
+<span class="sd">        exponential expression is multiplied by (1 - xCO2*1e-6). Else, this term is 1.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Pa or hPa -&gt; atm</span>
+    <span class="n">p_equ</span> <span class="o">=</span> <span class="n">pressure2atm</span><span class="p">(</span><span class="n">p_equ</span><span class="p">)</span>
+
+    <span class="c1"># °C -&gt; K</span>
+    <span class="n">SST</span> <span class="o">=</span> <span class="n">temperature2K</span><span class="p">(</span><span class="n">SST</span><span class="p">)</span>
+
+    <span class="c1"># respectively in cm³/mol</span>
+    <span class="n">B_CO2</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1636.75</span> <span class="o">+</span> <span class="mf">12.0408</span><span class="o">*</span><span class="n">SST</span> <span class="o">-</span> <span class="mf">3.27957e-2</span><span class="o">*</span><span class="n">SST</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mf">3.16528e-5</span><span class="o">*</span><span class="n">SST</span><span class="o">**</span><span class="mi">3</span>
+    <span class="n">d_CO2</span> <span class="o">=</span> <span class="mf">57.7</span> <span class="o">-</span> <span class="mf">0.118</span><span class="o">*</span><span class="n">SST</span>
+
+    <span class="c1"># gas constant</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="mf">8.2057366080960e-2</span> 	        <span class="c1"># L⋅atm⋅K−1⋅mol−1</span>
+    <span class="n">R</span> <span class="o">*=</span> <span class="mi">1000</span>                       <span class="c1"># cm³⋅atm⋅K−1⋅mol−1</span>
+
+    <span class="k">if</span> <span class="n">xCO2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">x_c</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">x_c</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">xCO2</span><span class="o">*</span><span class="mf">1e-6</span><span class="p">)</span>       <span class="c1"># can be and is often neglected in literature</span>
+
+    <span class="n">A</span> <span class="o">=</span> <span class="n">p_equ</span><span class="o">*</span><span class="p">(</span><span class="n">B_CO2</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">d_CO2</span> <span class="o">*</span> <span class="n">x_c</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="n">R</span><span class="o">*</span><span class="n">SST</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">pCO2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">A</span> <span class="o">/</span> <span class="n">B</span><span class="p">)</span>        <span class="c1"># same unit as pCO2 (µatm)</span>
+
+    <span class="k">return</span> <span class="n">f</span></div>
+
+
+<div class="viewcode-block" id="set_nonoperating_to_nan"><a class="viewcode-back" href="../../api/oceanpack.html#oceanpack.helpers.set_nonoperating_to_nan">[docs]</a><span class="k">def</span> <span class="nf">set_nonoperating_to_nan</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="s1">&#39;CO2&#39;</span><span class="p">,</span> <span class="n">shift</span><span class="o">=</span><span class="s1">&#39;30min&#39;</span><span class="p">,</span> <span class="n">status_var</span><span class="o">=</span><span class="s1">&#39;ANA_state&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Set all values from each period, which is ranging from the begin of a certain phase (indicated by the ANA_state flag)</span>
+<span class="sd">    to the end of the phase, plus a given shift to NaN.&quot;&quot;&quot;</span>
+
+    <span class="n">grouped_by_status</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">((</span><span class="n">data</span><span class="p">[</span><span class="n">status_var</span><span class="p">]</span> <span class="o">!=</span> <span class="n">data</span><span class="p">[</span><span class="n">status_var</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">())</span><span class="o">.</span><span class="n">cumsum</span><span class="p">())</span>
+
+    <span class="c1"># get the first and last index of all periods which are not in operating status</span>
+    <span class="n">phase_start</span><span class="p">,</span> <span class="n">phase_end</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="p">[(</span><span class="n">g</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">g</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">grouped_by_status</span> <span class="k">if</span> <span class="n">g</span><span class="p">[</span><span class="n">status_var</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">5</span><span class="p">])</span>
+
+    <span class="n">phase_start</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">phase_start</span><span class="p">)</span>
+    <span class="n">phase_end</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">phase_end</span><span class="p">)</span>
+
+    <span class="c1"># add shift to the end</span>
+    <span class="n">phase_end_shift</span> <span class="o">=</span> <span class="n">phase_end</span> <span class="o">+</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_timedelta</span><span class="p">(</span><span class="n">shift</span><span class="p">)</span>
+
+    <span class="c1"># data[&#39;takeOut&#39;] = np.repeat(0, len(data))</span>
+
+    <span class="c1"># set all values in the respective column(s) to NaN</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">phase_start</span><span class="p">,</span> <span class="n">phase_end_shift</span><span class="p">):</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">j</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="c1"># data.loc[i:j, &#39;takeOut&#39;] = True</span>
+
+    <span class="k">return</span> <span class="n">data</span></div>
+
+
+<div class="viewcode-block" id="nearest"><a class="viewcode-back" href="../../api/oceanpack.html#oceanpack.helpers.nearest">[docs]</a><span class="k">def</span> <span class="nf">nearest</span><span class="p">(</span><span class="n">items</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">pivot</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Find the element inside `items` that is closest to the `pivot` element.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; nearest(np.array([2,4,5,7,9,10]), 4.6)</span>
+<span class="sd">    5</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">pivot</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="centered_bins"><a class="viewcode-back" href="../../api/oceanpack.html#oceanpack.helpers.centered_bins">[docs]</a><span class="k">def</span> <span class="nf">centered_bins</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create centered bin boundaries from a given array with the values of the array as centers.</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; x = np.arange(-3, 4)</span>
+<span class="sd">    &gt;&gt;&gt; x</span>
+<span class="sd">    array([-3, -2, -1,  0,  1,  2,  3])</span>
+<span class="sd">    &gt;&gt;&gt; centered_bins(x)</span>
+<span class="sd">    array([-3.5, -2.5, -1.5, -0.5,  0.5,  1.5,  2.5,  3.5])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]))</span>
+
+    <span class="n">differences</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">x</span> <span class="o">-</span> <span class="n">differences</span></div>
+
+
+<div class="viewcode-block" id="grid_dataframe"><a class="viewcode-back" href="../../api/oceanpack.html#oceanpack.helpers.grid_dataframe">[docs]</a><span class="k">def</span> <span class="nf">grid_dataframe</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">vals</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">export_grid</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Bin the values with `points` coordinates by the given target coordinates `xi` and put the average of each bin</span>
+<span class="sd">    onto the target grid.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    points : tuple[list, list]</span>
+<span class="sd">        A tuple `(x, y)` consisting of two lists holding the respective x and y coordinates of the source data.</span>
+<span class="sd">    values : list</span>
+<span class="sd">        The actual data values that are meant to be regridded</span>
+<span class="sd">    xi : tuple[list, list]</span>
+<span class="sd">        A tuple `(x, y)` consisting of two lists holding the target coordinates.</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; df = pd.DataFrame({&#39;lon&#39;: np.linspace(0, 40, 100),</span>
+<span class="sd">    &gt;&gt;&gt;                    &#39;lat&#39;: np.sin(np.linspace(0, 3, 100))*10 + 40,</span>
+<span class="sd">    &gt;&gt;&gt;                    &#39;data&#39;: np.linspace(240,200,100)})</span>
+<span class="sd">    &gt;&gt;&gt; xi = np.linspace(-5, 45, 40)</span>
+<span class="sd">    &gt;&gt;&gt; yi = np.linspace(35, 53, 50)</span>
+<span class="sd">    &gt;&gt;&gt; gridded = grid_dataframe((df.lon, df.lat), df.data, (xi, yi))</span>
+<span class="sd">    &gt;&gt;&gt; plt.pcolormesh(xi, yi, gridded, shading=&#39;auto&#39;, cmap=&#39;Greens_r&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; plt.scatter(df.lon, df.lat, c=df.data, marker=&#39;.&#39;, lw=.75, cmap=&#39;Reds&#39;, label=&#39;raw data&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; plt.xlabel(&#39;Longitude&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; plt.ylabel(&#39;Latitude&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; plt.legend()</span>
+<span class="sd">    &gt;&gt;&gt; plt.show()</span>
+
+<span class="sd">    .. image:: ../_static/grid_dataframe_plot.png</span>
+<span class="sd">       :width: 450px</span>
+<span class="sd">       :alt: eample plot</span>
+<span class="sd">       :align: left</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">points</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">xi</span>
+    <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="o">*</span><span class="n">xi</span><span class="p">)</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">xx</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+    <span class="c1"># flatten target and grid components</span>
+    <span class="n">xx_</span> <span class="o">=</span> <span class="n">xx</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+    <span class="n">yy_</span> <span class="o">=</span> <span class="n">yy</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+    <span class="n">target_</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;vals&#39;</span><span class="p">:</span> <span class="n">vals</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="n">y</span><span class="p">})</span>
+
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;x_binned&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">centered_bins</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">labels</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;y_binned&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">centered_bins</span><span class="p">(</span><span class="n">Y</span><span class="p">),</span> <span class="n">labels</span><span class="o">=</span><span class="n">Y</span><span class="p">)</span>
+
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;points&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;x_binned&#39;</span><span class="p">,</span> <span class="s1">&#39;y_binned&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">df_</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;points&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df_</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="n">target_</span><span class="p">[(</span><span class="n">xx_</span> <span class="o">==</span> <span class="n">idx</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">yy_</span> <span class="o">==</span> <span class="n">idx</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">vals</span>
+
+    <span class="n">target</span> <span class="o">=</span> <span class="n">target_</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">xx</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">export_grid</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">target</span>
+
+    <span class="k">return</span> <span class="n">target</span></div>
+
+
+<div class="viewcode-block" id="check_input_for_duplicates"><a class="viewcode-back" href="../../api/oceanpack.html#oceanpack.helpers.check_input_for_duplicates">[docs]</a><span class="k">def</span> <span class="nf">check_input_for_duplicates</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A decorator that checks a list of file paths (the first and only argument of the wrapped function) for duplicates.</span>
+<span class="sd">    Detected duplicates are dropped from the list such that the function can deal with the cleaned-up list.&quot;&quot;&quot;</span>
+    <span class="c1"># The functools._wraps decorator ensures that `func` can still be parsed by Sphinx. Usually, decorated functions can not be parsed by Sphinx.</span>
+    <span class="nd">@_wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">file_list</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">file_list</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">file_list</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">file_list</span><span class="p">)</span>
+        <span class="n">remove_idx</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">f1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">file_list</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">f2</span> <span class="ow">in</span> <span class="n">file_list</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]:</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="n">filecmp</span><span class="o">.</span><span class="n">cmp</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span><span class="n">f2</span><span class="p">,</span> <span class="n">shallow</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># Note: shallow=False would compare the actual file contents</span>
+                <span class="k">if</span> <span class="n">res</span><span class="p">:</span>
+                    <span class="n">remove_idx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">filtered_file_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">file_list</span><span class="p">)</span> <span class="k">if</span> <span class="n">j</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">remove_idx</span><span class="p">]</span>
+        <span class="n">remove_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">file_list</span><span class="p">)</span> <span class="k">if</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">remove_idx</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">remove_idx</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Found and ignored </span><span class="si">%s</span><span class="s2"> duplicates in file list.&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">remove_idx</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">remove_files</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Ignored </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">entry</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">filtered_file_list</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">wrapper</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2020, markusritschel.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
