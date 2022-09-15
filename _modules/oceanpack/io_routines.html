@@ -146,7 +146,7 @@
 
 
 <div class="viewcode-block" id="read_oceanpack"><a class="viewcode-back" href="../../api/oceanpack.html#oceanpack.io_routines.read_oceanpack">[docs]</a><span class="nd">@check_input_for_duplicates</span>
-<span class="k">def</span> <span class="nf">read_oceanpack</span><span class="p">(</span><span class="n">files</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">read_oceanpack</span><span class="p">(</span><span class="n">files</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Read a single or multiple log files into a pd.DataFrame dataset.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">files</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">files</span><span class="p">]</span>
