@@ -16,6 +16,9 @@ The easiest way to install the `oceanpack` package is via pip directly from this
 
     $ pip install git+https://github.com/markusritschel/oceanpack.git#egg=oceanpack
 
+
+Clone repo and install locally
+==============================
 Alternatively, you can clone the repository from github and install the package locally:
 
 ::
