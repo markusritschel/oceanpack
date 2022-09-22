@@ -23,21 +23,13 @@ The entire code is publicly available on `Github <https://github.com/markusritsc
 If you feel like contributing, issues and pull requests are welcome :-)
 
 
-Installation
-============
-You can install this package on your machine via pip by executing
-
-::
-
-    $ pip install git+https://github.com/markusritschel/oceanpack.git#egg=oceanpack
-
-in your terminal.
 
 .. toctree::
    :maxdepth: 1
    :hidden:
    :caption: Content
-   
+
+   installation
    examples.ipynb
    License <license>
    Changelog <changelog>
