@@ -2,40 +2,34 @@
 oceanpack
 =========
 
-
-This is the documentation of the `oceanpack <https://github.com/markusritschel/oceanpack>`_ package.
+The `oceanpack <https://github.com/markusritschel/oceanpack>`_ package is a collection of routines that help with the quality control and processing of data collected with the OceanPack ferrybox system of SubCtech.
 
 .. note::
     This is **not** an official package. The company SubCtech is not involved in the development of the routines provided here.
 
+The OceanPack system measures underway :math:`CO_2` alongside water temperature, salinity and other parameters.
+Data are usually stored on an SD card but can also be streamed to a computer.
+The routines in this package contain routines for conversion of xCO2 to pCO2, for applying temperature corrections, computing the fugacity, etc.
 
-This package containes routines to read in log files of the SubCtech OceanPack as well as various helper functions to help with the data processing, e.g.
 
-* converting coordinates from the Analyzer's format into decimal digits
-* converting xCO2 to pCO2
-* applying temperature corrections
-* computing the fugacity fCO2
-* etc.
-
-A full description of the functions and the underlying algorithms can be found in the :ref:`py-modindex`.
+A full description of the functions and the underlying algorithms can be found in the Module Reference.
 
 .. TODO: Add a more extensive description here. Maybe include photos/images of the OceanPack etc. Mention any pecularities.
 
-Installation
+
+Contribution
 ============
-You can install this package on your machine via pip by executing
+The entire code is publicly available on `Github <https://github.com/markusritschel/oceanpack>`_.
+If you feel like contributing, issues and pull requests are welcome :-)
 
-::
 
-    $ pip install git+https://github.com/markusritschel/oceanpack.git#egg=oceanpack
-
-in your terminal.
 
 .. toctree::
    :maxdepth: 1
    :hidden:
-   :caption: Contents
-   
+   :caption: Content
+
+   installation
    examples.ipynb
    License <license>
    Changelog <changelog>

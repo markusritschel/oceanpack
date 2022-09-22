@@ -464,13 +464,15 @@ def grid_dataframe(points, vals, xi, export_grid=False):
     -------
     >>> df = pd.DataFrame({'lon': np.linspace(0, 40, 100),
     >>>                    'lat': np.sin(np.linspace(0, 3, 100))*10 + 40,
-    >>>                    'data': np.linspace(200,240,100)})
+    >>>                    'data': np.linspace(240,200,100)})
     >>> xi = np.linspace(-5, 45, 40)
     >>> yi = np.linspace(35, 53, 50)
     >>> gridded = grid_dataframe((df.lon, df.lat), df.data, (xi, yi))
-    >>> plt.pcolormesh(xi, yi, gridded, shading='auto')
+    >>> plt.pcolormesh(xi, yi, gridded, shading='auto', cmap='Greens_r')
+    >>> plt.scatter(df.lon, df.lat, c=df.data, marker='.', lw=.75, cmap='Reds', label='raw data')
     >>> plt.xlabel('Longitude')
     >>> plt.ylabel('Latitude')
+    >>> plt.legend()
     >>> plt.show()
 
     .. image:: ../_static/grid_dataframe_plot.png
@@ -510,7 +512,13 @@ def grid_dataframe(points, vals, xi, export_grid=False):
 
 def check_input_for_duplicates(func):
     """A decorator that checks a list of file paths (the first and only argument of the wrapped function) for duplicates.
-    Detected duplicates are dropped from the list such that the function can deal with the cleaned-up list."""
+    For example, when you call the function :func:`oceanpack.io_routines.read_oceanpack` with a list of many files, the
+    decorator checks the input for duplicates before the read-in routine actually processes the files.
+    The decorator makes use of the :func:`os.stat` signatures (file type, size, and modification time) to compare files
+    pair-wise.
+
+    Detected duplicates are dropped from the list such that the function can deal with the cleaned-up list.
+    """
     # The functools._wraps decorator ensures that `func` can still be parsed by Sphinx. Usually, decorated functions can not be parsed by Sphinx.
     @_wraps(func)
     def wrapper(file_list):

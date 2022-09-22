@@ -67,7 +67,7 @@ def _read_oceanview_stream_file(file):
 
 
 @check_input_for_duplicates
-def read_oceanpack(files):
+def read_oceanpack(files) -> pd.DataFrame:
     """Read a single or multiple log files into a pd.DataFrame dataset."""
     if isinstance(files, str):
         files = [files]
