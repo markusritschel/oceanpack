@@ -9,7 +9,7 @@
 #
 from __future__ import absolute_import, division, print_function, with_statement
 
-from .io_routines import read_oceanpack
+from .io_routines import *
 from .helpers import *
 
 from pkg_resources import get_distribution, DistributionNotFound

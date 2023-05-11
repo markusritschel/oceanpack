@@ -17,6 +17,8 @@ from pathlib import Path
 from .helpers import check_input_for_duplicates
 
 
+__all__ = ["read_oceanpack", "OCEANVIEW_VARIABLES", "SYSTEM_STATES"]
+
 logger = logging.getLogger(__name__)
 
 this_dir = Path(__file__).resolve().parents[0]
