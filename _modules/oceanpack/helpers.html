@@ -12,9 +12,8 @@
   <![endif]-->
   
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -26,14 +25,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> oceanpack
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            oceanpack
           </a>
               <div class="version">
                 0.1.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -66,9 +69,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html">Module code</a> &raquo;</li>
-      <li>oceanpack.helpers</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">oceanpack.helpers</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -100,7 +103,7 @@
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">__dm_split</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Split degrees and minutes from &#39;ddmm.mmmm&#39; format to (&#39;dd&#39;, &#39;mm.mmmm&#39;).</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Split degrees and minutes from &#39;ddmm.mmmm&#39; format to (&#39;dd&#39;, &#39;mm.mmmm&#39;).</span>
 <span class="sd">    This is a helper function for converting (GPS) coordinates.</span>
 
 <span class="sd">    Example</span>
@@ -116,7 +119,7 @@
 
 
 <div class="viewcode-block" id="decimal_degrees"><a class="viewcode-back" href="../../api/oceanpack.html#oceanpack.helpers.decimal_degrees">[docs]</a><span class="k">def</span> <span class="nf">decimal_degrees</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert coordinates from &#39;ddmm.mmmm&#39; format into &#39;dd.dddd&#39;.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert coordinates from &#39;ddmm.mmmm&#39; format into &#39;dd.dddd&#39;.</span>
 
 <span class="sd">    Example</span>
 <span class="sd">    -------</span>
@@ -132,7 +135,7 @@
 
 <span class="c1"># TODO: compare with &quot;1978 Practical Salinity Scale Equations, from IEEE Journal of Oceanic Engineering, Vol. OE-5, No. 1, January 1980, page 14&quot;</span>
 <div class="viewcode-block" id="cond2sal"><a class="viewcode-back" href="../../api/oceanpack.html#oceanpack.helpers.cond2sal">[docs]</a><span class="k">def</span> <span class="nf">cond2sal</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute salinity from conductivity, according to :cite:t:`lewis_practical_1981`.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute salinity from conductivity, according to :cite:t:`lewis_practical_1981`.</span>
 <span class="sd">    </span>
 <span class="sd">    Example</span>
 <span class="sd">    -------</span>
@@ -194,7 +197,7 @@
 
 
 <div class="viewcode-block" id="order_of_magnitude"><a class="viewcode-back" href="../../api/oceanpack.html#oceanpack.helpers.order_of_magnitude">[docs]</a><span class="k">def</span> <span class="nf">order_of_magnitude</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Determine the order of magnitude of the numeric input (`int`, `float`, :meth:`numpy.array` or :meth:`pandas.Series`).</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Determine the order of magnitude of the numeric input (`int`, `float`, :meth:`numpy.array` or :meth:`pandas.Series`).</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -225,7 +228,7 @@
 
 
 <div class="viewcode-block" id="pressure2atm"><a class="viewcode-back" href="../../api/oceanpack.html#oceanpack.helpers.pressure2atm">[docs]</a><span class="k">def</span> <span class="nf">pressure2atm</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert pressure given in hPa, Pa or atm into atm.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert pressure given in hPa, Pa or atm into atm.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -255,7 +258,7 @@
 
 
 <div class="viewcode-block" id="pressure2mbar"><a class="viewcode-back" href="../../api/oceanpack.html#oceanpack.helpers.pressure2mbar">[docs]</a><span class="k">def</span> <span class="nf">pressure2mbar</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert pressure given in hPa, Pa or atm into mbar (or hPa).</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert pressure given in hPa, Pa or atm into mbar (or hPa).</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -285,7 +288,7 @@
 
 
 <div class="viewcode-block" id="temperature2K"><a class="viewcode-back" href="../../api/oceanpack.html#oceanpack.helpers.temperature2K">[docs]</a><span class="k">def</span> <span class="nf">temperature2K</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert temperatures given in °C into Kelvin.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert temperatures given in °C into Kelvin.</span>
 <span class="sd">    If `T` is a :meth:`pandas.Series` object, only values larger than 200 are converted. All others are expected to be</span>
 <span class="sd">    already in Kelvin.</span>
 
@@ -306,7 +309,7 @@
 
 
 <div class="viewcode-block" id="temperature2C"><a class="viewcode-back" href="../../api/oceanpack.html#oceanpack.helpers.temperature2C">[docs]</a><span class="k">def</span> <span class="nf">temperature2C</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert temperatures given in Kelvin into °C.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert temperatures given in Kelvin into °C.</span>
 <span class="sd">    If `T` is a :meth:`pandas.Series` object, only values less than 200 are converted. All others are expected to be</span>
 <span class="sd">    already in °C.</span>
 
@@ -324,7 +327,7 @@
 
 
 <div class="viewcode-block" id="ppm2uatm"><a class="viewcode-back" href="../../api/oceanpack.html#oceanpack.helpers.ppm2uatm">[docs]</a><span class="k">def</span> <span class="nf">ppm2uatm</span><span class="p">(</span><span class="n">xCO2</span><span class="p">,</span><span class="n">p_equ</span><span class="p">,</span><span class="nb">input</span><span class="o">=</span><span class="s1">&#39;wet&#39;</span><span class="p">,</span><span class="n">T</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">S</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Convert mole fraction concentration (in ppm) into partial pressure (in µatm) following :cite:t:`dickson_guide_2007`</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert mole fraction concentration (in ppm) into partial pressure (in µatm) following :cite:t:`dickson_guide_2007`</span>
 
 <span class="sd">    .. math::</span>
 <span class="sd">        pCO_2 = xCO_2 \\cdot p_\\text{equ}</span>
@@ -360,7 +363,7 @@
 
 
 <div class="viewcode-block" id="water_vapor_pressure"><a class="viewcode-back" href="../../api/oceanpack.html#oceanpack.helpers.water_vapor_pressure">[docs]</a><span class="k">def</span> <span class="nf">water_vapor_pressure</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">S</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute the water vapor pressure by means of the temperature [K] and the salinity [PSU]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the water vapor pressure by means of the temperature [K] and the salinity [PSU]</span>
 <span class="sd">    following :cite:t:`weiss_nitrous_1980`.</span>
 
 <span class="sd">    Parameters</span>
@@ -378,7 +381,7 @@
 
 
 <div class="viewcode-block" id="temperature_correction"><a class="viewcode-back" href="../../api/oceanpack.html#oceanpack.helpers.temperature_correction">[docs]</a><span class="k">def</span> <span class="nf">temperature_correction</span><span class="p">(</span><span class="n">CO2</span><span class="p">,</span> <span class="n">T_out</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">T_in</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;Takahashi2009&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Apply a temperature correction. This might be necessary when the temperatures at the water intake </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply a temperature correction. This might be necessary when the temperatures at the water intake </span>
 <span class="sd">    (often outside the ship) and at the OceanPack CTD differ. The correction used here follows :cite:t:`takahashi_climatological_2009`:</span>
 
 <span class="sd">    .. math::</span>
@@ -414,7 +417,7 @@
 
 
 <div class="viewcode-block" id="fugacity"><a class="viewcode-back" href="../../api/oceanpack.html#oceanpack.helpers.fugacity">[docs]</a><span class="k">def</span> <span class="nf">fugacity</span><span class="p">(</span><span class="n">pCO2</span><span class="p">,</span> <span class="n">p_equ</span><span class="p">,</span> <span class="n">SST</span><span class="p">,</span> <span class="n">xCO2</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Calculate the fugacity of CO2. Can be done either before or after a :func:`.temperature correction`.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the fugacity of CO2. Can be done either before or after a :func:`.temperature correction`.</span>
 <span class="sd">    The formulas follow :cite:t:`dickson_guide_2007`, mainly SOP 5, Chapter 8. &quot;Calculation and expression of results&quot;</span>
 
 <span class="sd">    .. math::</span>
@@ -473,7 +476,7 @@
 
 
 <div class="viewcode-block" id="set_nonoperating_to_nan"><a class="viewcode-back" href="../../api/oceanpack.html#oceanpack.helpers.set_nonoperating_to_nan">[docs]</a><span class="k">def</span> <span class="nf">set_nonoperating_to_nan</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="s1">&#39;CO2&#39;</span><span class="p">,</span> <span class="n">shift</span><span class="o">=</span><span class="s1">&#39;30min&#39;</span><span class="p">,</span> <span class="n">status_var</span><span class="o">=</span><span class="s1">&#39;ANA_state&#39;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Set all values from each period, which is ranging from the begin of a certain phase (indicated by the ANA_state flag)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set all values from each period, which is ranging from the begin of a certain phase (indicated by the ANA_state flag)</span>
 <span class="sd">    to the end of the phase, plus a given shift to NaN.&quot;&quot;&quot;</span>
 
     <span class="n">grouped_by_status</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">((</span><span class="n">data</span><span class="p">[</span><span class="n">status_var</span><span class="p">]</span> <span class="o">!=</span> <span class="n">data</span><span class="p">[</span><span class="n">status_var</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">())</span><span class="o">.</span><span class="n">cumsum</span><span class="p">())</span>
@@ -498,7 +501,7 @@
 
 
 <div class="viewcode-block" id="nearest"><a class="viewcode-back" href="../../api/oceanpack.html#oceanpack.helpers.nearest">[docs]</a><span class="k">def</span> <span class="nf">nearest</span><span class="p">(</span><span class="n">items</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">pivot</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Find the element inside `items` that is closest to the `pivot` element.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Find the element inside `items` that is closest to the `pivot` element.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -509,7 +512,7 @@
 
 
 <div class="viewcode-block" id="centered_bins"><a class="viewcode-back" href="../../api/oceanpack.html#oceanpack.helpers.centered_bins">[docs]</a><span class="k">def</span> <span class="nf">centered_bins</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Create centered bin boundaries from a given array with the values of the array as centers.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create centered bin boundaries from a given array with the values of the array as centers.</span>
 
 <span class="sd">    Example</span>
 <span class="sd">    -------</span>
@@ -528,7 +531,7 @@
 
 
 <div class="viewcode-block" id="grid_dataframe"><a class="viewcode-back" href="../../api/oceanpack.html#oceanpack.helpers.grid_dataframe">[docs]</a><span class="k">def</span> <span class="nf">grid_dataframe</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">vals</span><span class="p">,</span> <span class="n">xi</span><span class="p">,</span> <span class="n">export_grid</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Bin the values with `points` coordinates by the given target coordinates `xi` and put the average of each bin</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Bin the values with `points` coordinates by the given target coordinates `xi` and put the average of each bin</span>
 <span class="sd">    onto the target grid.</span>
 
 <span class="sd">    Parameters</span>
@@ -577,21 +580,18 @@
 
     <span class="n">df</span><span class="p">[</span><span class="s1">&#39;points&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;x_binned&#39;</span><span class="p">,</span> <span class="s1">&#39;y_binned&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-    <span class="n">df_</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;points&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">df_</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;points&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 
     <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df_</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
         <span class="n">target_</span><span class="p">[(</span><span class="n">xx_</span> <span class="o">==</span> <span class="n">idx</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">yy_</span> <span class="o">==</span> <span class="n">idx</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">vals</span>
 
     <span class="n">target</span> <span class="o">=</span> <span class="n">target_</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">xx</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">export_grid</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">target</span>
-
-    <span class="k">return</span> <span class="n">target</span></div>
+    <span class="k">return</span> <span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span> <span class="k">if</span> <span class="n">export_grid</span> <span class="k">else</span> <span class="n">target</span></div>
 
 
 <div class="viewcode-block" id="check_input_for_duplicates"><a class="viewcode-back" href="../../api/oceanpack.html#oceanpack.helpers.check_input_for_duplicates">[docs]</a><span class="k">def</span> <span class="nf">check_input_for_duplicates</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A decorator that checks a list of file paths (the first and only argument of the wrapped function) for duplicates.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A decorator that checks a list of file paths (the first and only argument of the wrapped function) for duplicates.</span>
 <span class="sd">    For example, when you call the function :func:`oceanpack.io_routines.read_oceanpack` with a list of many files, the</span>
 <span class="sd">    decorator checks the input for duplicates before the read-in routine actually processes the files.</span>
 <span class="sd">    The decorator makes use of the :func:`os.stat` signatures (file type, size, and modification time) to compare files</span>

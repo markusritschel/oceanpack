@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>oceanpack &mdash; oceanpack 0.1.0 documentation</title>
@@ -13,9 +13,8 @@
   <![endif]-->
   
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -30,14 +29,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="#" class="icon icon-home"> oceanpack
+
+          
+          
+          <a href="#" class="icon icon-home">
+            oceanpack
           </a>
               <div class="version">
                 0.1.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -70,8 +73,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
-      <li>oceanpack</li>
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">oceanpack</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -81,32 +84,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  
-<style>
-/* CSS overrides for sphinx_rtd_theme */
-
-/* 24px margin */
-.nbinput.nblast.container,
-.nboutput.nblast.container {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
-
-/* ... except between code cells! */
-.nblast.container + .nbinput.container {
-    margin-top: -19px;
-}
-
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-
-/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
-.math {
-    text-align: unset;
-}
-</style>
-<section id="oceanpack">
-<h1>oceanpack<a class="headerlink" href="#oceanpack" title="Permalink to this headline"></a></h1>
+  <section id="oceanpack">
+<h1>oceanpack<a class="headerlink" href="#oceanpack" title="Permalink to this heading"></a></h1>
 <p>The <a class="reference external" href="https://github.com/markusritschel/oceanpack">oceanpack</a> package is a collection of routines that help with the quality control and processing of data collected with the OceanPack ferrybox system of SubCtech.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -117,7 +96,7 @@ Data are usually stored on an SD card but can also be streamed to a computer.
 The routines in this package contain routines for conversion of xCO2 to pCO2, for applying temperature corrections, computing the fugacity, etc.</p>
 <p>A full description of the functions and the underlying algorithms can be found in the Module Reference.</p>
 <section id="contribution">
-<h2>Contribution<a class="headerlink" href="#contribution" title="Permalink to this headline"></a></h2>
+<h2>Contribution<a class="headerlink" href="#contribution" title="Permalink to this heading"></a></h2>
 <p>The entire code is publicly available on <a class="reference external" href="https://github.com/markusritschel/oceanpack">Github</a>.
 If you feel like contributing, issues and pull requests are welcome :-)</p>
 <div class="toctree-wrapper compound">
@@ -127,23 +106,26 @@ If you feel like contributing, issues and pull requests are welcome :-)</p>
 </section>
 <hr class="docutils" />
 <section id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this headline"></a></h2>
+<h2>References<a class="headerlink" href="#references" title="Permalink to this heading"></a></h2>
 <blockquote>
 <div><div class="docutils container" id="id2">
-<dl class="citation">
-<dt class="label" id="id3"><span class="brackets">DSC+07</span></dt>
-<dd><p>Andrew Gilmore Dickson, Christopher L. Sabine, James Robert Christian, Charlene P. Bargeron, and North Pacific Marine Science Organization, editors. <em>Guide to Best Practices for Ocean CO2 Measurements</em>. Number no. 3 in PICES Special Publication. North Pacific Marine Science Organization, 2007. ISBN 978-1-897176-07-8.</p>
-</dd>
-<dt class="label" id="id7"><span class="brackets">LP81</span></dt>
-<dd><p>E.L. Lewis and R.G. Perkin. The practical salinity scale 1978: conversion of existing data. <em>Deep Sea Research Part A. Oceanographic Research Papers</em>, 28(4):307–328, 1981. <a class="reference external" href="https://doi.org/10.1016/0198-0149(81)90002-9">doi:10.1016/0198-0149(81)90002-9</a>.</p>
-</dd>
-<dt class="label" id="id4"><span class="brackets">TSW+09</span></dt>
-<dd><p>Taro Takahashi, Stewart C. Sutherland, Rik Wanninkhof, Colm Sweeney, Richard A. Feely, David W. Chipman, Burke Hales, Gernot Friederich, Francisco Chavez, Christopher Sabine, Andrew Watson, Dorothee C.E. Bakker, Ute Schuster, Nicolas Metzl, Hisayuki Yoshikawa-Inoue, Masao Ishii, Takashi Midorikawa, Yukihiro Nojiri, Arne Körtzinger, Tobias Steinhoff, Mario Hoppema, Jon Olafsson, Thorarinn S. Arnarson, Bronte Tilbrook, Truls Johannessen, Are Olsen, Richard Bellerby, C.S. Wong, Bruno Delille, N.R. Bates, and Hein J.W. de Baar. Climatological mean and decadal change in surface ocean pCO2, and net sea–air CO2 flux over the global oceans. <em>Deep Sea Research Part II: Topical Studies in Oceanography</em>, 56(8-10):554–577, 2009. <a class="reference external" href="https://doi.org/10.1016/j.dsr2.2008.12.009">doi:10.1016/j.dsr2.2008.12.009</a>.</p>
-</dd>
-<dt class="label" id="id6"><span class="brackets">WP80</span></dt>
-<dd><p>R.F. Weiss and B.A. Price. Nitrous oxide solubility in water and seawater. <em>Marine Chemistry</em>, 8(4):347–359, 1980. <a class="reference external" href="https://doi.org/10.1016/0304-4203(80)90024-9">doi:10.1016/0304-4203(80)90024-9</a>.</p>
-</dd>
-</dl>
+<div class="citation" id="id3" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>DSC+07<span class="fn-bracket">]</span></span>
+<p>Andrew Gilmore Dickson, Christopher L. Sabine, James Robert Christian, Charlene P. Bargeron, and North Pacific Marine Science Organization, editors. <em>Guide to Best Practices for Ocean CO2 Measurements</em>. Number no. 3 in PICES Special Publication. North Pacific Marine Science Organization, 2007. ISBN 978-1-897176-07-8.</p>
+</div>
+<div class="citation" id="id7" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>LP81<span class="fn-bracket">]</span></span>
+<p>E.L. Lewis and R.G. Perkin. The practical salinity scale 1978: conversion of existing data. <em>Deep Sea Research Part A. Oceanographic Research Papers</em>, 28(4):307–328, 1981. <a class="reference external" href="https://doi.org/10.1016/0198-0149(81)90002-9">doi:10.1016/0198-0149(81)90002-9</a>.</p>
+</div>
+<div class="citation" id="id4" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>TSW+09<span class="fn-bracket">]</span></span>
+<p>Taro Takahashi, Stewart C. Sutherland, Rik Wanninkhof, Colm Sweeney, Richard A. Feely, David W. Chipman, Burke Hales, Gernot Friederich, Francisco Chavez, Christopher Sabine, Andrew Watson, Dorothee C.E. Bakker, Ute Schuster, Nicolas Metzl, Hisayuki Yoshikawa-Inoue, Masao Ishii, Takashi Midorikawa, Yukihiro Nojiri, Arne Körtzinger, Tobias Steinhoff, Mario Hoppema, Jon Olafsson, Thorarinn S. Arnarson, Bronte Tilbrook, Truls Johannessen, Are Olsen, Richard Bellerby, C.S. Wong, Bruno Delille, N.R. Bates, and Hein J.W. de Baar. Climatological mean and decadal change in surface ocean pCO2, and net sea–air CO2 flux over the global oceans. <em>Deep Sea Research Part II: Topical Studies in Oceanography</em>, 56(8-10):554–577, 2009. <a class="reference external" href="https://doi.org/10.1016/j.dsr2.2008.12.009">doi:10.1016/j.dsr2.2008.12.009</a>.</p>
+</div>
+<div class="citation" id="id6" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>WP80<span class="fn-bracket">]</span></span>
+<p>R.F. Weiss and B.A. Price. Nitrous oxide solubility in water and seawater. <em>Marine Chemistry</em>, 8(4):347–359, 1980. <a class="reference external" href="https://doi.org/10.1016/0304-4203(80)90024-9">doi:10.1016/0304-4203(80)90024-9</a>.</p>
+</div>
+</div>
 </div>
 </div></blockquote>
 </section>

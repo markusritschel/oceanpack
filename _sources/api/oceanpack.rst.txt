@@ -20,6 +20,14 @@ oceanpack.io\_routines module
    :undoc-members:
    :show-inheritance:
 
+oceanpack.quality\_control module
+---------------------------------
+
+.. automodule:: oceanpack.quality_control
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 

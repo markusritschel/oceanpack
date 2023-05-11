@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Examples &mdash; oceanpack 0.1.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+      <link rel="stylesheet" href="_static/nbsphinx-code-cells.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -31,14 +31,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> oceanpack
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            oceanpack
           </a>
               <div class="version">
                 0.1.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -79,8 +83,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Examples</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Examples</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/examples.ipynb.txt" rel="nofollow"> View page source</a>
       </li>
@@ -90,289 +94,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  
-<style>
-/* CSS for nbsphinx extension */
-
-/* remove conflicting styling from Sphinx themes */
-div.nbinput.container div.prompt *,
-div.nboutput.container div.prompt *,
-div.nbinput.container div.input_area pre,
-div.nboutput.container div.output_area pre,
-div.nbinput.container div.input_area .highlight,
-div.nboutput.container div.output_area .highlight {
-    border: none;
-    padding: 0;
-    margin: 0;
-    box-shadow: none;
-}
-
-div.nbinput.container > div[class*=highlight],
-div.nboutput.container > div[class*=highlight] {
-    margin: 0;
-}
-
-div.nbinput.container div.prompt *,
-div.nboutput.container div.prompt * {
-    background: none;
-}
-
-div.nboutput.container div.output_area .highlight,
-div.nboutput.container div.output_area pre {
-    background: unset;
-}
-
-div.nboutput.container div.output_area div.highlight {
-    color: unset;  /* override Pygments text color */
-}
-
-/* avoid gaps between output lines */
-div.nboutput.container div[class*=highlight] pre {
-    line-height: normal;
-}
-
-/* input/output containers */
-div.nbinput.container,
-div.nboutput.container {
-    display: -webkit-flex;
-    display: flex;
-    align-items: flex-start;
-    margin: 0;
-    width: 100%;
-}
-@media (max-width: 540px) {
-    div.nbinput.container,
-    div.nboutput.container {
-        flex-direction: column;
-    }
-}
-
-/* input container */
-div.nbinput.container {
-    padding-top: 5px;
-}
-
-/* last container */
-div.nblast.container {
-    padding-bottom: 5px;
-}
-
-/* input prompt */
-div.nbinput.container div.prompt pre {
-    color: #307FC1;
-}
-
-/* output prompt */
-div.nboutput.container div.prompt pre {
-    color: #BF5B3D;
-}
-
-/* all prompts */
-div.nbinput.container div.prompt,
-div.nboutput.container div.prompt {
-    width: 4.5ex;
-    padding-top: 5px;
-    position: relative;
-    user-select: none;
-}
-
-div.nbinput.container div.prompt > div,
-div.nboutput.container div.prompt > div {
-    position: absolute;
-    right: 0;
-    margin-right: 0.3ex;
-}
-
-@media (max-width: 540px) {
-    div.nbinput.container div.prompt,
-    div.nboutput.container div.prompt {
-        width: unset;
-        text-align: left;
-        padding: 0.4em;
-    }
-    div.nboutput.container div.prompt.empty {
-        padding: 0;
-    }
-
-    div.nbinput.container div.prompt > div,
-    div.nboutput.container div.prompt > div {
-        position: unset;
-    }
-}
-
-/* disable scrollbars on prompts */
-div.nbinput.container div.prompt pre,
-div.nboutput.container div.prompt pre {
-    overflow: hidden;
-}
-
-/* input/output area */
-div.nbinput.container div.input_area,
-div.nboutput.container div.output_area {
-    -webkit-flex: 1;
-    flex: 1;
-    overflow: auto;
-}
-@media (max-width: 540px) {
-    div.nbinput.container div.input_area,
-    div.nboutput.container div.output_area {
-        width: 100%;
-    }
-}
-
-/* input area */
-div.nbinput.container div.input_area {
-    border: 1px solid #e0e0e0;
-    border-radius: 2px;
-    /*background: #f5f5f5;*/
-}
-
-/* override MathJax center alignment in output cells */
-div.nboutput.container div[class*=MathJax] {
-    text-align: left !important;
-}
-
-/* override sphinx.ext.imgmath center alignment in output cells */
-div.nboutput.container div.math p {
-    text-align: left;
-}
-
-/* standard error */
-div.nboutput.container div.output_area.stderr {
-    background: #fdd;
-}
-
-/* ANSI colors */
-.ansi-black-fg { color: #3E424D; }
-.ansi-black-bg { background-color: #3E424D; }
-.ansi-black-intense-fg { color: #282C36; }
-.ansi-black-intense-bg { background-color: #282C36; }
-.ansi-red-fg { color: #E75C58; }
-.ansi-red-bg { background-color: #E75C58; }
-.ansi-red-intense-fg { color: #B22B31; }
-.ansi-red-intense-bg { background-color: #B22B31; }
-.ansi-green-fg { color: #00A250; }
-.ansi-green-bg { background-color: #00A250; }
-.ansi-green-intense-fg { color: #007427; }
-.ansi-green-intense-bg { background-color: #007427; }
-.ansi-yellow-fg { color: #DDB62B; }
-.ansi-yellow-bg { background-color: #DDB62B; }
-.ansi-yellow-intense-fg { color: #B27D12; }
-.ansi-yellow-intense-bg { background-color: #B27D12; }
-.ansi-blue-fg { color: #208FFB; }
-.ansi-blue-bg { background-color: #208FFB; }
-.ansi-blue-intense-fg { color: #0065CA; }
-.ansi-blue-intense-bg { background-color: #0065CA; }
-.ansi-magenta-fg { color: #D160C4; }
-.ansi-magenta-bg { background-color: #D160C4; }
-.ansi-magenta-intense-fg { color: #A03196; }
-.ansi-magenta-intense-bg { background-color: #A03196; }
-.ansi-cyan-fg { color: #60C6C8; }
-.ansi-cyan-bg { background-color: #60C6C8; }
-.ansi-cyan-intense-fg { color: #258F8F; }
-.ansi-cyan-intense-bg { background-color: #258F8F; }
-.ansi-white-fg { color: #C5C1B4; }
-.ansi-white-bg { background-color: #C5C1B4; }
-.ansi-white-intense-fg { color: #A1A6B2; }
-.ansi-white-intense-bg { background-color: #A1A6B2; }
-
-.ansi-default-inverse-fg { color: #FFFFFF; }
-.ansi-default-inverse-bg { background-color: #000000; }
-
-.ansi-bold { font-weight: bold; }
-.ansi-underline { text-decoration: underline; }
-
-
-div.nbinput.container div.input_area div[class*=highlight] > pre,
-div.nboutput.container div.output_area div[class*=highlight] > pre,
-div.nboutput.container div.output_area div[class*=highlight].math,
-div.nboutput.container div.output_area.rendered_html,
-div.nboutput.container div.output_area > div.output_javascript,
-div.nboutput.container div.output_area:not(.rendered_html) > img{
-    padding: 5px;
-    margin: 0;
-}
-
-/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
-div.nbinput.container div.input_area > div[class^='highlight'],
-div.nboutput.container div.output_area > div[class^='highlight']{
-    overflow-y: hidden;
-}
-
-/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
-.prompt .copybtn {
-    display: none;
-}
-
-/* Some additional styling taken form the Jupyter notebook CSS */
-.jp-RenderedHTMLCommon table,
-div.rendered_html table {
-  border: none;
-  border-collapse: collapse;
-  border-spacing: 0;
-  color: black;
-  font-size: 12px;
-  table-layout: fixed;
-}
-.jp-RenderedHTMLCommon thead,
-div.rendered_html thead {
-  border-bottom: 1px solid black;
-  vertical-align: bottom;
-}
-.jp-RenderedHTMLCommon tr,
-.jp-RenderedHTMLCommon th,
-.jp-RenderedHTMLCommon td,
-div.rendered_html tr,
-div.rendered_html th,
-div.rendered_html td {
-  text-align: right;
-  vertical-align: middle;
-  padding: 0.5em 0.5em;
-  line-height: normal;
-  white-space: normal;
-  max-width: none;
-  border: none;
-}
-.jp-RenderedHTMLCommon th,
-div.rendered_html th {
-  font-weight: bold;
-}
-.jp-RenderedHTMLCommon tbody tr:nth-child(odd),
-div.rendered_html tbody tr:nth-child(odd) {
-  background: #f5f5f5;
-}
-.jp-RenderedHTMLCommon tbody tr:hover,
-div.rendered_html tbody tr:hover {
-  background: rgba(66, 165, 245, 0.2);
-}
-
-/* CSS overrides for sphinx_rtd_theme */
-
-/* 24px margin */
-.nbinput.nblast.container,
-.nboutput.nblast.container {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
-
-/* ... except between code cells! */
-.nblast.container + .nbinput.container {
-    margin-top: -19px;
-}
-
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-
-/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
-.math {
-    text-align: unset;
-}
-</style>
-<section id="Examples">
-<h1>Examples<a class="headerlink" href="#Examples" title="Permalink to this headline"></a></h1>
+  <section id="Examples">
+<h1>Examples<a class="headerlink" href="#Examples" title="Permalink to this heading"></a></h1>
 <p>Here, we use a short excerpt of real underwater CO2 measurements to demonstrate the routines in the <code class="docutils literal notranslate"><span class="pre">oceanpack</span></code> module.</p>
 <section id="Read-in-the-file">
-<h2>Read in the file<a class="headerlink" href="#Read-in-the-file" title="Permalink to this headline"></a></h2>
+<h2>Read in the file<a class="headerlink" href="#Read-in-the-file" title="Permalink to this heading"></a></h2>
 <p>First, read the file into a pd.DataFrame and show head and variable names.</p>
 <blockquote>
 <div><p>The <code class="docutils literal notranslate"><span class="pre">read_oceanpack()</span></code> routine can be fed with either a single file path or a list of file paths.</p>
@@ -455,7 +181,7 @@ Index([&#39;FRAC&#39;, &#39;SEC&#39;, &#39;CO2&#39;, &#39;CO2abs&#39;, &#39;H2O&
 </div></blockquote>
 </section>
 <section id="Convert-coordinates">
-<h2>Convert coordinates<a class="headerlink" href="#Convert-coordinates" title="Permalink to this headline"></a></h2>
+<h2>Convert coordinates<a class="headerlink" href="#Convert-coordinates" title="Permalink to this heading"></a></h2>
 <p>Convert coordinates from ‘ddmm.mmmm’ format into ‘dd.dddd’.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
@@ -491,7 +217,7 @@ Name: Longitude, dtype: float64
 </div>
 </section>
 <section id="Compute-pressure-at-equilibrator">
-<h2>Compute pressure at equilibrator<a class="headerlink" href="#Compute-pressure-at-equilibrator" title="Permalink to this headline"></a></h2>
+<h2>Compute pressure at equilibrator<a class="headerlink" href="#Compute-pressure-at-equilibrator" title="Permalink to this heading"></a></h2>
 <p>The OceanPack only measures the pressure at the analyzer cell (<span class="math notranslate nohighlight">\(p_\text{cell}\)</span>) as well as the pressure difference <span class="math notranslate nohighlight">\(p_\text{diff}\)</span> at the intake. To retrieve the pressure at the equilibrator (<span class="math notranslate nohighlight">\(p_\text{equ}\)</span>), we build a moving average of the difference pressure (to smooth the fluctuations) and subtract it from the cell pressure. Finally, we convert the pressure into atm units.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
@@ -507,7 +233,7 @@ df[&#39;press_equ&#39;] = pressure2atm(pressure_equ)
 </div></blockquote>
 </section>
 <section id="Filter-non-operating-phases">
-<h2>Filter non-operating phases<a class="headerlink" href="#Filter-non-operating-phases" title="Permalink to this headline"></a></h2>
+<h2>Filter non-operating phases<a class="headerlink" href="#Filter-non-operating-phases" title="Permalink to this heading"></a></h2>
 <p>Usually, the OceanPack runs through various phases (such as spin-up, calibration, normal operation). For our final calculation we want to get rid of all the CO2 related values in non-operating phases and also skip the first x minutes after each non-operating phase is finished, since after calibration, the analyzer usually needs some time to get back to normal levels.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
@@ -528,10 +254,10 @@ status_var = &#39;STATUS&#39;
 </div>
 </section>
 <section id="CO2-calculations">
-<h2>CO2 calculations<a class="headerlink" href="#CO2-calculations" title="Permalink to this headline"></a></h2>
+<h2>CO2 calculations<a class="headerlink" href="#CO2-calculations" title="Permalink to this heading"></a></h2>
 <p>Now, after all the preparation is done, let’s calculate our CO2 variables of interest.</p>
 <p>First, we need to convert the xCO2 concentration, which is given by the analyzer, into partial pressure.</p>
-<p>According to Dickson et al. (2007), SOP 4, the partial pressure of carbon dioxide in air, which is in equilibrium with a sample of seawater, is defined as the product of the mole fraction of CO2 in the equilibrated gas phase and the total pressure of equilibration <span class="math notranslate nohighlight">\(p_\text{equ}\)</span>:</p>
+<p>According to <span id="id1">[<a class="reference internal" href="index.html#id3" title="Andrew Gilmore Dickson, Christopher L. Sabine, James Robert Christian, Charlene P. Bargeron, and North Pacific Marine Science Organization, editors. Guide to Best Practices for Ocean CO2 Measurements. Number no. 3 in PICES Special Publication. North Pacific Marine Science Organization, 2007. ISBN 978-1-897176-07-8.">Dickson <em>et al.</em>, 2007</a>]</span>, SOP 4, the partial pressure of carbon dioxide in air, which is in equilibrium with a sample of seawater, is defined as the product of the mole fraction of CO2 in the equilibrated gas phase and the total pressure of equilibration <span class="math notranslate nohighlight">\(p_\text{equ}\)</span>:</p>
 <p><span class="math">\begin{equation*}
 pCO_2 = xCO_2 \cdot p_\text{equ}
 \end{equation*}</span></p>
@@ -543,7 +269,7 @@ pCO_2 = xCO_2 \cdot p_\text{equ}
 </pre></div>
 </div>
 </div>
-<p>Second, we want to apply a temperature correction. This might be necessary when the temperatures at the water intake (often outside the ship) and at the OceanPack CTD differ. The correction used here follows Takahashi et al. (2009):</p>
+<p>Second, we want to apply a temperature correction. This might be necessary when the temperatures at the water intake (often outside the ship) and at the OceanPack CTD differ. The correction used here follows <span id="id2">[<a class="reference internal" href="index.html#id4" title="Taro Takahashi, Stewart C. Sutherland, Rik Wanninkhof, Colm Sweeney, Richard A. Feely, David W. Chipman, Burke Hales, Gernot Friederich, Francisco Chavez, Christopher Sabine, Andrew Watson, Dorothee C.E. Bakker, Ute Schuster, Nicolas Metzl, Hisayuki Yoshikawa-Inoue, Masao Ishii, Takashi Midorikawa, Yukihiro Nojiri, Arne Körtzinger, Tobias Steinhoff, Mario Hoppema, Jon Olafsson, Thorarinn S. Arnarson, Bronte Tilbrook, Truls Johannessen, Are Olsen, Richard Bellerby, C.S. Wong, Bruno Delille, N.R. Bates, and Hein J.W. de Baar. Climatological mean and decadal change in surface ocean pCO2, and net sea–air CO2 flux over the global oceans. Deep Sea Research Part II: Topical Studies in Oceanography, 56(8-10):554–577, 2009. doi:10.1016/j.dsr2.2008.12.009.">Takahashi <em>et al.</em>, 2009</a>]</span>:</p>
 <p><span class="math">\begin{equation*}
 {(xCO_2)}_{SST} = {(xCO_2)}_{T_\text{equ}} \cdot \exp{\Big(0.0433\cdot(SST - T_\text{equ}) - 4.35\times 10^{-5}\cdot(SST^2 - T_\text{equ}^2)\Big)}
 \end{equation*}</span></p>
@@ -558,7 +284,7 @@ df[&#39;pCO2_wet_sst&#39;] = temperature_correction(df[&#39;pCO2_wet_equ&#39;], 
 </div>
 </div>
 <p>Finally, we compute the fugacity by hands of the before calculated partial pressure, the pressure at the equilibrator, and the SST.</p>
-<p>According to Weiss (1974), the fugacity can be calculated via</p>
+<p>According to <span id="id3">[<a class="reference internal" href="index.html#id6" title="R.F. Weiss and B.A. Price. Nitrous oxide solubility in water and seawater. Marine Chemistry, 8(4):347–359, 1980. doi:10.1016/0304-4203(80)90024-9.">Weiss and Price, 1980</a>]</span>, the fugacity can be calculated via</p>
 <div class="math notranslate nohighlight">
 \[\begin{equation*}
 (fCO_2)^\text{wet}_\text{SST} = (pCO_2)^\text{wet}_\text{SST} \cdot
@@ -584,7 +310,7 @@ B(CO_2,T) = -1636.75 + 12.0408\,T - 0.0327957\,T^2 + 0.0000316528\,T^3
 </div>
 </section>
 <section id="Plot-the-results">
-<h2>Plot the results<a class="headerlink" href="#Plot-the-results" title="Permalink to this headline"></a></h2>
+<h2>Plot the results<a class="headerlink" href="#Plot-the-results" title="Permalink to this heading"></a></h2>
 <p>Let’s plot the time series of the pCO2 in wet air both at the equilibrator and at sea-surface temperature as well as the fugacity given in wet air and at sea-surface temperature.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
