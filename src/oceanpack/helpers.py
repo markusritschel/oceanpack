@@ -47,7 +47,7 @@ def decimal_degrees(x):
     sign = np.sign(x)
     x = np.abs(x)
     degrees, minutes = __dm_split(x)
-    return sign*(degrees + minutes / 60)
+    return sign * (degrees + minutes / 60)
 
 
 # TODO: compare with "1978 Practical Salinity Scale Equations, from IEEE Journal of Oceanic Engineering, Vol. OE-5, No. 1, January 1980, page 14"
@@ -132,9 +132,9 @@ def order_of_magnitude(x):
     array([1., 2.])
     """
     x = np.asarray(x)
-    if np.all(x==0):
+    if np.all(x == 0):
         return None
-    x = x[x!=0]
+    x = x[x != 0]
     oom = np.floor(np.log10(x))
     # oom = (np.int32(np.log10(np.abs(x))) + 1)
     return np.array(oom)
@@ -163,12 +163,12 @@ def pressure2atm(p):
     p = copy(p)
     if 2 <= np.nanmedian(np.rint(order_of_magnitude(p))) <= 3:
         p /= 1013.25
-        logger.info('Pressure is assumed to be in hPa and was converted to atm')
+        logger.info("Pressure is assumed to be in hPa and was converted to atm")
     elif 4 <= np.nanmedian(np.rint(order_of_magnitude(p))) <= 5:
         p /= 101325
-        logger.info('Pressure is assumed to be in Pa and was converted to atm')
+        logger.info("Pressure is assumed to be in Pa and was converted to atm")
     elif -1 <= np.nanmedian(np.rint(order_of_magnitude(p))) <= 1:
-        logger.info('Pressure is assumed to be already in atm (no conversion)')
+        logger.info("Pressure is assumed to be already in atm (no conversion)")
     else:
         raise IOError("Pressure must be given in hPa, Pa or atm")
     return p
@@ -192,12 +192,12 @@ def pressure2mbar(p):
     """
     p = copy(p)
     if 2 <= np.nanmedian(np.rint(order_of_magnitude(p))) <= 3:
-        logger.info('Pressure is assumed to be already in mbar (no conversion)')
+        logger.info("Pressure is assumed to be already in mbar (no conversion)")
     elif 4 <= np.nanmedian(np.rint(order_of_magnitude(p))) <= 5:
         p /= 100
-        logger.info('Pressure is assumed to be in Pa and was converted to mbar (hPa)')
+        logger.info("Pressure is assumed to be in Pa and was converted to mbar (hPa)")
     elif -1 <= np.nanmedian(np.rint(order_of_magnitude(p))) <= 1:
-        logger.info('Pressure is assumed to be in atm and was converted to mbar (hPa)')
+        logger.info("Pressure is assumed to be in atm and was converted to mbar (hPa)")
         p *= 1013.25
     else:
         raise IOError("Pressure must be given in hPa, Pa or atm")
@@ -215,7 +215,7 @@ def temperature2K(T):
     283.15
     """
     T = copy(T)
-    if isinstance(T,pd.Series):
+    if isinstance(T, pd.Series):
         if len(T[T > 200]) != 0:
             logger.warning("Some values seem to be already in Kelvin")
         # TODO: do this in a better way
@@ -236,7 +236,7 @@ def temperature2C(T):
     10.0
     """
     T = copy(T)
-    if isinstance(T,pd.Series):
+    if isinstance(T, pd.Series):
         T.loc[T > 200] -= 273.15
     elif T > 200:
         T -= 273.15
@@ -266,16 +266,16 @@ def ppm2uatm(xCO2,p_equ,input='wet',T=None,S=None):
     """
     # Pa or hPa -> atm
     p_equ = pressure2atm(p_equ)
-
-    if input=="wet":
+    
+    if input == "wet":
         pH2O = 0
-    elif input== "dry":
-        pH2O = water_vapor_pressure(T,S)
+    elif input == "dry":
+        pH2O = water_vapor_pressure(T, S)
     else:
         raise IOError("Input must be either 'dry' or 'wet'.")
-
+    
     pCO2_wet_equ = xCO2 * (p_equ - pH2O)
-
+    
     return pCO2_wet_equ
 
 
@@ -303,6 +303,8 @@ def temperature_correction(CO2, T_out=None, T_in=None, method='Takahashi2009', *
 
     .. math::
         {(xCO_2)}_{SST} = {(xCO_2)}_{T_\\text{equ}} \\cdot \\exp{\\Big(0.0433\\cdot(SST - T_\\text{equ}) - 4.35\\times 10^{-5}\\cdot(SST^2 - T_\\text{equ}^2)\\Big)}
+
+    for correcting the temperature at the equilibrator :math:`T_\text{equ}` to the SST.
 
     `CO2` can be one out of [xCO2 (mole fraction), pCO2 (partial pressure), fCO2 (fugacity)].
 
