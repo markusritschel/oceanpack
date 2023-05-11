@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 this_dir = Path(__file__).resolve().parents[0]
 
 OCEANVIEW_VARIABLES = pd.read_csv(this_dir/'oceanview_variables.csv', index_col='ID')
-SYSTEM_STATES = pd.read_csv(this_dir/'system_states.csv', sep=';', index_col='state')
+SYSTEM_STATES = pd.read_csv(this_dir/'system_states.csv', sep=r';\s*?', index_col='state').T.to_dict('records')[0]
 
 
 def _read_oceanpack_internal_logfile(file, **kwargs):
@@ -110,7 +110,7 @@ def read_oceanpack(files) -> pd.DataFrame:
     for col in df.columns:
         try:
             df[col] = pd.to_numeric(df[col])
-        except:
+        except Exception:
             logger.warning(f'Cannot convert {col} to numeric')
 
     df.sort_index(axis=0, inplace=True, ascending=True)
