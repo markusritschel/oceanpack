@@ -497,17 +497,14 @@ def grid_dataframe(points, vals, xi, export_grid=False):
 
     df['points'] = df[['x_binned', 'y_binned']].apply(tuple, axis=1)
 
-    df_ = df.groupby(['points']).mean()
+    df_ = df.groupby('points').mean()
 
     for idx, row in df_.iterrows():
         target_[(xx_ == idx[0]) & (yy_ == idx[1])] = row.vals
 
     target = target_.reshape(xx.shape)
 
-    if export_grid:
-        return xx, yy, target
-
-    return target
+    return (xx, yy, target) if export_grid else target
 
 
 def check_input_for_duplicates(func):

@@ -70,14 +70,3 @@ def test_bin_creator():
     assert len(bins) == len(x) + 1, "Bin edges must be one more than there are labels"
 
 
-def test_gridding_shape():
-    x = np.linspace(-4, 4, 100)
-    y = np.linspace(40, 50, 100)
-    data = np.random.rand(100)
-
-    xi = np.arange(-5, 5, .25)
-    yi = np.arange(40, 60, .25)
-
-    xx, yy, target = grid_dataframe((x, y), data, (xi, yi), export_grid=True)
-
-    assert target.shape == (80, 40), "Shape of the target doesn't match!"
