@@ -130,7 +130,7 @@
     <span class="n">sign</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
     <span class="n">degrees</span><span class="p">,</span> <span class="n">minutes</span> <span class="o">=</span> <span class="n">__dm_split</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">sign</span><span class="o">*</span><span class="p">(</span><span class="n">degrees</span> <span class="o">+</span> <span class="n">minutes</span> <span class="o">/</span> <span class="mi">60</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">sign</span> <span class="o">*</span> <span class="p">(</span><span class="n">degrees</span> <span class="o">+</span> <span class="n">minutes</span> <span class="o">/</span> <span class="mi">60</span><span class="p">)</span></div>
 
 
 <span class="c1"># TODO: compare with &quot;1978 Practical Salinity Scale Equations, from IEEE Journal of Oceanic Engineering, Vol. OE-5, No. 1, January 1980, page 14&quot;</span>
@@ -215,9 +215,9 @@
 <span class="sd">    array([1., 2.])</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">x</span><span class="o">==</span><span class="mi">0</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">None</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">x</span><span class="o">!=</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">x</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">]</span>
     <span class="n">oom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
     <span class="c1"># oom = (np.int32(np.log10(np.abs(x))) + 1)</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">oom</span><span class="p">)</span></div>
@@ -246,12 +246,12 @@
     <span class="n">p</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
     <span class="k">if</span> <span class="mi">2</span> <span class="o">&lt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">order_of_magnitude</span><span class="p">(</span><span class="n">p</span><span class="p">)))</span> <span class="o">&lt;=</span> <span class="mi">3</span><span class="p">:</span>
         <span class="n">p</span> <span class="o">/=</span> <span class="mf">1013.25</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Pressure is assumed to be in hPa and was converted to atm&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Pressure is assumed to be in hPa and was converted to atm&quot;</span><span class="p">)</span>
     <span class="k">elif</span> <span class="mi">4</span> <span class="o">&lt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">order_of_magnitude</span><span class="p">(</span><span class="n">p</span><span class="p">)))</span> <span class="o">&lt;=</span> <span class="mi">5</span><span class="p">:</span>
         <span class="n">p</span> <span class="o">/=</span> <span class="mi">101325</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Pressure is assumed to be in Pa and was converted to atm&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Pressure is assumed to be in Pa and was converted to atm&quot;</span><span class="p">)</span>
     <span class="k">elif</span> <span class="o">-</span><span class="mi">1</span> <span class="o">&lt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">order_of_magnitude</span><span class="p">(</span><span class="n">p</span><span class="p">)))</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Pressure is assumed to be already in atm (no conversion)&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Pressure is assumed to be already in atm (no conversion)&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Pressure must be given in hPa, Pa or atm&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">p</span></div>
@@ -275,12 +275,12 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">p</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
     <span class="k">if</span> <span class="mi">2</span> <span class="o">&lt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">order_of_magnitude</span><span class="p">(</span><span class="n">p</span><span class="p">)))</span> <span class="o">&lt;=</span> <span class="mi">3</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Pressure is assumed to be already in mbar (no conversion)&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Pressure is assumed to be already in mbar (no conversion)&quot;</span><span class="p">)</span>
     <span class="k">elif</span> <span class="mi">4</span> <span class="o">&lt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">order_of_magnitude</span><span class="p">(</span><span class="n">p</span><span class="p">)))</span> <span class="o">&lt;=</span> <span class="mi">5</span><span class="p">:</span>
         <span class="n">p</span> <span class="o">/=</span> <span class="mi">100</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Pressure is assumed to be in Pa and was converted to mbar (hPa)&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Pressure is assumed to be in Pa and was converted to mbar (hPa)&quot;</span><span class="p">)</span>
     <span class="k">elif</span> <span class="o">-</span><span class="mi">1</span> <span class="o">&lt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmedian</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">rint</span><span class="p">(</span><span class="n">order_of_magnitude</span><span class="p">(</span><span class="n">p</span><span class="p">)))</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Pressure is assumed to be in atm and was converted to mbar (hPa)&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Pressure is assumed to be in atm and was converted to mbar (hPa)&quot;</span><span class="p">)</span>
         <span class="n">p</span> <span class="o">*=</span> <span class="mf">1013.25</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Pressure must be given in hPa, Pa or atm&quot;</span><span class="p">)</span>
@@ -298,7 +298,7 @@
 <span class="sd">    283.15</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">T</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">T</span><span class="p">[</span><span class="n">T</span> <span class="o">&gt;</span> <span class="mi">200</span><span class="p">])</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Some values seem to be already in Kelvin&quot;</span><span class="p">)</span>
         <span class="c1"># TODO: do this in a better way</span>
@@ -319,7 +319,7 @@
 <span class="sd">    10.0</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">T</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">):</span>
         <span class="n">T</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">T</span> <span class="o">&gt;</span> <span class="mi">200</span><span class="p">]</span> <span class="o">-=</span> <span class="mf">273.15</span>
     <span class="k">elif</span> <span class="n">T</span> <span class="o">&gt;</span> <span class="mi">200</span><span class="p">:</span>
         <span class="n">T</span> <span class="o">-=</span> <span class="mf">273.15</span>
@@ -349,16 +349,16 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Pa or hPa -&gt; atm</span>
     <span class="n">p_equ</span> <span class="o">=</span> <span class="n">pressure2atm</span><span class="p">(</span><span class="n">p_equ</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="nb">input</span><span class="o">==</span><span class="s2">&quot;wet&quot;</span><span class="p">:</span>
+    
+    <span class="k">if</span> <span class="nb">input</span> <span class="o">==</span> <span class="s2">&quot;wet&quot;</span><span class="p">:</span>
         <span class="n">pH2O</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">elif</span> <span class="nb">input</span><span class="o">==</span> <span class="s2">&quot;dry&quot;</span><span class="p">:</span>
-        <span class="n">pH2O</span> <span class="o">=</span> <span class="n">water_vapor_pressure</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">S</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">input</span> <span class="o">==</span> <span class="s2">&quot;dry&quot;</span><span class="p">:</span>
+        <span class="n">pH2O</span> <span class="o">=</span> <span class="n">water_vapor_pressure</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">S</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;Input must be either &#39;dry&#39; or &#39;wet&#39;.&quot;</span><span class="p">)</span>
-
+    
     <span class="n">pCO2_wet_equ</span> <span class="o">=</span> <span class="n">xCO2</span> <span class="o">*</span> <span class="p">(</span><span class="n">p_equ</span> <span class="o">-</span> <span class="n">pH2O</span><span class="p">)</span>
-
+    
     <span class="k">return</span> <span class="n">pCO2_wet_equ</span></div>
 
 
@@ -386,6 +386,8 @@
 
 <span class="sd">    .. math::</span>
 <span class="sd">        {(xCO_2)}_{SST} = {(xCO_2)}_{T_\\text{equ}} \\cdot \\exp{\\Big(0.0433\\cdot(SST - T_\\text{equ}) - 4.35\\times 10^{-5}\\cdot(SST^2 - T_\\text{equ}^2)\\Big)}</span>
+
+<span class="sd">    for correcting the temperature at the equilibrator :math:`T_\text{equ}` to the SST.</span>
 
 <span class="sd">    `CO2` can be one out of [xCO2 (mole fraction), pCO2 (partial pressure), fCO2 (fugacity)].</span>
 
