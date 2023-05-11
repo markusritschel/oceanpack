@@ -304,7 +304,7 @@ def temperature_correction(CO2, T_out=None, T_in=None, method='Takahashi2009', *
     .. math::
         {(xCO_2)}_{SST} = {(xCO_2)}_{T_\\text{equ}} \\cdot \\exp{\\Big(0.0433\\cdot(SST - T_\\text{equ}) - 4.35\\times 10^{-5}\\cdot(SST^2 - T_\\text{equ}^2)\\Big)}
 
-    for correcting the temperature at the equilibrator :math:`T_\text{equ}` to the SST.
+    for correcting the temperature at the equilibrator :math:`T_\\text{equ}` to the SST.
 
     `CO2` can be one out of [xCO2 (mole fraction), pCO2 (partial pressure), fCO2 (fugacity)].
 
