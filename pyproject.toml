@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools @ git+https://github.com/pypa/setuptools.git@main", "wheel"]
+build-backend = "setuptools.build_meta"
+# TODO: consider hatchling for built
+
+[project]
+name = "oceanpack"
+description = "This repository contains routines for the evaluation of data from the OceanPack™ AUMS (Autonomous Underwater Measuring System) by SubCtech®."
+authors = [
+  {name = "Markus Ritschel", email = "git@markusritschel.de"},
+]
+readme = "README.md"
+license = {file = "LICENSE"}
+dynamic = ["version"]
+requires-python = ">= 3.10"
+dependencies = []
+
+
+[project.scripts]
+oceanpack = "oceanpack:cli"
+
+[tool.setuptools.dynamic]
+version = {attr = "oceanpack.__version__"}
+
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+
+[tool.jupytext]
+formats = "ipynb,py:percent,md:myst"
+
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = [
+    "tests",
+    "src",
+]
+addopts = [
+    "--import-mode=importlib",
+    "-ra -q"
+]
+
+
+[tool.flake8]
+max-line-length = 80
+max-complexity = 10
