@@ -5,6 +5,7 @@
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #
 from enum import Enum, IntEnum
+from pathlib import Path
 
 
 class FileSourceType(Enum):
@@ -64,10 +65,38 @@ class FileSourceModel:
             self._filehandler = self._source_type.get_filehandler()
 
     def load_data(self, path: str):
-        pass
+        all_files = collect_files(path)
+
     def clean_data(self):
         pass
+
     def process_data(self):
         pass
+
     def get_data(self):
         pass
+    
+
+def collect_files(path: str, suffix='log') -> list[Path]:
+    """
+    Collect files from a given path.
+
+    Parameters
+    ----------
+    path : str
+        The path to the file or directory.
+    suffix : str, optional
+        The file suffix to filter by. Defaults to 'log'.
+
+    Returns
+    -------
+    list[Path]
+        A list of paths to the detected files.
+    """
+    path = Path(path)
+    if path.is_file():
+        all_files = [path]
+    elif path.is_dir():
+        files = path.glob(f'**/*.{suffix}')
+        all_files = list(files)
+    return all_files
