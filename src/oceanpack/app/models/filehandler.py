@@ -16,3 +16,19 @@ class FileHandlerInterface(ABC):
     def read_file(file_path):
         pass
 
+
+class InternalFileHandler(FileHandlerInterface):
+    """File handler for log files created by OceanPack Analyzer or NetDI unit."""
+
+
+class AnalyzerFileHandler(InternalFileHandler):
+    """File handler for log files created by OceanPack Analyzer unit."""
+
+
+class NetDIFileHandler(InternalFileHandler):
+    """File handler for log files created by OceanPack NetDI unit."""
+
+
+class StreamFileHandler(FileHandlerInterface):
+    """File handler for log files created by OceanPack NetDI unit."""
+
