@@ -52,6 +52,17 @@ class FileSourceModel:
     def source_type(self) -> str:
         return self._source_type
 
+    @source_type.setter
+    def source_type(self, value: str):
+        if not isinstance(value, str):
+            raise TypeError("source_type must be of type str")
+        if not FileSourceType.isvalid(value):
+            valid_values = [m.value for m in FileSourceType]
+            raise TypeError(f"source_type is unknown. Valid options are {valid_values}")
+        self._source_type = FileSourceType.from_string(value)
+        if self._source_type:
+            self._filehandler = self._source_type.get_filehandler()
+
     def load_data(self, path: str):
         pass
     def clean_data(self):
