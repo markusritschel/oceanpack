@@ -6,6 +6,9 @@
 #
 """Console script for oceanpack."""
 import click
+from oceanpack.app.controllers.data_controller import DataController
+
+
 @click.group()
 def main():
     pass
