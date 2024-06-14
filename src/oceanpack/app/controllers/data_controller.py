@@ -4,8 +4,8 @@
 # Date:   2024-06-13
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #
-from ..views.data_view import DataView
-from ..models.filesource import FileSourceModel
+from oceanpack.app.views.data_view import DataView
+from oceanpack.app.models.filesource import FileSourceModel
 
 
 class DataController:
