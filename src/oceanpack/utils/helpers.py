@@ -52,6 +52,9 @@ def compute_salinity(C, T, p):
     >>> compute_salinity(C=52, T=25, p=1013)
     34.20810771080768
     """
+    p = pressure2mbar(p) / 100  # convert hPa (mbar) -> dbar
+    T = temperature2C(T)
+
     a0 = 0.008
     a1 = -0.1692
     a2 = 25.3851
