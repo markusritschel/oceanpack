@@ -229,6 +229,42 @@ def temperature2C(T):
     return T
 
 
+def ppm2uatm(xCO2,p_equ,input='wet',T=None,S=None):
+    """Convert mole fraction concentration (in ppm) into partial pressure (in µatm) following :cite:t:`dickson_guide_2007`
+
+    .. math::
+        pCO_2 = xCO_2 \\cdot p_\\text{equ}
+
+    Parameters
+    ----------
+    xCO2: float or pd.Series
+        The measured CO2 concentration (in ppm)
+    p_equ: float or pd.Series
+        The measured pressure (in hPa, Pa or atm) at the equilibrator (hint: you might want to smoothen your time series)
+    input: str [default: "wet"]
+        Either "wet" or "dry", specifying the type of air, in which the concentration is measured.
+        If the CO2 concentration is measured in dry air, one must correct for the water vapor pressure.
+        In this case, make sure to also provide T (temperature in Kelvin) and S (salinity in PSU) as arguments.
+    T: float or pd.Series [default: None]
+        Temperature in Kelvin (needs to be provided if xCO2 is measured in dry air)
+    S: float or pd.Series [default: None]
+        Salinity in PSU (needs to be provided if xCO2 is measured in dry air)
+    """
+    # Pa or hPa -> atm
+    p_equ = pressure2atm(p_equ)
+
+    if input == "dry":
+        pH2O = compute_water_vapor_pressure(T, S)
+    elif input == "wet":
+        pH2O = 0
+    else:
+        raise IOError("Input must be either 'dry' or 'wet'.")
+
+    pCO2_wet_equ = xCO2 * (p_equ - pH2O)
+    
+    return pCO2_wet_equ
+
+
 def compute_water_vapor_pressure(T, S):
     """Compute the water vapor pressure by means of the temperature [K] and the salinity [PSU]
     following :cite:t:`weiss_nitrous_1980`.
