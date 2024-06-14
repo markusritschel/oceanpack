@@ -19,7 +19,7 @@ def convert_coordinates(x):
     Example
     -------
     >>> x = (12.0, 45.5)
-    >>> decimal_degrees(x)
+    >>> convert_coordinates(x)
     array([0.2       , 0.75833333])
     """
     sign = np.sign(x)
