@@ -1,10 +1,8 @@
-![](logo.png)
-
 ## Introduction
 
-Welcome to the documentation of Oceanpack!
+Welcome to the documentation of [oceanpack](https://github.com/markusritschel/oceanpack)!
 
-The [oceanpack](https://github.com/markusritschel/oceanpack) package is a collection of routines that help with the quality control and processing of data collected with the OceanPack ferrybox system of SubCtech.
+This package is a collection of routines that help with the quality control and processing of data collected with the OceanPack ferrybox system of SubCtech.
 
 ```{note}
 This is **not** an official package. The company SubCtech is not involved in the development of the routines provided here.
