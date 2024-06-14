@@ -1,6 +1,6 @@
 # Oceanpack
 
-![build](https://github.com/markusritschel/oceanpack/workflows/build/badge.svg)
+![build](https://github.com/markusritschel/oceanpack/actions/workflows/main.yml/badge.svg)
 [![License MIT license](https://img.shields.io/github/license/markusritschel/oceanpack)](./LICENSE)
 
 **Disclaimer:** This is not an official package. The company SubCtech is not involved in the development of the routines provided here.
