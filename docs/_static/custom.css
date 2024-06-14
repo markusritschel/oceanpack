@@ -8,5 +8,17 @@
     background-repeat: no-repeat;
     background-size: contain;
     display: inline-block;
-  }
-  
+}
+
+/* Add highlighting of API elements similar to RTD theme */
+.sig.sig-object.py {
+    display: table;
+    margin: 6px 0;
+    font-size: 90%;
+    line-height: normal;
+    background: #e7f2fa;
+    color: #2980b9;
+    border-top: 3px solid #6ab0de;
+    //padding: 6px;
+    position: relative
+}

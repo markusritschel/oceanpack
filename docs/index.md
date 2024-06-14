@@ -1,16 +1,20 @@
-![](_static/logo.png)
+![](logo.png)
 
 ## Introduction
 
 Welcome to the documentation of Oceanpack!
 
-This repository contains routines for the evaluation of data from the OceanPack™ AUMS (Autonomous Underwater Measuring System) by SubCtech®.
+The [oceanpack](https://github.com/markusritschel/oceanpack) package is a collection of routines that help with the quality control and processing of data collected with the OceanPack ferrybox system of SubCtech.
 
-```{tip}
-- Give a short introduction on what the package is about.
-- Limit yourself to just a few sentences.
-- You may also give some instructions on how to navigate through the documentation.
+```{note}
+This is **not** an official package. The company SubCtech is not involved in the development of the routines provided here.
 ```
+
+The OceanPack system measures underway CO2 alongside water temperature, salinity and other parameters.
+Data are usually stored on an SD card but can also be streamed to a computer.
+The routines in this package contain routines for conversion of xCO2 to pCO2, for applying temperature corrections, computing the fugacity, etc.
+
+A full description of the functions and the underlying algorithms can be found in the Module Reference.
 
 ## Getting Started
 
@@ -60,7 +64,6 @@ make tests
 ```
 
 to run the tests via `pytest`.
-
 
 ## Contact
 

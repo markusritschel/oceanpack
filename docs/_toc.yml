@@ -6,15 +6,14 @@ root: index
 parts:
   - caption: Content
     chapters:
-      - file: demo-stuff
+      - file: examples
   - caption: Project Info
     chapters:
       - file: _autoapi/index   # will be generated automatically
       - file: bibliography
       - file: readme
         title: README
-        sections:
-          - file: license
-            title: LICENSE
-          - title: CHANGELOG
-            file: changelog
+      - file: license
+        title: LICENSE
+      - title: CHANGELOG
+        file: changelog
