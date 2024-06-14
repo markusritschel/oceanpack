@@ -321,3 +321,61 @@ def temperature_correction(CO2, T_out=None, T_in=None, method='Takahashi2009', *
     return CO2_out
 
 
+def fugacity(pCO2, p_equ, SST, xCO2=None):
+    """Calculate the fugacity of CO2. Can be done either before or after a :func:`.temperature correction`.
+    The formulas follow :cite:t:`dickson_guide_2007`, mainly SOP 5, Chapter 8. "Calculation and expression of results"
+
+    .. math::
+       (fCO_2)^\\text{wet}_\\text{SST} = (pCO_2)^\\text{wet}_\\text{SST} \\cdot
+            \\exp{\\Big(p_\\text{equ}\\cdot\\frac{\\left[ B(CO_2,SST) + 2\\,\\left(1-(xCO_2)^\\text{wet}_{SST}\\right)^2 \\, \\delta(CO_2,SST)\\right]}{R\\cdot SST}\\Big)}
+
+    where :math:`SST` is the sea surface temperature in K, :math:`R` the gas constant and :math:`B(CO_2,SST)` and 
+    :math:`\delta(CO_2,SST)` are the virial coefficients for :math:`CO_2` (both in :math:`\\text{cm}^3\\,\\text{mol}^{-1}`), which are given as
+
+    .. math::
+       B(CO_2,T) = -1636.75 + 12.0408\\,T - 0.0327957\\,T^2 + 0.0000316528\\,T^3
+
+    and
+
+    .. math::
+       \\delta(CO_2,T) = 57.7 - 0.188\\,T
+
+
+    Parameters
+    ----------
+    pCO2: float or pd.Series
+        The partial pressure of CO2 (in µatm).
+        Make sure you have converted xCO2 concentration (mole fraction in ppm) into partial pressure (in µatm).
+    p_equ: float or pd.Series
+        The measured pressure (in hPa, Pa or atm) at the equilibrator (hint: you might want to smoothen your time series)
+    SST: float or pd.Series
+        The in-situ measurement temperature (in °C or Kelvin)
+    xCO2: float or pd.Series (optional)
+        CO2 concentration (mole fraction in ppm). If given, the δ_CO2 virial coefficient in the numerator in the exponential expression is multiplied by (1 - xCO2*1e-6). Else, this term is 1.
+    """
+    # Pa or hPa -> atm
+    p_equ = pressure2atm(p_equ)
+
+    # °C -> K
+    SST = temperature2K(SST)
+
+    # respectively in cm³/mol
+    B_CO2 = -1636.75 + 12.0408*SST - 3.27957e-2*SST**2 + 3.16528e-5*SST**3
+    δ_CO2 = 57.7 - 0.118*SST
+
+    # gas constant
+    R = 8.2057366080960e-2 	        # L⋅atm⋅K−1⋅mol−1
+    R *= 1000                       # cm³⋅atm⋅K−1⋅mol−1
+
+    if xCO2 is None:
+        x_c = 1
+    else:
+        x_c = (1 - xCO2*1e-6)       # can be and is often neglected in literature
+
+    A = p_equ*(B_CO2 + 2 * δ_CO2 * x_c**2)
+    B = R*SST
+    f = pCO2 * np.exp(A / B)        # same unit as pCO2 (µatm)
+
+    return f
+
+
