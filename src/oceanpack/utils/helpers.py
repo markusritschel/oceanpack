@@ -379,3 +379,14 @@ def fugacity(pCO2, p_equ, SST, xCO2=None):
     return f
 
 
+def find_nearest(items: list, pivot: float) -> float:
+    """Find the element inside `items` that is closest to the `pivot` element.
+
+    Examples
+    --------
+    >>> nearest(np.array([2,4,5,7,9,10]), 4.6)
+    5
+    """
+    return min(items, key=lambda x: abs(x - pivot))
+
+
