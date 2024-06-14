@@ -187,7 +187,9 @@ def order_of_magnitude(x):
     x = x[x != 0]
     oom = np.floor(np.log10(x))
     # oom = (np.int32(np.log10(np.abs(x))) + 1)
-    return np.array(oom)
+    return np.array(oom).squeeze()
+
+
 
 
 def temperature2K(T):
