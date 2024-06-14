@@ -390,3 +390,22 @@ def find_nearest(items: list, pivot: float) -> float:
     return min(items, key=lambda x: abs(x - pivot))
 
 
+def centered_bins(x):
+    """Create centered bin boundaries from a given array with the values of the array as centers.
+
+    Example
+    -------
+    >>> x = np.arange(-3, 4)
+    >>> x
+    array([-3, -2, -1,  0,  1,  2,  3])
+    >>> centered_bins(x)
+    array([-3.5, -2.5, -1.5, -0.5,  0.5,  1.5,  2.5,  3.5])
+    """
+    x = np.array(x)
+    x = np.append(x, x[-1] + np.diff(x[-2:]))
+
+    differences = np.gradient(x, 2)
+
+    return x - differences
+
+
