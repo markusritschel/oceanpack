@@ -1,6 +1,7 @@
 # Oceanpack
 
 ![build](https://github.com/markusritschel/oceanpack/actions/workflows/main.yml/badge.svg)
+[![codecov](https://codecov.io/gh/markusritschel/oceanpack/graph/badge.svg?token=ESR952PE13)](https://codecov.io/gh/markusritschel/oceanpack)
 [![License MIT license](https://img.shields.io/github/license/markusritschel/oceanpack)](./LICENSE)
 
 **Disclaimer:** This is not an official package. The company SubCtech is not involved in the development of the routines provided here.
