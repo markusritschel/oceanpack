@@ -81,6 +81,7 @@ class FileSourceModel:
         self.source_type = source_type
         self._metadata = None
         self.df = None
+        self.ds = None
 
     @property
     def source_type(self) -> str:
@@ -134,6 +135,14 @@ class FileSourceModel:
                 log.warning(f'Cannot convert {col} to numeric')
         df.sort_index(axis=0, inplace=True, ascending=True)
         self.df = df
+        self._pandas_to_xarray()
+
+
+    def _pandas_to_xarray(self):
+        ds = self.df.to_xarray()
+        ds.attrs['source_type'] = self.source_type.value
+        self.ds = ds
+
 
     def get_data(self):
         pass
