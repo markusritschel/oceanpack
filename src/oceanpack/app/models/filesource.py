@@ -5,12 +5,14 @@
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #
 from enum import Enum, IntEnum
-<<<<<<< HEAD
-=======
-import logging
 import pandas as pd
->>>>>>> af5a1a0 (Add pandas import statement)
+from tqdm.auto import tqdm
+import logging
+
 from pathlib import Path
+
+
+log = logging.getLogger(__name__)
 
 
 class FileSourceType(Enum):
@@ -93,7 +95,14 @@ class FileSourceModel:
         self.df = df[~df.index.duplicated(keep='first')]
 
     def process_data(self):
-        pass
+        df = self.df
+        for col in df.columns:
+            try:
+                df[col] = pd.to_numeric(df[col])
+            except Exception:
+                log.warning(f'Cannot convert {col} to numeric')
+        df.sort_index(axis=0, inplace=True, ascending=True)
+        self.df = df
 
     def get_data(self):
         pass
