@@ -44,6 +44,7 @@ make src-available
 ```
 
 to make the project's routines (located in `src`) available for import.
+This will also give you access to a command line interface (CLI) that can be used for some basic tasks.
 
 ### Usage
 
@@ -51,6 +52,12 @@ The package can be imported and used as follows:
 
 ```python
 import oceanpack
+```
+
+In addition, you will have access to a [command line interface (CLI)](cli.md) that you can run from the terminal:
+
+```bash
+oceanpack --help
 ```
 
 ### Test code
