@@ -88,7 +88,9 @@ class FileSourceModel:
 
 
     def clean_data(self):
-        pass
+        df = self.df
+        df = df.loc[df.index.dropna()]
+        self.df = df[~df.index.duplicated(keep='first')]
 
     def process_data(self):
         pass
