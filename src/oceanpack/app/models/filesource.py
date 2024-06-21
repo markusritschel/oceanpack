@@ -136,12 +136,22 @@ class FileSourceModel:
         df.sort_index(axis=0, inplace=True, ascending=True)
         self.df = df
         self._pandas_to_xarray()
+        self._add_metadata_to_xarray()
 
 
     def _pandas_to_xarray(self):
         ds = self.df.to_xarray()
         ds.attrs['source_type'] = self.source_type.value
         self.ds = ds
+
+
+    def _add_metadata_to_xarray(self):
+        meta = self._metadata.set_index('name')
+        for var in self.ds.variables:
+            if str(var) in meta.index.values:
+                for col in meta.columns:
+                    if value := meta.loc[var, col]:
+                        self.ds[var].attrs[col] = value
 
 
     def get_data(self):
