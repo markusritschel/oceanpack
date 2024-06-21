@@ -21,6 +21,37 @@ class FileHandlerInterface(ABC):
     def read_file(file_path):
         pass
 
+    @classmethod
+    def parse_header(cls, file_path):
+        header_dict = {}
+        with open(file_path, 'r', encoding='Windows 1252') as f:
+            header_dict['nrows'] = 0
+            while True:
+                line = f.readline()
+                header_dict['nrows'] += 1
+
+                if line.startswith('$PSDS0'):
+                    header_dict['$PSDS0'] = None
+                    break
+
+                elif line.startswith('@RATE') : 
+                    break
+
+                elif line.startswith('@NAME'):
+                    names = line.strip().split(',')
+                    header_dict['names'] = [x.replace('/', '_') for x in names]
+
+                elif line.startswith('@UNIT'):
+                    header_dict['units'] = line.strip().split(',')
+
+                elif line.startswith('@SENSOR'):
+                    header_dict['sensors'] = line.strip().split(',')
+
+                if header_dict['nrows'] > 15:
+                    log.warning(f'Could not find header in file {file_path}. Skip file.')
+                    return None
+        return header_dict
+
 
 class InternalFileHandler(FileHandlerInterface):
     """File handler for log files created by OceanPack Analyzer or NetDI unit.
@@ -47,7 +78,7 @@ class InternalFileHandler(FileHandlerInterface):
         meta : pandas DataFrame
             The metadata associated with the log file.
         """
-        header = InternalFileHandler.parse_header(file_path)
+        header = FileHandlerInterface.parse_header(file_path)
         if not header:
             return pd.DataFrame(), pd.DataFrame()
         
@@ -68,34 +99,6 @@ class InternalFileHandler(FileHandlerInterface):
                                              columns=['name', 'unit', 'device'])
 
         return data, metadata
-
-
-    @staticmethod
-    def parse_header(file_path):
-        header_dict = {}
-        with open(file_path, 'r', encoding='Windows 1252') as f:
-            header_dict['nrows'] = 0
-            while True:
-                line = f.readline()
-                header_dict['nrows'] += 1
-                if line.startswith('@RATE') : 
-                    break
-
-                elif line.startswith('@NAME'):
-                    names = line.strip().split(',')
-                    header_dict['names'] = [x.replace('/', '_') for x in names]
-
-                elif line.startswith('@UNIT'):
-                    header_dict['units'] = line.strip().split(',')
-
-                elif line.startswith('@SENSOR'):
-                    header_dict['sensors'] = line.strip().split(',')
-
-                if header_dict['nrows'] > 15:
-                    log.warning(f'Could not find header in file {file_path}. Skip file.')
-                    return None
-        return header_dict
-
 
 
 class AnalyzerFileHandler(InternalFileHandler):
