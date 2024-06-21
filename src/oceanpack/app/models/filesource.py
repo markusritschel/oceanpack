@@ -49,6 +49,23 @@ class FileSourceType(Enum):
                 return source
         raise ValueError(f"Invalid source type: {value}")
 
+    @classmethod
+    def from_header(cls, file_path):
+        from .filehandler import FileHandlerInterface
+        print('Try to estimate source type from header...')
+        header = FileHandlerInterface.parse_header(file_path)
+        if '$PSDS0' in header:
+            return FileSourceType.STREAM
+        elif 'names' in header:
+            if 'analyzer' in file_path.parent.as_posix().lower():
+                print("Found 'Analyzer' in file path. Use 'Analyzer' as source type.")
+                return FileSourceType.ANALYZER
+            elif 'netdi' in file_path.parent.as_posix().lower():
+                print("Found 'NetDI' in file path. Use 'NetDI' as source type.")
+                return FileSourceType.NETDI
+        else:
+            raise ValueError("Could not determine source type from header. Please specify using the respective option.")
+
 
 class FileSourceModel:
     def __init__(self, source_type: FileSourceType = None) -> None:
@@ -64,8 +81,12 @@ class FileSourceModel:
 
     @source_type.setter
     def source_type(self, value: str):
-        if not isinstance(value, str):
+        if value is None:
+            log.warning("Source type not specified. Need to estimate from header during execution of `load_data`.")
+            return None
+        elif not isinstance(value, str):
             raise TypeError("source_type must be of type str")
+        
         if not FileSourceType.isvalid(value):
             valid_values = [m.value for m in FileSourceType]
             raise TypeError(f"source_type is unknown. Valid options are {valid_values}")
@@ -75,6 +96,9 @@ class FileSourceModel:
 
     def load_data(self, path: str):
         all_files = collect_files(path)
+
+        if self._source_type is None:
+            self._source_type = FileSourceType.from_header(all_files[0])
 
         if self._source_type:
             self._filehandler = self._source_type.get_filehandler()
