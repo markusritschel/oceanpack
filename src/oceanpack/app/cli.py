@@ -9,12 +9,25 @@ import click
 from oceanpack.app.controllers.data_controller import DataController
 
 
-@click.group()
-def main():
-    pass
+welcome_msg = """
+                                                __  
+  ____  ________  ____ _____  ____  ____ ______/ /__
+ / __ \/ ___/ _ \/ __ `/ __ \/ __ \/ __ `/ ___/ //_/
+/ /_/ / /__/  __/ /_/ / / / / /_/ / /_/ / /__/ ,<   
+\____/\___/\___/\__,_/_/ /_/ .___/\__,_/\___/_/|_|  
+                          /_/                       
+"""
 
 
-@main.command()
+@click.group(invoke_without_command=True)
+@click.pass_context
+def main(ctx):
+    if ctx.invoked_subcommand is None:
+        click.echo(welcome_msg)
+        click.echo(ctx.get_help())
+
+
+@main.command
 @click.argument('path', type=click.Path(exists=True))
 @click.option('--source-type', '-t', type=click.Choice(['Analyzer', 'NetDI', 'Stream']))
 @click.argument('output_file', type=click.Path())
