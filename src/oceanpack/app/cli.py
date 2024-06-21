@@ -16,7 +16,7 @@ def main():
 
 @main.command()
 @click.argument('path', type=click.Path(exists=True))
-@click.option('--source_type', '-t', required=True, type=click.Choice(['Analyzer', 'NetDI', 'Stream']))
+@click.option('--source-type', '-t', type=click.Choice(['Analyzer', 'NetDI', 'Stream']))
 @click.argument('output_file', type=click.Path())
 def process_data(path, source_type, output_file):
     """
