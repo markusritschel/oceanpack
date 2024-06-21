@@ -18,13 +18,14 @@ log = logging.getLogger(__name__)
 class FileSourceType(Enum):
     """This class determines the file source."""
 
+    INTERNAL = 'Internal'
     ANALYZER = 'Analyzer'
     NETDI    = 'NetDI'
     STREAM   = 'Stream'
 
     @staticmethod
     def isvalid(source_type: str) -> bool:
-        """Checks if the source type is valid."""
+        """Checks if the source type is valid. Returns True if the source type is found."""
         source_types = [member.value for member in FileSourceType]
         return source_type in source_types
     
@@ -39,6 +40,9 @@ class FileSourceType(Enum):
         elif self == FileSourceType.STREAM:
             from .filehandler import StreamFileHandler
             return StreamFileHandler
+        elif self == FileSourceType.INTERNAL:
+            from .filehandler import InternalFileHandler
+            return InternalFileHandler
         else:
             return None
     
@@ -63,6 +67,9 @@ class FileSourceType(Enum):
             elif 'netdi' in file_path.parent.as_posix().lower():
                 print("Found 'NetDI' in file path. Use 'NetDI' as source type.")
                 return FileSourceType.NETDI
+            else:
+                print("Use 'Internal' as source type.")
+                return FileSourceType.INTERNAL
         else:
             raise ValueError("Could not determine source type from header. Please specify using the respective option.")
 
