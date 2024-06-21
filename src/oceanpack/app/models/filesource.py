@@ -5,6 +5,11 @@
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #
 from enum import Enum, IntEnum
+<<<<<<< HEAD
+=======
+import logging
+import pandas as pd
+>>>>>>> af5a1a0 (Add pandas import statement)
 from pathlib import Path
 
 
@@ -48,6 +53,8 @@ class FileSourceModel:
         self._filehandler = None
         self._source_type = None
         self.source_type = source_type
+        self._metadata = None
+        self.df = None
 
     @property
     def source_type(self) -> str:
@@ -66,6 +73,19 @@ class FileSourceModel:
 
     def load_data(self, path: str):
         all_files = collect_files(path)
+
+        if self._source_type:
+            self._filehandler = self._source_type.get_filehandler()
+
+        df_list = []
+        for file in tqdm(all_files, unit='file'):
+            data_, metadata_ = self._filehandler.read_file(file)
+            if self._metadata is None:
+                self._metadata = metadata_
+            df_list.append(data_)
+
+        self.df = pd.concat(df_list)
+
 
     def clean_data(self):
         pass
