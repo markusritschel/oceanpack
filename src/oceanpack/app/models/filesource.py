@@ -58,7 +58,9 @@ class FileSourceType(Enum):
         from .filehandler import FileHandlerInterface
         print('Try to estimate source type from header...')
         header = FileHandlerInterface.parse_header(file_path)
-        if '$PSDS0' in header:
+        if header is None:
+            raise ValueError("Could not determine source type from header. Please specify using the respective option.")
+        elif '$PSDS0' in header:
             return FileSourceType.STREAM
         elif 'names' in header:
             if 'analyzer' in file_path.parent.as_posix().lower():
