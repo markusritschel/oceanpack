@@ -73,9 +73,9 @@ class InternalFileHandler(FileHandlerInterface):
 
         Returns
         -------
-        df : pandas DataFrame
+        data : pandas DataFrame
             The data from the log file as a DataFrame.
-        meta : pandas DataFrame
+        metadata : pandas DataFrame
             The metadata associated with the log file.
         """
         header = FileHandlerInterface.parse_header(file_path)

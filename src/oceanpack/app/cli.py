@@ -6,17 +6,21 @@
 #
 """Console script for oceanpack."""
 import click
+from colorama import Fore, Back, Style
 from oceanpack.app.controllers.data_controller import DataController
 
 
-welcome_msg = """
+welcome_msg = Fore.BLUE + """
                                                 __  
   ____  ________  ____ _____  ____  ____ ______/ /__
  / __ \/ ___/ _ \/ __ `/ __ \/ __ \/ __ `/ ___/ //_/
 / /_/ / /__/  __/ /_/ / / / / /_/ / /_/ / /__/ ,<   
 \____/\___/\___/\__,_/_/ /_/ .___/\__,_/\___/_/|_|  
                           /_/                       
-"""
+
+    A command line interface for working with data 
+          from the OceanPack™ by SubCtech©.
+""" + Fore.RESET
 
 
 @click.group(invoke_without_command=True)
@@ -34,7 +38,7 @@ def main(ctx):
 def process_data(path, source_type, output_file):
     """
     Process OceanPack log file(s) from PATH, clean the data, and export to OUTPUT_FILE.
-    Important: Handle files from different source types separately.
+    Please process files from different source types separately.
     """
     controller = DataController(source_type)
     controller.load_data(path)
