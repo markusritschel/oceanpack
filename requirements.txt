@@ -1,9 +1,9 @@
+click
 flake8
 jupyter-book
 jupytext
-click
+numpy
+pandas
 pytest
 pytest-cov
-pandas
-numpy
 seaborn

@@ -1,6 +1,6 @@
 {
-  "template": "/home/markusritschel/PycharmProjects/cookiecutter-pypackage",
-  "commit": "e94c50052e7b90070276acd98e68ec8011fc255b",
+  "template": "https://github.com/markusritschel/cookiecutter-pypackage",
+  "commit": "513db265ec105714fdef2227e4800857b8d04f6f",
   "checkout": null,
   "context": {
     "cookiecutter": {
@@ -12,15 +12,13 @@
       "package_name": "oceanpack",
       "project_short_description": "This repository contains routines for the evaluation of data from the OceanPack™ AUMS (Autonomous Underwater Measuring System) by SubCtech®.",
       "project_version": "0.1.0",
-      "use_pytest": "y",
       "command_line_interface": "Click",
-      "create_author_file": "y",
       "sphinx_theme": "pydata_sphinx_theme",
       "project_license": "MIT license",
       "_copy_without_render": [
         ".github/workflows/*"
       ],
-      "_template": "/home/markusritschel/PycharmProjects/cookiecutter-pypackage"
+      "_template": "https://github.com/markusritschel/cookiecutter-pypackage"
     }
   },
   "directory": null
