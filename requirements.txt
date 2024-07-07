@@ -1,4 +1,5 @@
 click
+colorama
 flake8
 jupyter-book
 jupytext
