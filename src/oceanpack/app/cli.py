@@ -35,7 +35,7 @@ def main(ctx):
 @click.argument('path', type=click.Path(exists=True))
 @click.option('--source-type', '-t', type=click.Choice(['Analyzer', 'NetDI', 'Stream']))
 @click.argument('output_file', type=click.Path())
-def process_data(path, source_type, output_file):
+def convert_data(path, source_type, output_file):
     """
     Process OceanPack log file(s) from PATH, clean the data, and export to OUTPUT_FILE.
     Please process files from different source types separately.
