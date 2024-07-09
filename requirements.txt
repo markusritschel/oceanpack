@@ -8,3 +8,5 @@ pandas
 pytest
 pytest-cov
 seaborn
+tqdm
+xarray
