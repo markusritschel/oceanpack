@@ -7,7 +7,7 @@
 """Console script for oceanpack."""
 import click
 from colorama import Fore, Back, Style
-from oceanpack.app.controllers.data_controller import DataConversionController
+from oceanpack.app.controllers.data_controller import DataConversionController, DataMergeController
 
 
 welcome_msg = Fore.BLUE + """
@@ -43,6 +43,16 @@ def convert_data(path, source_type, output_file):
     controller = DataConversionController(source_type)  # DataController(source_model)
     controller.load_data(path)
     controller.display()
+    controller.generate_output(output_file)
+
+
+@main.command
+@click.argument('files', type=click.Path(exists=True), nargs=-1)
+@click.option('--output-file', '-o', type=click.Path())
+@click.option('--tolerance', '-t', type=str, default='2min')
+def merge_data(files, output_file, tolerance):
+    controller = DataMergeController()
+    controller.merge(files, tolerance=tolerance)
     controller.generate_output(output_file)
 
 
