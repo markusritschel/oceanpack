@@ -44,7 +44,6 @@ def convert_data(path, source_type, output_file):
     controller.load_data(path)
     controller.display()
     controller.generate_output(output_file)
-    controller.write_output(output_file)
 
 
 if __name__ == "__main__":
