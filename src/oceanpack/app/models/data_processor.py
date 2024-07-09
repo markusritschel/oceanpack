@@ -39,6 +39,11 @@ class DataProcessor:
         self.ds['PressEqu'].attrs['unit'] = 'atm'
         self.ds['PressEqu'].attrs['full_name'] = 'Pressure at equilibrator/membrane'
 
+    def compute_pCO2_wet_equ(self):
+        """Compute pCO2 at the equilibrator in wet air."""
+        from oceanpack.utils.helpers import ppm2uatm
+        self.ds['pCO2_wet_equ'] = ppm2uatm(self.ds['CO2'], self.ds['PressEqu'])
+
     def to_netcdf(self, output_file):
         self.ds.to_netcdf(output_file)
 
