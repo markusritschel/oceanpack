@@ -44,6 +44,19 @@ class DataProcessor:
         from oceanpack.utils.helpers import ppm2uatm
         self.ds['pCO2_wet_equ'] = ppm2uatm(self.ds['CO2'], self.ds['PressEqu'])
 
+    def remove_non_operating_phases(self):
+        """Set CO2 values in non-operating phases to NaN"""
+        from oceanpack.utils.helpers import set_nonoperating_to_nan
+        for var in self.ds.variables:
+            if 'CO2' in var and not var.endswith('original'):
+                if f'{var}_original' not in self.ds.variables:
+                    self.ds = self.ds.rename({var: f'{var}_original'})
+                df = self.ds[[f'{var}_original', 'STATUS']].to_pandas()
+                df = set_nonoperating_to_nan(df, status_var='STATUS',
+                                             col=f'{var}_original', 
+                                             shift="20min")
+                self.ds[var] = df[f'{var}_original']
+
     def to_netcdf(self, output_file):
         self.ds.to_netcdf(output_file)
 
