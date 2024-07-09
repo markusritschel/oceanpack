@@ -4,6 +4,7 @@
 # Date:   2024-06-13
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #
+from oceanpack.app.models.data_processor import DataMerger
 from oceanpack.app.views.data_view import DataConversionView
 from oceanpack.app.models.filesource import FileSourceModel
 
@@ -22,6 +23,18 @@ class DataConversionController:
 
     def display(self):
         self.view.display(self.model)
+
+    def generate_output(self, path):
+        self.model.to_netcdf(path)
+
+
+class DataMergeController:
+    def __init__(self):
+        self.model = DataMerger()
+
+    def merge(self, files, tolerance: str = '2min'):
+        self.model.merge(files, tolerance=tolerance)
+        self.model.select_variables()
 
     def generate_output(self, path):
         self.model.to_netcdf(path)
