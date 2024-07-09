@@ -179,7 +179,11 @@ sphinx:
     images_config: 
       backend: 'LightBox2'
     html_theme: furo   # furo, sphinx_rtd_theme, pydata_sphinx_theme, sphinx_book_theme, sphinx_material, sphinx_immaterial
-    pygments_style: sphinx
+    html_theme_options:
+      navigation_with_keys: true
+      sidebar_hide_name: true
+    pygments_style: default   # https://pygments.org/styles/
+    pygments_dark_style: zenburn
     bibtex_reference_style: author_year
 
 html_use_opensearch: 'https://docs.python.org/3.12/'
