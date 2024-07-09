@@ -37,12 +37,14 @@ class DataProcessor:
         pressure_equ = df['CellPress'] - df['DPressInt'].rolling('2min').mean()  # in mBar
         self.ds['PressEqu'] = pressure2atm(pressure_equ)  # in atm
         self.ds['PressEqu'].attrs['unit'] = 'atm'
-        self.ds['PressEqu'].attrs['full_name'] = 'Pressure at equilibrator/membrane'
+        self.ds['PressEqu'].attrs['long_name'] = 'Pressure at equilibrator/membrane'
 
     def compute_pCO2_wet_equ(self):
         """Compute pCO2 at the equilibrator in wet air."""
         from oceanpack.utils.helpers import ppm2uatm
         self.ds['pCO2_wet_equ'] = ppm2uatm(self.ds['CO2'], self.ds['PressEqu'])
+        self.ds['pCO2_wet_equ'].attrs['unit'] = 'atm'
+        self.ds['pCO2_wet_equ'].attrs['long_name'] = 'pCO2 at equilibrator/membrane in wet air'
 
     def remove_non_operating_phases(self):
         """Set CO2 values in non-operating phases to NaN"""
