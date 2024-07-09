@@ -61,6 +61,7 @@ def merge_data(files, output_file, tolerance):
 def process_data(path):
     controller = DataProcessingController()
     controller.load_data(path)
+    controller.process_data()
 
 
 if __name__ == "__main__":

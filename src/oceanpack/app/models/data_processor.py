@@ -30,6 +30,15 @@ class DataProcessor:
         self.ds['lon'] = convert_coordinates(self.ds['Longitude'])
         self.ds['lat'] = convert_coordinates(self.ds['Latitude'])
 
+    def compute_equilibrator_pressure(self):
+        """Obtain pressure at the equilibrator/membrane."""
+        from oceanpack.utils.helpers import pressure2atm
+        df = self.ds[['CellPress', 'DPressInt']].to_pandas()
+        pressure_equ = df['CellPress'] - df['DPressInt'].rolling('2min').mean()  # in mBar
+        self.ds['PressEqu'] = pressure2atm(pressure_equ)  # in atm
+        self.ds['PressEqu'].attrs['unit'] = 'atm'
+        self.ds['PressEqu'].attrs['full_name'] = 'Pressure at equilibrator/membrane'
+
     def to_netcdf(self, output_file):
         self.ds.to_netcdf(output_file)
 
