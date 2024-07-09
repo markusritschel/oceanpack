@@ -168,7 +168,7 @@ def pressure2mbar(p):
 
 
 def order_of_magnitude(x):
-    """Determine the order of magnitude of the numeric input (`int`, `float`, :meth:`numpy.array` or :meth:`pandas.Series`).
+    """Determine the order of magnitude of the numeric input (:obj:`int`, :obj:`float`, :obj:`numpy.array` or :obj:`pandas.Series`).
 
     Examples
     --------
