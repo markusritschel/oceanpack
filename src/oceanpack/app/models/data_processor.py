@@ -57,6 +57,7 @@ class DataMerger:
 
     def select_variables(self):
         vars2keep = [
+            "time",
             "CO2",
             "SBE45Temp",
             "SBE45Cond",
