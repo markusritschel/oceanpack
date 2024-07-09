@@ -56,9 +56,9 @@ class DataProcessingController:
 
     def process_data(self):
         self.model.convert_coordinates()
+        self.model.remove_non_operating_phases()
         self.model.compute_equilibrator_pressure()
         self.model.compute_pCO2_wet_equ()
-        self.model.remove_non_operating_phases()
 
     def generate_output(self, path):
         self.model.to_netcdf(path)
