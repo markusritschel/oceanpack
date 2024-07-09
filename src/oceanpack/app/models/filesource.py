@@ -125,11 +125,13 @@ class FileSourceModel:
 
 
     def clean_data(self):
+        """Remove duplicates and NaN values from the data."""
         df = self.df
         df = df.loc[df.index.dropna()]
         self.df = df[~df.index.duplicated(keep='first')]
 
     def process_data(self):
+        """Convert data to numeric"""
         df = self.df
         for col in df.columns:
             try:
