@@ -87,7 +87,7 @@ pCO_2 = xCO_2 \cdot p_\text{equ}
 
 However, the pressure at the equilibrator is not registered by the OceanPack.
 Instead, the OceanPack registers the pressure in the measurement cell (`CellPress`) and the difference pressure to the equilibrator (`DPressInt`).
-Here, to estimate the pressure at the equilibrator/membrane, we build a 2-minutes rolling mean of the `DPressInt` and add it to the `CellPress`.
+Here, to estimate the pressure at the equilibrator/membrane, we build a 2-minutes rolling mean of the `DPressInt` and subtract it from the `CellPress`.
 
 
 ### Compute the pCO2 at the equilibrator in wet air
