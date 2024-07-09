@@ -385,9 +385,9 @@ def fugacity(pCO2, p_equ, SST, xCO2=None):
     return f
 
 
-def set_nonoperating_to_nan(data, col='CO2', shift='30min', status_var='ANA_state'):
+def set_nonoperating_to_nan(data, col='CO2', buffer='30min', status_var='ANA_state'):
     """Set all values from each period, which is ranging from the begin of a certain phase 
-    (indicated by the status flag) to the end of the phase, plus a given shift to NaN.
+    (indicated by the status flag) to the end of the phase, plus a given buffer to NaN.
     """
 
     grouped_by_status = data.groupby((data[status_var] != data[status_var].shift()).cumsum())
@@ -399,7 +399,7 @@ def set_nonoperating_to_nan(data, col='CO2', shift='30min', status_var='ANA_stat
     phase_end = pd.to_datetime(phase_end)
 
     # add shift to the end
-    phase_end_shift = phase_end + pd.to_timedelta(shift)
+    phase_end_shift = phase_end + pd.to_timedelta(buffer)
 
     # set all values in the respective column(s) to NaN
     for i, j in zip(phase_start, phase_end_shift):

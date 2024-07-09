@@ -56,7 +56,7 @@ class DataProcessor:
                 df = self.ds[[f'{var}_original', 'STATUS']].to_pandas()
                 df = set_nonoperating_to_nan(df, status_var='STATUS',
                                              col=f'{var}_original', 
-                                             shift="20min")
+                                             buffer="20min")
                 self.ds[var] = df[f'{var}_original']
 
     def to_netcdf(self, output_file):
