@@ -123,7 +123,7 @@ class FileSourceModel:
             df_list.append(data_)
 
         self.df = pd.concat(df_list)
-
+        self.history += f'{len(all_files)} files loaded; '
 
     def clean_data(self):
         """Remove duplicates and NaN values from the data."""
