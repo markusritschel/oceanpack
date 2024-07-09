@@ -8,7 +8,7 @@ from oceanpack.app.models.filesource import FileSourceModel
 
 
 
-class DataView:
+class DataConversionView:
     @staticmethod
     def display(model: FileSourceModel):
         pass
