@@ -8,7 +8,9 @@ from oceanpack.app.views.data_view import DataView
 from oceanpack.app.models.filesource import FileSourceModel
 
 
-class DataController:
+class DataConversionController:
+    """A class that controlls the conversion from raw log files retrieved from the OceanPack to
+    netCDF format."""
     def __init__(self, source_type: str = None):
         self.model = FileSourceModel(source_type)
         self.view = DataView()
@@ -21,6 +23,6 @@ class DataController:
     def display(self):
         self.view.display(self.model)
 
-    def write_output(self, path):
+    def generate_output(self, path):
         data = self.model.get_data()
         self.view.export_to_netcdf(data, path)

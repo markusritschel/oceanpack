@@ -7,7 +7,7 @@
 """Console script for oceanpack."""
 import click
 from colorama import Fore, Back, Style
-from oceanpack.app.controllers.data_controller import DataController
+from oceanpack.app.controllers.data_controller import DataConversionController
 
 
 welcome_msg = Fore.BLUE + """
@@ -40,9 +40,10 @@ def convert_data(path, source_type, output_file):
     Process OceanPack log file(s) from PATH, clean the data, and export to OUTPUT_FILE.
     Please process files from different source types separately.
     """
-    controller = DataController(source_type)
+    controller = DataConversionController(source_type)  # DataController(source_model)
     controller.load_data(path)
     controller.display()
+    controller.generate_output(output_file)
     controller.write_output(output_file)
 
 
