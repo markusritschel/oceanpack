@@ -85,6 +85,7 @@ class FileSourceModel:
         self._metadata = None
         self.df = None
         self.ds = None
+        self.history = ''
 
     @property
     def source_type(self) -> str:
@@ -129,6 +130,7 @@ class FileSourceModel:
         df = self.df
         df = df.loc[df.index.dropna()]
         self.df = df[~df.index.duplicated(keep='first')]
+        self.history += 'Removed duplicates; '
 
     def process_data(self):
         """Convert data to numeric"""
@@ -140,6 +142,7 @@ class FileSourceModel:
                 log.warning(f'Cannot convert {col} to numeric. Variable will be dropped.')
                 df.drop(col, axis=1, inplace=True)
         df.sort_index(axis=0, inplace=True, ascending=True)
+        self.history += 'Converted data to numeric; '
         self.df = df
         self._pandas_to_xarray()
         self._add_metadata_to_xarray()
@@ -149,7 +152,7 @@ class FileSourceModel:
         ds = self.df.to_xarray()
         ds.attrs['source_type'] = self.source_type.value
         self.ds = ds
-
+        self.history += 'Converted pd.DataFrame to xr.Dataset; '
 
     def _add_metadata_to_xarray(self):
         meta = self._metadata.set_index('name')
