@@ -10,6 +10,25 @@ import logging
 log = logging.getLogger(__name__)
 
 
+class DataProcessor:
+    """A class the processes the data from the Analyzer or the NetDI unit.
+    This includes:
+        - Compute CO2 concentration
+        - Compute pCO2
+        - Compute fugacity
+        - ...
+    """
+    def __init__(self):
+        self.ds = None
+
+    def load_data(self, file):
+        import xarray as xr
+        self.ds = xr.open_dataset(file)
+
+    def to_netcdf(self, output_file):
+        self.ds.to_netcdf(output_file)
+
+
 class DataMerger:
     def __init__(self):
         self.merged = None

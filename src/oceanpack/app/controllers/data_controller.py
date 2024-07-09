@@ -4,7 +4,7 @@
 # Date:   2024-06-13
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #
-from oceanpack.app.models.data_processor import DataMerger
+from oceanpack.app.models.data_processor import DataMerger, DataProcessor
 from oceanpack.app.views.data_view import DataConversionView
 from oceanpack.app.models.filesource import FileSourceModel
 
@@ -38,3 +38,16 @@ class DataMergeController:
 
     def generate_output(self, path):
         self.model.to_netcdf(path)
+
+
+class DataProcessingController:
+    """A class that controls the processing of variables in a netCDF file."""
+    def __init__(self):
+        self.model = DataProcessor()
+
+    def load_data(self, path):
+        self.model.load_data(path)
+
+    def generate_output(self, path):
+        self.model.to_netcdf(path)
+

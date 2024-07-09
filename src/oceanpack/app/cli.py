@@ -7,7 +7,7 @@
 """Console script for oceanpack."""
 import click
 from colorama import Fore, Back, Style
-from oceanpack.app.controllers.data_controller import DataConversionController, DataMergeController
+from oceanpack.app.controllers.data_controller import DataConversionController, DataMergeController, DataProcessingController
 
 
 welcome_msg = Fore.BLUE + """
@@ -54,6 +54,13 @@ def merge_data(files, output_file, tolerance):
     controller = DataMergeController()
     controller.merge(files, tolerance=tolerance)
     controller.generate_output(output_file)
+
+
+@main.command
+@click.argument('path', type=click.Path(exists=True))
+def process_data(path):
+    controller = DataProcessingController()
+    controller.load_data(path)
 
 
 if __name__ == "__main__":
