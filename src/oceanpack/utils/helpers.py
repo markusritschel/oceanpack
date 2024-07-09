@@ -7,6 +7,7 @@
 import logging
 import numpy as np
 import pandas as pd
+import xarray as xr
 from copy import copy
 
 
@@ -415,3 +416,25 @@ def centered_bins(x):
     return x - differences
 
 
+def compress_xarray(data: xr.Dataset | xr.DataArray, complevel: int = 5) -> xr.Dataset | xr.DataArray:
+    """Compress :class:`xarray.Dataset` or :class:`xarray.DataArray`.
+    
+    Parameters
+    ----------
+    data:
+        Data to compress.
+    complevel:
+        Compression level.
+    
+    Returns
+    -------
+    xr.Dataset | xr.DataArray
+        Compressed data.
+    """
+    compression_dict = dict(zlib=True, complevel=complevel)
+    if isinstance(data, xr.Dataset):
+        for variable in data:
+            data[variable].encoding.update(compression_dict)
+    elif isinstance(data, xr.DataArray):
+        data.encoding.update(compression_dict)
+    return data
