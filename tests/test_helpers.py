@@ -62,7 +62,7 @@ def test_bin_creator():
     x = np.arange(-90, 91)
     bins = centered_bins(x)
 
-    assert np.alltrue(bins == np.arange(-90.5, 91, 1)), "Bins don't match!"
+    assert np.all(bins == np.arange(-90.5, 91, 1)), "Bins don't match!"
     assert len(bins) == len(x) + 1, "Bin edges must be one more than there are labels"
 
 
