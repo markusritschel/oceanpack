@@ -198,8 +198,8 @@ def order_of_magnitude(x):
 
 def temperature2K(T):
     """Convert temperatures given in °C into Kelvin.
-    If `T` is a :meth:`pandas.Series` object, only values larger than 200 are converted. All others are expected to be
-    already in Kelvin.
+    If `T` is a :obj:`pandas.Series` object, only values larger than 200 are converted. 
+    All others are expected to be already in Kelvin.
 
     Examples
     --------
@@ -219,8 +219,8 @@ def temperature2K(T):
 
 def temperature2C(T):
     """Convert temperatures given in Kelvin into °C.
-    If `T` is a :meth:`pandas.Series` object, only values less than 200 are converted. All others are expected to be
-    already in °C.
+    If `T` is a :obj:`pandas.Series` object, only values greater than 200 are converted. 
+    All others are expected to be already in °C.
 
     Examples
     --------
@@ -243,17 +243,17 @@ def ppm2uatm(xCO2,p_equ,input='wet',T=None,S=None):
 
     Parameters
     ----------
-    xCO2: float or pd.Series
+    xCO2: float or pandas.Series
         The measured CO2 concentration (in ppm)
-    p_equ: float or pd.Series
+    p_equ: float or pandas.Series
         The measured pressure (in hPa, Pa or atm) at the equilibrator (hint: you might want to smoothen your time series)
     input: str [default: "wet"]
         Either "wet" or "dry", specifying the type of air, in which the concentration is measured.
         If the CO2 concentration is measured in dry air, one must correct for the water vapor pressure.
         In this case, make sure to also provide T (temperature in Kelvin) and S (salinity in PSU) as arguments.
-    T: float or pd.Series [default: None]
+    T: float or pandas.Series [default: None]
         Temperature in Kelvin (needs to be provided if xCO2 is measured in dry air)
-    S: float or pd.Series [default: None]
+    S: float or pandas.Series [default: None]
         Salinity in PSU (needs to be provided if xCO2 is measured in dry air)
     """
     # Pa or hPa -> atm
@@ -277,9 +277,9 @@ def compute_water_vapor_pressure(T, S):
 
     Parameters
     ----------
-    S: float or pd.Series
+    S: float or pandas.Series
         Salinity in PSU
-    T: float or pd.Series
+    T: float or pandas.Series
         Temperature (°C gets converted into Kelvin)
     """
     # °C -> K
@@ -302,15 +302,15 @@ def temperature_correction(CO2, T_out=None, T_in=None, method='Takahashi2009', *
 
     Parameters
     ----------
-    CO2: float or pd.Series
+    CO2: float or pandas.Series
         The CO2 variable, which shall be corrected for temperature differences.
         Can be one out of the following:
         - xCO2 (mole fraction in ppm)
         - pCO2 (partial pressure in hPa, Pa, atm or µatm)
         - fCO2 (fugacity in hPa, Pa, atm or µatm)
-    T_out: float or pd.Series
+    T_out: float or pandas.Series
         The temperature towards which the data shall be corrected. Typically, the in-situ temperature (°C or K), at which the water was sampled.
-    T_in: float or pd.Series
+    T_in: float or pandas.Series
         The temperature from which the data shall be corrected. Typically, the temperature (°C or K) at the equilibrator, at which the water was measured.
     method: str
         Either "Takahashi2009" or "Takahashi1993", describing the method of the respectively published paper by Takahashi et al.
@@ -328,8 +328,8 @@ def temperature_correction(CO2, T_out=None, T_in=None, method='Takahashi2009', *
 
 
 def fugacity(pCO2, p_equ, SST, xCO2=None):
-    """Calculate the fugacity of CO2. Can be done either before or after a :func:`.temperature correction`.
-    The formulas follow :cite:t:`dickson_guide_2007`, mainly SOP 5, Chapter 8. "Calculation and expression of results"
+    """Calculate the fugacity of CO2. Can be done either before or after a :func:`temperature_correction`.
+    The formulas follow :cite:t:`dickson_guide_2007`, mainly SOP 5, Chapter 8. "Calculation and expression of results".
 
     .. math::
        (fCO_2)^\\text{wet}_\\text{SST} = (pCO_2)^\\text{wet}_\\text{SST} \\cdot
@@ -349,14 +349,14 @@ def fugacity(pCO2, p_equ, SST, xCO2=None):
 
     Parameters
     ----------
-    pCO2: float or pd.Series
+    pCO2: float or pandas.Series
         The partial pressure of CO2 (in µatm).
         Make sure you have converted xCO2 concentration (mole fraction in ppm) into partial pressure (in µatm).
-    p_equ: float or pd.Series
+    p_equ: float or pandas.Series
         The measured pressure (in hPa, Pa or atm) at the equilibrator (hint: you might want to smoothen your time series)
-    SST: float or pd.Series
+    SST: float or pandas.Series
         The in-situ measurement temperature (in °C or Kelvin)
-    xCO2: float or pd.Series (optional)
+    xCO2: float or pandas.Series (optional)
         CO2 concentration (mole fraction in ppm). If given, the δ_CO2 virial coefficient in the numerator in the exponential expression is multiplied by (1 - xCO2*1e-6). Else, this term is 1.
     """
     # Pa or hPa -> atm
@@ -451,7 +451,7 @@ def compress_xarray(data: xr.Dataset | xr.DataArray, complevel: int = 5) -> xr.D
     
     Returns
     -------
-    xr.Dataset | xr.DataArray
+    xarray.Dataset | xarray.DataArray
         Compressed data.
     """
     compression_dict = dict(zlib=True, complevel=complevel)
