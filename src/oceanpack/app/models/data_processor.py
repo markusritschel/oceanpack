@@ -85,7 +85,7 @@ class DataMerger:
             "Speed",
             "Course",
             "Error",
-            "ANA_state"
+            "ANA_state",
             "STATUS",
         ]
         vars2drop = [var for var in self.merged.variables if var not in vars2keep]
