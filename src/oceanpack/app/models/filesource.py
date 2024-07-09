@@ -135,7 +135,8 @@ class FileSourceModel:
             try:
                 df[col] = pd.to_numeric(df[col])
             except Exception:
-                log.warning(f'Cannot convert {col} to numeric')
+                log.warning(f'Cannot convert {col} to numeric. Variable will be dropped.')
+                df.drop(col, axis=1, inplace=True)
         df.sort_index(axis=0, inplace=True, ascending=True)
         self.df = df
         self._pandas_to_xarray()
