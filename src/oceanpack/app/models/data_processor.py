@@ -25,6 +25,11 @@ class DataProcessor:
         import xarray as xr
         self.ds = xr.open_dataset(file)
 
+    def convert_coordinates(self):
+        from oceanpack.utils.helpers import convert_coordinates
+        self.ds['lon'] = convert_coordinates(self.ds['Longitude'])
+        self.ds['lat'] = convert_coordinates(self.ds['Latitude'])
+
     def to_netcdf(self, output_file):
         self.ds.to_netcdf(output_file)
 

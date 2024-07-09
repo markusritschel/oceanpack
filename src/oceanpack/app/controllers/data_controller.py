@@ -48,6 +48,9 @@ class DataProcessingController:
     def load_data(self, path):
         self.model.load_data(path)
 
+    def process_data(self):
+        self.model.convert_coordinates()
+
     def generate_output(self, path):
         self.model.to_netcdf(path)
 
