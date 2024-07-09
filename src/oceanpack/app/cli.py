@@ -64,6 +64,7 @@ def process_data(path):
     controller = DataProcessingController()
     controller.load_data(path)
     controller.process_data()
+    controller.generate_output(path)
 
 
 if __name__ == "__main__":
