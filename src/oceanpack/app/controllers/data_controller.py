@@ -4,7 +4,7 @@
 # Date:   2024-06-13
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #
-from oceanpack.app.views.data_view import DataView
+from oceanpack.app.views.data_view import DataConversionView
 from oceanpack.app.models.filesource import FileSourceModel
 
 
@@ -13,7 +13,7 @@ class DataConversionController:
     netCDF format."""
     def __init__(self, source_type: str = None):
         self.model = FileSourceModel(source_type)
-        self.view = DataView()
+        self.view = DataConversionView()
 
     def load_data(self, path: str):
         self.model.load_data(path)
