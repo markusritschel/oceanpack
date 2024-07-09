@@ -6,7 +6,7 @@ root: index
 parts:
   - caption: Content
     chapters:
-      - file: examples
+      - file: workflow
       - file: cli
   - caption: Project Info
     chapters:
