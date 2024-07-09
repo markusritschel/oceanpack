@@ -57,6 +57,7 @@ class FileSourceType(Enum):
     def from_header(cls, file_path):
         from .filehandler import FileHandlerInterface
         print('Try to estimate source type from header...')
+        file_path = Path(file_path)
         header = FileHandlerInterface.parse_header(file_path)
         if header is None:
             raise ValueError("Could not determine source type from header. Please specify using the respective option.")
