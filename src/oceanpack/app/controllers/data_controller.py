@@ -24,5 +24,4 @@ class DataConversionController:
         self.view.display(self.model)
 
     def generate_output(self, path):
-        data = self.model.get_data()
-        self.view.export_to_netcdf(data, path)
+        self.model.to_netcdf(path)

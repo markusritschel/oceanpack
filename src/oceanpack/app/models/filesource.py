@@ -158,9 +158,9 @@ class FileSourceModel:
                         self.ds[var].attrs[col] = value
 
 
-    def get_data(self):
-        pass
-    
+    def to_netcdf(self, output_file):
+        self.ds.to_netcdf(output_file)
+
 
 def collect_files(path: str, suffix='log') -> list[Path]:
     """
