@@ -58,6 +58,7 @@ class DataProcessor:
                 self.ds[var] = df[f'{var}_original']
 
     def to_netcdf(self, output_file):
+        self.ds.load()   # necessary to be able to overwrite the netCDF
         self.ds.to_netcdf(output_file)
 
 
