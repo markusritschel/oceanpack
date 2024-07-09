@@ -6,6 +6,7 @@
 #
 import logging
 from abc import ABC, abstractmethod
+from typing import Tuple
 
 import pandas as pd
 
@@ -23,9 +24,8 @@ class FileHandlerInterface(ABC):
 
     @classmethod
     def parse_header(cls, file_path):
-        header_dict = {}
+        header_dict = {'nrows': 0}
         with open(file_path, 'r', encoding='Windows 1252') as f:
-            header_dict['nrows'] = 0
             while True:
                 line = f.readline()
                 header_dict['nrows'] += 1
@@ -62,7 +62,7 @@ class InternalFileHandler(FileHandlerInterface):
         Reads the log file and returns a data and metadata as :class:`pandas.DataFrame`, respectively.
     """
     @staticmethod
-    def read_file(file_path) -> pd.DataFrame:
+    def read_file(file_path) -> Tuple[pd.DataFrame]:
         """
         Reads the log file and returns a data and metadata as :class:`pandas.DataFrame`, respectively.
 
@@ -79,7 +79,7 @@ class InternalFileHandler(FileHandlerInterface):
             The metadata associated with the log file.
         """
         header = FileHandlerInterface.parse_header(file_path)
-        if not header:
+        if header is None:
             return pd.DataFrame(), pd.DataFrame()
         
         names = header['names']
