@@ -64,7 +64,7 @@ class DataMerger:
             "AIN0_mA_Waterflow",
             "CellTemp",
             "CellPress",
-            "DPessInt",
+            "DPressInt",
             "Latitude",
             "Longitude",
             "Speed",
