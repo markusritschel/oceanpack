@@ -81,9 +81,11 @@ To be able to convert the xCO2 concentration registered by the OceanPack into ac
 
 According to {cite:t}`dickson_guide_2007`, SOP 4, the partial pressure of carbon dioxide in air, which is in equilibrium with a sample of seawater, is defined as the product of the mole fraction of CO2 in the equilibrated gas phase and the total pressure of equilibration $p_\text{equ}$:
 
+$$
 \begin{equation*}
 pCO_2 = xCO_2 \cdot p_\text{equ}
 \end{equation*}
+$$
 
 However, the pressure at the equilibrator is not registered by the OceanPack.
 Instead, the OceanPack registers the pressure in the measurement cell (`CellPress`) and the difference pressure to the equilibrator (`DPressInt`).
@@ -93,6 +95,8 @@ Here, to estimate the pressure at the equilibrator/membrane, we build a 2-minute
 ### Compute the pCO2 at the equilibrator in wet air
 
 After having computed the pressure at the equilibrator, we can now compute the partial pressure of CO2 in wet air, corresponding to the formula shown above.
+The OceanPack's analyzer measures the xCO2 concentration in wet air.
+Note that $p_\text{equ}$ must be in units of Pa!
 
 
 ### Temperature correction
@@ -104,10 +108,11 @@ Often, when doing measurements at sea, the temperature at the equilibrator and t
 This can be taken into account by correcting the xCO2 concentration to the sea surface temperature (SST).
 The correction used here follows {cite:t}`takahashi_climatological_2009`:
 
+$$
 \begin{equation*}
 {(xCO_2)}_{SST} = {(xCO_2)}_{T_\text{equ}} \cdot \exp{\Big(0.0433\cdot(SST - T_\text{equ}) - 4.35\times 10^{-5}\cdot(SST^2 - T_\text{equ}^2)\Big)}
 \end{equation*}
-
+$$
 
 ```{tip}
 If the measurements were taken onboard a ship, the way for the water from the intake to the OceanPack might be quite long. In that case, one should first perform a lag analysis and correct the time series of the intake temperature accordingly.
@@ -121,7 +126,7 @@ This is not implemented yet.
 
 Finally, we compute the fugacity by hands of the before calculated partial pressure, the pressure at the equilibrator, and the SST.
 
-According to {cite:t}`weiss_nitrous_1980`, the fugacity can be calculated via
+According to {cite:t}`dickson_guide_2007` (e.g. the example in SOP 24, page 4 f.), the fugacity can be calculated via
 
 $$
 \begin{equation*}
@@ -146,3 +151,5 @@ $$
 \end{equation*}
 $$
 
+following {cite:t}`weiss_carbon_1974`.
+Again, $p_\text{equ}$ is in units of Pa.
