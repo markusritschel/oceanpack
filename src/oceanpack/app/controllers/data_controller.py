@@ -4,9 +4,13 @@
 # Date:   2024-06-13
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #
+import logging
 from oceanpack.app.models.data_processor import DataMerger, DataProcessor
 from oceanpack.app.views.data_view import DataConversionView
 from oceanpack.app.models.filesource import FileSourceModel
+
+
+log = logging.getLogger(__name__)
 
 
 class DataConversionController:
@@ -32,9 +36,11 @@ class DataMergeController:
     def __init__(self):
         self.model = DataMerger()
 
-    def merge(self, files, tolerance: str = '2min'):
+    def merge(self, files, tolerance: str = '2min', **kwargs):
         self.model.merge(files, tolerance=tolerance)
-        self.model.select_variables()
+        if kwargs.pop('keep_all') is False:
+            log.info("Remove variables that are not important for further analysis.")
+            self.model.select_variables()
 
     def generate_output(self, path):
         self.model.to_netcdf(path)

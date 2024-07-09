@@ -50,9 +50,11 @@ def convert_data(path, source_type, output_file):
 @click.argument('files', type=click.Path(exists=True), nargs=-1)
 @click.option('--output-file', '-o', type=click.Path())
 @click.option('--tolerance', '-t', type=str, default='2min')
-def merge_data(files, output_file, tolerance):
+@click.option('--keep-all', is_flag=True, default=False)
+def merge_data(files, output_file, tolerance, keep_all):
+    kwargs = {'keep_all': keep_all}
     controller = DataMergeController()
-    controller.merge(files, tolerance=tolerance)
+    controller.merge(files, tolerance=tolerance, **kwargs)
     controller.generate_output(output_file)
 
 
