@@ -1,13 +1,8 @@
 # The Command Line Interface
 
-The package also includes a command line interface (CLI) that can be used for some basic tasks, which include:
+The package also includes a command line interface (CLI) that can be used for some basic tasks, which include processing of the data, data cleansing, quality control, basic plots.
 
-- processing of the data
-- data cleansing
-- quality control
-- basic plots
-
-If you install the package in your environment (following the instructions [here](index.md#installation)), you will also have access to an executable command `oceanpack` which you can run from the terminal.
+If you install the package in your environment (following the instructions [here](index.md#installation)), you will have access to an executable command `oceanpack` which you can run from the terminal.
 
 The CLI includes basic help messages to guide you through the interface.
 
