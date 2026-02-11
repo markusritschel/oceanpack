@@ -10,22 +10,12 @@
 # If you have an .env file
 # include .env
 
-# Check if Mamba is installed
-CONDA := $(shell command -v conda 2> /dev/null)
-MAMBA := $(shell command -v mamba 2> /dev/null)
-
-# Set the package manager to use
-ifeq ($(MAMBA),)
-    PACKAGE_MANAGER := conda
-else
-    PACKAGE_MANAGER := mamba
-endif
 
 
 .PHONY: cleanup clean-jupyter-book clean-pyc, clean-logs, documentation, book, save-requirements, requirements, src-available, conda-env, test-requirements, tests, clear-images, convert-images, figures, crop-pdf, crop-png, show-help
 
 ## Clean-up python artifacts, logs and jupyter-book built
-cleanup: clean-pyc clean-logs clean-docs
+cleanup: clean-pyc clean-logs clean-docs clean-test-cov
 
 ## Cleanup documentation built
 clean-docs:
@@ -45,6 +35,10 @@ clean-logs:
 	find ./logs -iname '*.log' -type f -exec rm {} +
 
 
+## Remove coverage files
+clean-test-cov:
+	find . -name 'htmlcov' -exec rm -fr {} +
+
 ## Build the code documentation with Jupyter-Book
 documentation:
 	jb build docs/ -v
@@ -53,7 +47,7 @@ documentation:
 
 ## Run flake8 linter
 lint:
-	flake8 ./src/
+	uv run ruff check
 
 
 ## Synchronize Jupyter notebooks according to the rules in pyproject.toml
@@ -61,9 +55,9 @@ sync-notebooks:
 	jupytext --sync notebooks/**/*.ipynb
 
 
-## Update the requirements.txt
+## Update dependencies lock file
 save-requirements:
-	pip list --format=freeze > requirements.txt
+	uv lock
 
 
 ## Create a conda environment.yml file
@@ -83,22 +77,21 @@ conda-env:
 	conda activate oceanpack
 
 
+## Set up a virtual environment with uv
+virtual-env:
+	@echo "Set up a virtual environment with uv"
+	uv sync --dev
+	uv lock
+
 
 ## Install Python Dependencies
 install-requirements:
 	@echo "Install required packages into current environment"
-ifeq ($(CONDA),)
-	@echo "Conda not found, using pip."
-	python -m pip install -U pip setuptools wheel
-	python -m pip install -r requirements.txt
-else
-	$(PACKAGE_MANAGER) env update --file environment.yml
-endif
-
+	uv sync --all-extras
 
 ## Install requirements for building the docs
 install-doc-requirements:
-	python -m pip install -r docs/requirements.txt
+	uv sync --groups docs
 
 
 ## Make the source code as package available
@@ -106,16 +99,15 @@ src-available:
 	pip install -e .
 
 
-## Check if all packages listed in requirements.txt are installed in the current environment
+## Check if all packages listed in pyproject.toml are installed in the current environment
 test-requirements:
-	@echo "Check if all packages listed in requirements.txt are installed in the current environment:"
-	# the "|| true" prevents the command returning an error if grep does not find a match
-	python -m pip -vvv freeze -r requirements.txt | grep "not installed" || true
+	@echo "Check if all packages listed in pyproject.toml are installed in the current environment:"
+	uv sync --all-extras --dry-run
 
 
 ## Run pytest for the source code
 tests: test-requirements
-	python -m pytest -v
+	uv run pytest -v
 
 
 ## Test github actions locally
