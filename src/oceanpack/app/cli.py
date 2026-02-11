@@ -49,7 +49,7 @@ def convert_data(path, source_type, output_file):
 @main.command
 @click.argument('files', type=click.Path(exists=True), nargs=-1)
 @click.option('--output-file', '-o', type=click.Path())
-@click.option('--tolerance', '-t', type=str, default='2min')
+@click.option('--tolerance', '-t', type=str, default='2min', show_default=True)
 @click.option('--keep-all', is_flag=True, default=False)
 def merge_data(files, output_file, tolerance, keep_all):
     kwargs = {'keep_all': keep_all}
