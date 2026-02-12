@@ -2,7 +2,6 @@ furo
 jupyter-book
 jupytext
 myst-parser
-mystmd
 lxml_html_clean
 nbsphinx
 pydata-sphinx-theme

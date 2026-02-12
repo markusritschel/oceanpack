@@ -97,6 +97,7 @@ sphinx:
     _sphinx_config: .
   extra_extensions:
   - 'nbsphinx'
+  - 'myst_parser'
   - 'sphinx.ext.autodoc'
   - 'sphinx.ext.intersphinx'
   - 'sphinx.ext.autodoc.typehints'

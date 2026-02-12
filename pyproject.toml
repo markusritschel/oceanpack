@@ -24,7 +24,6 @@ dependencies = [
   "jupytext",
   "markdown",
   "matplotlib",
-  "mystmd",
   "nodejs",
   "numpy",
   "pandas",

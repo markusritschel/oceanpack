@@ -13,7 +13,7 @@ oceanpack convert-data [OPTIONS] PATH OUTPUT_FILE
 ```
 
 This command takes a path as the first argument pointing either to a single file or a directory containing multiple files.
-These files should stem from the OceanPack and be retreived either via USB-Stick transfer (from the NetDI or the Analyzer unit) or via stream from the OceanView&copy; software provided by SubCtech.
+These files should stem from the OceanPack and be retrieved either via USB-Stick transfer (from the NetDI or the Analyzer unit) or via stream from the OceanView&copy; software provided by SubCtech.
 
 If the source type (Analyzer, NetDI, Stream) is not specified, the CLI will try to infer the source type from the header and the file path.
 If you experience issues with this, you can set the source type manually by specifying the option `-t` or `--source-type`.
