@@ -91,7 +91,7 @@ install-requirements:
 
 ## Install requirements for building the docs
 install-doc-requirements:
-	uv sync --groups docs
+	uv sync --group docs
 
 
 ## Make the source code as package available
