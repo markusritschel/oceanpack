@@ -37,15 +37,15 @@ clean-logs:
 
 ## Remove coverage files
 clean-test-cov:
-	find . -name 'htmlcov' -exec rm -fr {} +
+	rm -rf htmlcov/
 
 ## Build the code documentation with Jupyter-Book
 documentation:
-	jb build docs/ -v
+	uv run --group docs sphinx-build -b html docs/ docs/_build/html
 
 
 
-## Run flake8 linter
+## Run linter
 lint:
 	uv run ruff check
 
@@ -116,7 +116,69 @@ test-gh-actions:
 	act push --artifact-server-path /tmp/artifacts --container-options "--userns host" --action-offline-mode
 
 
+.SUFFIXES: .jpg .jpeg .png .pdf
+imagedir = ./reports/figures
 
+JPEG=$(wildcard ${imagedir}/*.jpg ${imagedir}/*.jpeg)		# find all JPG and JPEG files
+JPG=$(JPEG:.jpeg=.jpg)						# internally rename all JPEG to JPG
+PDF=$(wildcard ${imagedir}/*.pdf) 				# find all PDF files
+jpg2png=$(JPG:.jpg=.png)					# naming rule for JPG to PNG conversion
+pdf2png=$(PDF:.pdf=.png)					# naming rule for PDF to PNG conversion
+
+## Remove all PNG files that have a PDF or JPG parent
+clear-images:
+	@echo remove all PNG files in ${imagedir} which have a PDF or JPG parent
+	@rm -f ${pdf2png}
+	@rm -f ${jpg2png}
+
+
+## Convert JPG and PDF files to PNG files (applies to all files in ./reports/figures)
+convert-images: $(jpg2png) $(pdf2png)
+	@echo ---
+	@echo finished conversion
+
+
+# rule for converting JPG and PDF to PNG
+# compare compression result and delete PNG if result is bad
+.jpeg.png .jpg.png .pdf.png:
+	@convert -density 400 "$<" -resize 800x800 -quality 85% "$@"
+	@echo converted $<
+	@i=`stat -c%s "$<"`; \
+	 o=`stat -c%s "$@"`; \
+	 score=$$(( $$i / $$o)); \
+	 [ $$score -lt 2 ] && echo "\tbad compression: remove $@" && rm $@ || true
+
+# @i=`stat -c%s "$<"`; \
+# o=`stat -c%s "$@"`; \
+# [ $$((2*o)) -gt $$i ] && echo "\tbad compression: remove $@" && rm -f $@ || true
+
+
+## Clear all PNGs that have a JPG or PDF parent, crop PDF and PNG files, and convert PDFs to PNG (applies to all files in ./reports/figures)
+figures: clear-images crop-pdf convert-images crop-png
+	@echo ---
+	@echo finished creating figures
+
+
+## Crop PDF files (applies to all files in ./reports/figures)
+crop-pdf:
+	@echo
+	@echo crop all pdf files in ${imagedir}
+	@for file in `find ${imagedir}/ -iname "*.pdf" -type f`; \
+		do \
+			pdfcrop $${file} $${file}; \
+		done;
+
+
+## Crop PNG files (applies to all files in ./reports/figures)
+crop-png:
+	@echo
+	@echo crop all png files in ${imagedir}
+	@for file in `find ${imagedir}/ -iname "*.png" -type f`; \
+		do \
+			echo crop $${file}; \
+			convert $${file} -trim -bordercolor White -border 25x25 $${file}; \
+		done;
+	
 
 
 # ==================== Don't put anything below this line ====================

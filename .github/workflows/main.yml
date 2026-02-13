@@ -15,75 +15,51 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+      - name: Install uv and set the Python version
+        uses: astral-sh/setup-uv@v7
         with:
           python-version: ${{ matrix.python-version }}
-#          cache: 'pip'
 
-      - name: Cache pip
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
+      - name: Install the project
+        run: uv sync --locked --dev
 
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-
-      - name: Install local package
-        run: pip install -e .
-
-      - name: Run flake8
+      - name: Run linting
         run: | 
-          pip install flake8
           # stop the build if there are Python syntax errors or undefined names
-          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics       
-
+          uv run ruff check --select=E9,F63,F7,F82
+          # run full linting with all configured rules
+          # --exit-zero throws errors as warnings (the GitHub editor is 127 chars wide)
+          uv run ruff check --exit-zero
 
       - name: Run tests
-        run: |
-          pip install pytest pytest-cov
-          python -m pytest -v
+        run: uv run pytest -v
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         env:
             CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
 
   build-documentation:
     runs-on: ubuntu-latest
     needs: build
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
-      - name: Set up Python 3.10
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
-
-      - name: Cache pip
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('docs/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
+      - name: Install uv and set the Python version
+        uses: astral-sh/setup-uv@v7
 
       - name: Install documentation dependencies
-        run: pip install -r docs/requirements.txt
+        run: uv sync --groups docs
 
       - name: Build documentation
         run: uv run --group docs sphinx-build -b html docs/ docs/_build/html
 
       - name: Upload documentation artifacts
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           name: documentation
           path: docs/_build/html/
