@@ -31,7 +31,8 @@ dependencies = [
   "rich",
   "tqdm",
   "typer",
-  "xarray"
+  "xarray",
+  "pandoc>=2.4",
 ]
 
 
