@@ -83,3 +83,23 @@ to run the tests via `pytest`.
 ## Contact
 
 For any questions or issues, please contact me via git@markusritschel.de or open an [issue](https://github.com/markusritschel/oceanpack/issues).
+
+
+```{toctree}
+:hidden:
+:caption: About
+
+workflow
+cli
+```
+
+```{toctree}
+:hidden:
+:caption: Project Info 
+
+api/index
+bibliography
+README <readme>
+LICENSE <license>
+CHANGELOG <changelog>
+```
