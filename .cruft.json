@@ -1,5 +1,5 @@
 {
-  "template": "https://github.com/markusritschel/cookiecutter-pypackage",
+  "template": "https://github.com/markusritschel/cookiecutter-pyproject",
   "commit": "7d0c57565c9bab09fbfa8b9156e6d3b0e06e8b37",
   "checkout": null,
   "context": {
@@ -21,7 +21,7 @@
         "docs/references.bib",
         "justfile"
       ],
-      "_template": "https://github.com/markusritschel/cookiecutter-pypackage",
+      "_template": "https://github.com/markusritschel/cookiecutter-pyproject",
       "_commit": "7d0c57565c9bab09fbfa8b9156e6d3b0e06e8b37"
     }
   },
