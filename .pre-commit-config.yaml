@@ -1,8 +1,8 @@
 # See https://docs.astral.sh/uv/guides/integration/pre-commit/
 repos:
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.10.2
+    rev: 0.11.6
     hooks:
+      # Update the uv lockfile
       - id: uv-lock
-      - id: uv-sync
       - id: uv-export
