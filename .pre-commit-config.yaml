@@ -5,4 +5,4 @@ repos:
     hooks:
       # Update the uv lockfile
       - id: uv-lock
-      - id: uv-export
+        always_run: true
