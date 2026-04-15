@@ -1,7 +1,7 @@
 # See https://just.systems/ for more information
 
-# Show available commands
-list:
+[private]
+default:
     @just --list
 
 # Run ruff check for linting without modifying files
@@ -86,6 +86,11 @@ clean-test:
     @echo "Cleaning test and coverage artifacts..."
     @rm -f .coverage
     @rm -fr htmlcov/ .pytest_cache
+
+# Test github actions locally
+test-gh-actions:
+	@mkdir -p /tmp/artifacts
+	act push --artifact-server-path /tmp/artifacts --container-options "--userns host" --action-offline-mode
 
 # Publish to PyPI (manual alternative to GitHub Actions)
 publish:

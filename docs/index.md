@@ -73,12 +73,33 @@ oceanpack --help
 ### Test code
 
 You can run
-
 ```bash
 make tests
 ```
-
 to run the tests via `pytest`.
+
+
+## Getting Started
+
+### Installation
+
+I recommend to use `uv` as a dependency manager (read here for the details).
+Then, getting set up is as simple as 
+```bash
+uv sync
+```
+to install dependencies and make the project's source code (located in `src`) available for import.
+
+👉 Activate your virtual environment:
+```bash
+source .venv/bin/activate
+```
+You can verify that you're using the environment's Python executable by checking if
+```bash
+which python
+```
+points to `.venv/bin/activate`.
+
 
 ## Contact
 
@@ -95,7 +116,15 @@ cli
 
 ```{toctree}
 :hidden:
-:caption: Project Info 
+
+:caption: Main navigation
+example
+```
+
+
+```{toctree}
+:hidden:
+:caption: Project information
 
 api/index
 bibliography
