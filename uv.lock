@@ -1610,7 +1610,7 @@ wheels = [
 
 [[package]]
 name = "jupyter-book"
-version = "2.1.4"
+version = "2.1.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "ipykernel" },
@@ -1619,9 +1619,9 @@ dependencies = [
     { name = "nodeenv" },
     { name = "platformdirs" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/22/26/39ac5e93a7858333716d75531c581f5d13570af11611c36e975c7ccdc971/jupyter_book-2.1.4.tar.gz", hash = "sha256:2a888f698b0f1e316269c59cc9d24849013d5617d6901a643a98407547cb4b6c", size = 3215248, upload-time = "2026-04-01T17:50:55.531Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/5e/cc/eb91af1fa9867fb3d857b23ae23ebfb02bd9afed70da815f447505139d4a/jupyter_book-2.1.5.tar.gz", hash = "sha256:6a43a1991365b5896fa789e9df1687b9b37f91d06d9eb7cc94fc628ac27e662e", size = 3218061, upload-time = "2026-05-02T00:06:51.818Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/0a/22/06382d93a4dd90feb7b4a5f570ba9057f963af806a58210a27065fa9a936/jupyter_book-2.1.4-py3-none-any.whl", hash = "sha256:4d15af1c90e60c3dd3987eb0bc9fe5734207a020794ab371b6d145bf07b1b46a", size = 2619278, upload-time = "2026-04-01T17:50:53.543Z" },
+    { url = "https://files.pythonhosted.org/packages/b5/83/205e7af4153d9690c3cb94fa9cea670c0d26ce7f022aaa589a9e136f1491/jupyter_book-2.1.5-py3-none-any.whl", hash = "sha256:19eedc70bb8d5ed5de0f7f3cb8de312da3a50900dcdda9b0c5a9704410a7758d", size = 2619600, upload-time = "2026-05-02T00:06:49.645Z" },
 ]
 
 [[package]]
