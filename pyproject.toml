@@ -20,8 +20,8 @@ dependencies = [
   "jupytext",
   "jupyterbook-latex",
   "jupyterlab",
-  "jupyternotify",
   "jupytext",
+  "marimo",
   "markdown",
   "matplotlib",
   "nodejs",
@@ -48,8 +48,6 @@ dev = [
   "pre-commit"
 ]
 lint = [
-  "flake8",
-  "isort",
   "ruff",
   "ty",
 ]
