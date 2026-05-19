@@ -196,10 +196,17 @@ def order_of_magnitude(x):
 
 
 
+# Ocean/atmospheric temperatures never exceed ~50 °C, so any value at or above
+# this threshold is assumed to already be in Kelvin (≥ 273.15 K for 0 °C).
+_CELSIUS_KELVIN_THRESHOLD = 200.0
+
+
 def temperature2K(T):
     """Convert temperatures given in °C into Kelvin.
-    If `T` is a :obj:`pandas.Series` object, only values larger than 200 are converted. 
-    All others are expected to be already in Kelvin.
+
+    Uses a heuristic: values below :data:`_CELSIUS_KELVIN_THRESHOLD` are treated
+    as °C and shifted by 273.15; values at or above the threshold are assumed to
+    already be in Kelvin and are returned unchanged.
 
     Examples
     --------
@@ -208,19 +215,20 @@ def temperature2K(T):
     """
     T = copy(T)
     if isinstance(T, pd.Series):
-        if len(T[T > 200]) != 0:
+        if (T >= _CELSIUS_KELVIN_THRESHOLD).any():
             log.warning("Some values seem to be already in Kelvin")
-        # TODO: do this in a better way
-        T.loc[T < 200] += 273.15
-    elif T < 200:
+        T.loc[T < _CELSIUS_KELVIN_THRESHOLD] += 273.15
+    elif T < _CELSIUS_KELVIN_THRESHOLD:
         T += 273.15
     return T
 
 
 def temperature2C(T):
     """Convert temperatures given in Kelvin into °C.
-    If `T` is a :obj:`pandas.Series` object, only values greater than 200 are converted. 
-    All others are expected to be already in °C.
+
+    Uses a heuristic: values above :data:`_CELSIUS_KELVIN_THRESHOLD` are treated
+    as Kelvin and shifted by −273.15; values at or below the threshold are assumed
+    to already be in °C and are returned unchanged.
 
     Examples
     --------
@@ -229,8 +237,8 @@ def temperature2C(T):
     """
     T = copy(T)
     if isinstance(T, pd.Series):
-        T.loc[T > 200] -= 273.15
-    elif T > 200:
+        T.loc[T > _CELSIUS_KELVIN_THRESHOLD] -= 273.15
+    elif T > _CELSIUS_KELVIN_THRESHOLD:
         T -= 273.15
     return T
 
