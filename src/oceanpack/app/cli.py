@@ -48,10 +48,18 @@ def convert_data(path, source_type, output_file):
 
 @main.command
 @click.argument('files', type=click.Path(exists=True), nargs=-1)
-@click.option('--output-file', '-o', type=click.Path())
-@click.option('--tolerance', '-t', type=str, default='2min', show_default=True)
-@click.option('--keep-all', is_flag=True, default=False)
+@click.option('--output-file', '-o', type=click.Path(), help='Path for the merged netCDF output file.')
+@click.option('--tolerance', '-t', type=str, default='2min', show_default=True,
+              help='Maximum time offset allowed when aligning timestamps across input files (pandas offset string, e.g. "2min", "30s").')
+@click.option('--keep-all', is_flag=True, default=False,
+              help='Retain all variables from the input files. By default only the scientifically relevant subset is kept.')
 def merge_data(files, output_file, tolerance, keep_all):
+    """
+    Merge multiple netCDF FILES produced by the convert-data step into a single dataset.
+    Timestamps are aligned across files using nearest-neighbour matching within TOLERANCE.
+    Unless --keep-all is set, the output is trimmed to a curated set of scientifically
+    relevant variables. The merged dataset is written to OUTPUT_FILE in netCDF format.
+    """
     kwargs = {'keep_all': keep_all}
     controller = DataMergeController()
     controller.merge(files, tolerance=tolerance, **kwargs)
@@ -61,6 +69,14 @@ def merge_data(files, output_file, tolerance, keep_all):
 @main.command
 @click.argument('path', type=click.Path(exists=True))
 def process_data(path):
+    """
+    Run the physical-variable processing pipeline on the merged netCDF file at PATH.
+    The pipeline performs four steps in order: (1) convert raw Latitude/Longitude to
+    decimal-degree coordinates, (2) mask CO2 readings during non-operating instrument
+    phases, (3) derive equilibrator pressure from cell pressure and internal differential
+    pressure, and (4) compute pCO2 in wet air at the equilibrator. The processed dataset
+    is written back to PATH, overwriting the input file in place.
+    """
     controller = DataProcessingController()
     controller.load_data(path)
     controller.process_data()
