@@ -96,7 +96,7 @@ def compute_salinity(C, T, p):
 
     RT = R / (rT*Rp)
 
-    k = 0.0162  # TODO: check sign! +/-?
+    k = 0.0162  # UNESCO 1983, Tech. Papers in Marine Sci. 44, eq. 3 (k = +0.0162)
 
     ξ = np.sqrt(RT)
     ψ = b0 + b1*ξ + b2*ξ**2 + b3*ξ**3 + b4*ξ**4 + b5*ξ**5
