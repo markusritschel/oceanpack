@@ -1,7 +1,6 @@
 # Oceanpack
 
-[![build](https://github.com/markusritschel/oceanpack/actions/workflows/main.yml/badge.svg)]([![build](https://github.com/markusritschel/oceanpack/actions/workflows/main.yml/badge.svg)
-)
+[![build](https://github.com/markusritschel/oceanpack/actions/workflows/main.yml/badge.svg)](https://github.com/markusritschel/oceanpack/actions/workflows/main.yml)
 [![codecov](https://codecov.io/gh/markusritschel/oceanpack/graph/badge.svg?token=ESR952PE13)](https://codecov.io/gh/markusritschel/oceanpack)
 [![License MIT license](https://img.shields.io/github/license/markusritschel/oceanpack)](./LICENSE)
 
