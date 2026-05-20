@@ -4379,7 +4379,7 @@ wheels = [
 
 [[package]]
 name = "rinohtype"
-version = "0.5.5"
+version = "0.5.6"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "appdirs" },
@@ -4393,9 +4393,9 @@ dependencies = [
     { name = "rinoh-typeface-texgyreheros" },
     { name = "rinoh-typeface-texgyrepagella" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c7/21/7e2e32b16b5625a651b4f6773e1fe6ae10449f8c1f84b6731797a722a6a4/rinohtype-0.5.5.tar.gz", hash = "sha256:2efc38b5f41541693617e5a4bc6826e8932897d3c14b1b0ecd3ae4aaff404224", size = 6452152, upload-time = "2024-07-13T14:58:43.594Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/10/59/53c88ae5af164e03dceace7b86ac67f4f45cd019f2f58fd6aaddae79cb46/rinohtype-0.5.6.tar.gz", hash = "sha256:e9392bd4e9117f5bef1285b81d6420183df5393aed289b176f7a81b6c9646d15", size = 6731068, upload-time = "2026-05-15T14:24:10.085Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/be/06/b9a641899db78cbd38c2d57d1878a499546336b6b844e79021b5f362fa54/rinohtype-0.5.5-py3-none-any.whl", hash = "sha256:b1c429e69c55b1b2400367ac0fcc17f30ec537ceb22e8f2dd768909282c2e642", size = 611480, upload-time = "2024-07-13T14:58:41.574Z" },
+    { url = "https://files.pythonhosted.org/packages/bc/39/221faa2cfd10bdf00be83a9e7643ba9d4ab8fdcb9373d7a1563aed8eb980/rinohtype-0.5.6-py3-none-any.whl", hash = "sha256:fa137d7f8f805b6725b8100e59ef873a56767f255951be7826596c4f28cbfc5d", size = 616489, upload-time = "2026-05-15T14:24:07.956Z" },
 ]
 
 [[package]]
