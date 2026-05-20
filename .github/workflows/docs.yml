@@ -46,6 +46,6 @@ jobs:
     steps:
       - name: Deploy documentation
         if: ${{ !env.ACT }}
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
         with:
           artifact_name: documentation
