@@ -83,3 +83,11 @@ class TestComputeFugacity:
         result = float(dp.ds['fCO2_wet_SST'].values[0])
         expected = fugacity(pCO2_sst, 1.0, 20.0, xCO2=350.0)
         assert np.isclose(result, expected, rtol=1e-9)
+
+
+def test_pCO2_wet_equ_unit_label():
+    """pCO2_wet_equ must carry unit 'µatm', not 'atm'."""
+    dp = DataProcessor()
+    dp.ds = _make_ds()
+    dp.compute_pCO2_wet_equ()
+    assert dp.ds['pCO2_wet_equ'].attrs.get('unit') == 'µatm'
