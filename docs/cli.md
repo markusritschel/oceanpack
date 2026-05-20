@@ -59,7 +59,7 @@ This command will perform the following steps:
 3. Pressure at the equilibrator
 4. Compute the pCO2 at the equilibrator in wet air
 5. Temperature correction (not implemented yet)
-6. Compute the fugacity (not implemented yet)
+6. Compute the fugacity
 
 
 ```{warning}
@@ -127,9 +127,6 @@ If the measurements were taken onboard a ship, the way for the water from the in
 
 
 ### Compute the fugacity
-:::{warning}
-This is not implemented yet.
-:::
 
 Finally, we compute the fugacity by hands of the before calculated partial pressure, the pressure at the equilibrator, and the SST.
 

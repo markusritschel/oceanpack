@@ -59,6 +59,27 @@ class DataProcessor:
                                              buffer="20min")
                 self.ds[var] = df[f'{var}_original']
 
+    def compute_fugacity(self):
+        """Compute the fugacity of CO2 at SST from pCO2, equilibrator pressure, and SST.
+
+        Follows Weiss (1974) and Dickson et al., 2007 (SOP 24).
+        Uses temperature-corrected pCO2 (``pCO2_wet_SST``) if available,
+        otherwise falls back to ``pCO2_wet_equ``.
+        """
+        from oceanpack.utils.helpers import fugacity
+
+        pCO2_var = 'pCO2_wet_SST' if 'pCO2_wet_SST' in self.ds else 'pCO2_wet_equ'
+        xCO2 = self.ds['CO2'] if 'CO2' in self.ds else None
+
+        self.ds['fCO2_wet_SST'] = fugacity(
+            self.ds[pCO2_var],
+            self.ds['PressEqu'],
+            self.ds['SBE45Temp'],
+            xCO2=xCO2,
+        )
+        self.ds['fCO2_wet_SST'].attrs['unit'] = 'µatm'
+        self.ds['fCO2_wet_SST'].attrs['long_name'] = 'Fugacity of CO2 in wet air at SST'
+
     def to_netcdf(self, output_file):
         self.ds.load()   # necessary to be able to overwrite the netCDF
         self.ds.to_netcdf(output_file)
