@@ -4,17 +4,23 @@
 default:
     @just --list
 
-# Run ruff check for linting without modifying files
-lint *ARGS:
-    uv run --group test ruff check {{ARGS}}
+# Run ruff formatter, modifying files and fixing lint errors
+format:
+    uv run --group dev ruff format .
+    uv run --group dev ruff check --fix .
+
+# Run ruff linter without modifying files
+lint:
+    uv run --group dev ruff format --check .
+    uv run --group dev ruff check .
 
 # Run all the formatting, linting, and testing commands
 qa:
-    uv run --group test ruff format .
-    uv run --group test ruff check . --fix
-    uv run --group test ruff check --select I --fix .
-    uv run --group test ty check .
-    uv run --group test pytest .
+    uv run --group dev ruff format .
+    uv run --group dev ruff check --fix .
+    uv run --group dev ruff check --select I --fix .
+    uv run --group dev ty check .
+    uv run --group dev pytest .
 
 # Run all the tests, but allow for arguments to be passed
 test *ARGS:
