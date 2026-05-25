@@ -43,8 +43,37 @@ class DataProcessor:
         """Compute pCO2 at the equilibrator in wet air."""
         from oceanpack.utils.helpers import ppm2uatm
         self.ds['pCO2_wet_equ'] = ppm2uatm(self.ds['CO2'], self.ds['PressEqu'])
-        self.ds['pCO2_wet_equ'].attrs['unit'] = 'atm'
+        self.ds['pCO2_wet_equ'].attrs['unit'] = 'uatm'
         self.ds['pCO2_wet_equ'].attrs['long_name'] = 'pCO2 at equilibrator/membrane in wet air'
+
+    def compute_temperature_correction(self):
+        """Correct pCO2 from equilibrator temperature to in-situ SST (Takahashi et al. 2009).
+
+        T_equ is approximated by waterTemp (SBE45 intake temperature). CellTemp is the
+        LI-840 detector cell (~51 °C) and must NOT be used here.
+        """
+        from oceanpack.utils.helpers import temperature_correction
+        T_equ = self.ds['waterTemp']    # equilibrator ≈ water intake temperature
+        T_sst = self.ds['waterTemp']    # in-situ SST (same sensor; ΔT ≈ 0 for this dataset)
+        self.ds['pCO2_wet_sst'] = temperature_correction(
+            self.ds['pCO2_wet_equ'], T_out=T_sst, T_in=T_equ
+        )
+        self.ds['pCO2_wet_sst'].attrs['unit'] = 'uatm'
+        self.ds['pCO2_wet_sst'].attrs['long_name'] = 'pCO2 at SST in wet air (temperature-corrected)'
+
+    def compute_fCO2_wet_sst(self):
+        """Compute fugacity of CO2 at SST."""
+        from oceanpack.utils.helpers import fugacity
+        df = self.ds[['pCO2_wet_sst', 'PressEqu', 'waterTemp', 'CO2']].to_pandas()
+        fco2 = fugacity(
+            df['pCO2_wet_sst'],
+            df['PressEqu'],
+            df['waterTemp'],
+            xCO2=df['CO2'],
+        )
+        self.ds['fCO2_wet_sst'] = fco2
+        self.ds['fCO2_wet_sst'].attrs['unit'] = 'uatm'
+        self.ds['fCO2_wet_sst'].attrs['long_name'] = 'fCO2 at SST in wet air'
 
     def remove_non_operating_phases(self):
         """Set CO2 values in non-operating phases to NaN"""

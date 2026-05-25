@@ -393,7 +393,11 @@ def set_nonoperating_to_nan(data, col='CO2', buffer='30min', status_var='ANA_sta
     grouped_by_status = data.groupby((data[status_var] != data[status_var].shift()).cumsum())
 
     # get the first and last index of all periods which are not in operating status
-    phase_start, phase_end = zip(*[(g.index[0], g.index[-1]) for i, g in grouped_by_status if g[status_var].unique() != 5])
+    non_operating = [(g.index[0], g.index[-1]) for i, g in grouped_by_status if g[status_var].unique() != 5]
+    if not non_operating:
+        return data
+
+    phase_start, phase_end = zip(*non_operating)
 
     phase_start = pd.to_datetime(phase_start)
     phase_end = pd.to_datetime(phase_end)

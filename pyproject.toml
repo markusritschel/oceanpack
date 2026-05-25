@@ -34,6 +34,7 @@ dependencies = [
   "typer",
   "xarray",
   "pandoc>=2.4",
+  "netcdf4>=1.7.3",
 ]
 
 
