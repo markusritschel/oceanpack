@@ -145,5 +145,5 @@ def test_temperature_correction_output_attributes():
     proc.compute_temperature_correction()
 
     attrs = proc.ds["pCO2_wet_sst"].attrs
-    assert attrs.get("unit") == "atm"
+    assert attrs.get("unit") == "µatm"
     assert "long_name" in attrs
