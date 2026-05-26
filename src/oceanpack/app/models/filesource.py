@@ -88,7 +88,7 @@ class FileSourceModel:
         self.history = ''
 
     @property
-    def source_type(self) -> str:
+    def source_type(self) -> FileSourceType | None:
         return self._source_type
 
     @source_type.setter
