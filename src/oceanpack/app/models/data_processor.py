@@ -27,6 +27,9 @@ class DataProcessor:
 
     def convert_coordinates(self):
         from oceanpack.utils.helpers import convert_coordinates
+        if not all(var in self.ds for var in ['Longitude', 'Latitude']):
+            log.warning("Longitude and Latitude variables not found. Skipping coordinate conversion.")
+            return
         self.ds['lon'] = convert_coordinates(self.ds['Longitude'])
         self.ds['lat'] = convert_coordinates(self.ds['Latitude'])
 
