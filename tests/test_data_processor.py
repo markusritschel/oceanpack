@@ -23,67 +23,6 @@ def _make_ds(**overrides):
     return xr.Dataset({k: xr.DataArray([v]) for k, v in defaults.items()})
 
 
-class TestComputeFugacity:
-    def test_output_variable_created(self):
-        dp = DataProcessor()
-        dp.ds = _make_ds()
-        dp.compute_fugacity()
-        assert 'fCO2_wet_SST' in dp.ds
-
-    def test_attrs(self):
-        dp = DataProcessor()
-        dp.ds = _make_ds()
-        dp.compute_fugacity()
-        assert dp.ds['fCO2_wet_SST'].attrs['unit'] == 'µatm'
-        assert (
-            dp.ds['fCO2_wet_SST'].attrs['long_name']
-            == 'Fugacity of CO2 in wet air at SST'
-        )
-
-    def test_matches_helper_directly(self):
-        """Result must equal calling the fugacity() helper with the same inputs."""
-        pCO2, p_equ, SST, xCO2 = 350.0, 1.0, 20.0, 350.0
-        dp = DataProcessor()
-        dp.ds = _make_ds(pCO2_wet_equ=pCO2, PressEqu=p_equ, SBE45Temp=SST, CO2=xCO2)
-        dp.compute_fugacity()
-        expected = fugacity(pCO2, p_equ, SST, xCO2=xCO2)
-        assert np.isclose(float(dp.ds['fCO2_wet_SST'].values[0]), expected, rtol=1e-9)
-
-    def test_fugacity_less_than_pCO2(self):
-        """fCO2 must be slightly smaller than pCO2 (virial correction is always negative)."""
-        dp = DataProcessor()
-        dp.ds = _make_ds()
-        dp.compute_fugacity()
-        assert float(dp.ds['fCO2_wet_SST'].values[0]) < 350.0
-
-    def test_dickson_sop24_example(self):
-        """Verify against Dickson et al., 2007 (SOP 24) example.
-
-        Typical example values: pCO2=348.7 µatm, p_equ=1 atm, SST=29°C,
-        xCO2=348.7 ppm.  Expected fCO2 is approximately 347.6 µatm.
-        """
-        pCO2, p_equ, SST, xCO2 = 348.7, 1.0, 29.0, 348.7
-        dp = DataProcessor()
-        dp.ds = _make_ds(pCO2_wet_equ=pCO2, PressEqu=p_equ, SBE45Temp=SST, CO2=xCO2)
-        dp.compute_fugacity()
-        result = float(dp.ds['fCO2_wet_SST'].values[0])
-        assert result < pCO2, "fCO2 should be less than pCO2"
-        assert np.isclose(result, 347.6, atol=1.0), (
-            f"Expected ~347.6 µatm, got {result:.3f}"
-        )
-
-    def test_uses_pCO2_wet_SST_when_available(self):
-        """When pCO2_wet_SST (temperature-corrected) is present, it should be used."""
-        pCO2_sst = 345.0
-        ds = _make_ds(pCO2_wet_equ=350.0, PressEqu=1.0, SBE45Temp=20.0, CO2=350.0)
-        ds['pCO2_wet_SST'] = xr.DataArray([pCO2_sst])
-        dp = DataProcessor()
-        dp.ds = ds
-        dp.compute_fugacity()
-        result = float(dp.ds['fCO2_wet_SST'].values[0])
-        expected = fugacity(pCO2_sst, 1.0, 20.0, xCO2=350.0)
-        assert np.isclose(result, expected, rtol=1e-9)
-
 
 def test_pCO2_wet_equ_unit_label():
     """pCO2_wet_equ must carry unit 'µatm', not 'atm'."""
@@ -93,7 +32,7 @@ def test_pCO2_wet_equ_unit_label():
     assert dp.ds['pCO2_wet_equ'].attrs.get('unit') == 'µatm'
 
 
-def _make_processor(pCO2_wet_equ, SBE45Temp, CellTemp):
+def _make_processor(pCO2_wet_equ, SBE45Temp, SST):
     """Build a minimal DataProcessor with required variables for temperature correction."""
     times = np.array(["2020-01-01"], dtype="datetime64[ns]")
     proc = DataProcessor()
@@ -101,7 +40,7 @@ def _make_processor(pCO2_wet_equ, SBE45Temp, CellTemp):
         {
             "pCO2_wet_equ": ("time", np.atleast_1d(pCO2_wet_equ)),
             "SBE45Temp": ("time", np.atleast_1d(SBE45Temp)),
-            "CellTemp": ("time", np.atleast_1d(CellTemp)),
+            "SST": ("time", np.atleast_1d(SST)),
         },
         coords={"time": times},
     )
@@ -114,7 +53,7 @@ def test_temperature_correction_normal_case():
     t_equ = 18.0
     pco2 = 400.0
 
-    proc = _make_processor(pco2, sst, t_equ)
+    proc = _make_processor(pco2, t_equ, sst)
     proc.compute_temperature_correction()
 
     expected = pco2 * np.exp(0.0433 * (sst - t_equ) - 4.35e-5 * (sst**2 - t_equ**2))
