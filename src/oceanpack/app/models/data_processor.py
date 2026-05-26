@@ -46,6 +46,42 @@ class DataProcessor:
         self.ds['pCO2_wet_equ'].attrs['unit'] = 'µatm'
         self.ds['pCO2_wet_equ'].attrs['long_name'] = 'pCO2 at equilibrator/membrane in wet air'
 
+    def compute_temperature_correction(self):
+        """Correct pCO2 from equilibrator temperature to in-situ SST.
+
+        Applies the Takahashi correction formula.
+        T_equ is approximated by waterTemp (internal SBE45 temperature).
+
+        .. note::
+            If measurements were taken on a ship, the water intake path may introduce a
+            lag between the actual SST and the registered ``SBE45Temp``. A lag analysis
+            and time-series correction of the intake temperature should be considered
+            before applying this correction in such cases.
+
+        References
+        ----------
+        Takahashi et al. (2009), doi:10.1016/j.dsr2.2008.12.009
+        """
+        from oceanpack.utils.helpers import temperature_correction
+        CO2_var = "pCO2_wet_equ"
+        T_equ_var = "SBE45Temp"     # equilibrator temperature (approximated by internal SBE45)
+        T_target_var = "SST"        # in-situ sea surface temperature (SST)
+        for var in [CO2_var, T_target_var, T_equ_var]:
+            if var not in self.ds.variables:
+                log.warning(f"{var} variable not found. Skipping temperature correction.")
+                return
+        CO2 = self.ds[CO2_var]
+        T_target = self.ds[T_target_var]
+        T_equ = self.ds[T_equ_var]
+        self.ds['pCO2_wet_sst'] = temperature_correction(
+            CO2=CO2,
+            T_out=T_target,
+            T_in=T_equ,
+            method='Takahashi2009'
+        )
+        self.ds['pCO2_wet_sst'].attrs['unit'] = 'µatm'
+        self.ds['pCO2_wet_sst'].attrs['long_name'] = 'pCO2 at SST in wet air (temperature-corrected)'
+
     def remove_non_operating_phases(self):
         """Set CO2 values in non-operating phases to NaN"""
         from oceanpack.utils.helpers import set_nonoperating_to_nan
