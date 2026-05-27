@@ -26,32 +26,38 @@ class DataProcessor:
     def load_data(self, file):
         """Load raw data from `file`."""
         import xarray as xr
+
         self.ds = xr.open_dataset(file)
 
     def convert_coordinates(self):
         """Convert longitude and latitude from DDDMM.MMM format to decimal degrees."""
         from oceanpack.utils.helpers import convert_coordinates
-        if not all(var in self.ds for var in ['Longitude', 'Latitude']):
-            log.warning("Longitude and Latitude variables not found. Skipping coordinate conversion.")
+
+        if not all(var in self.ds for var in ["Longitude", "Latitude"]):
+            log.warning(
+                "Longitude and Latitude variables not found. Skipping coordinate conversion."
+            )
             return
-        self.ds['lon'] = convert_coordinates(self.ds['Longitude'])
-        self.ds['lat'] = convert_coordinates(self.ds['Latitude'])
+        self.ds["lon"] = convert_coordinates(self.ds["Longitude"])
+        self.ds["lat"] = convert_coordinates(self.ds["Latitude"])
 
     def compute_equilibrator_pressure(self):
         """Obtain pressure at the equilibrator/membrane."""
         from oceanpack.utils.helpers import pressure2atm
-        df = self.ds[['CellPress', 'DPressInt']].to_pandas()
-        pressure_equ = df['CellPress'] - df['DPressInt'].rolling('2min').mean()  # in mBar
-        self.ds['PressEqu'] = pressure2atm(pressure_equ)  # in atm
-        self.ds['PressEqu'].attrs['unit'] = 'atm'
-        self.ds['PressEqu'].attrs['long_name'] = 'Pressure at equilibrator/membrane'
+
+        df = self.ds[["CellPress", "DPressInt"]].to_pandas()
+        pressure_equ = df["CellPress"] - df["DPressInt"].rolling("2min").mean()  # in mBar
+        self.ds["PressEqu"] = pressure2atm(pressure_equ)  # in atm
+        self.ds["PressEqu"].attrs["unit"] = "atm"
+        self.ds["PressEqu"].attrs["long_name"] = "Pressure at equilibrator/membrane"
 
     def compute_pCO2_wet_equ(self):  # noqa: N802
         """Compute pCO2 at the equilibrator in wet air."""
         from oceanpack.utils.helpers import ppm2uatm
-        self.ds['pCO2_wet_equ'] = ppm2uatm(self.ds['CO2'], self.ds['PressEqu'])
-        self.ds['pCO2_wet_equ'].attrs['unit'] = 'µatm'
-        self.ds['pCO2_wet_equ'].attrs['long_name'] = 'pCO2 at equilibrator/membrane in wet air'
+
+        self.ds["pCO2_wet_equ"] = ppm2uatm(self.ds["CO2"], self.ds["PressEqu"])
+        self.ds["pCO2_wet_equ"].attrs["unit"] = "µatm"
+        self.ds["pCO2_wet_equ"].attrs["long_name"] = "pCO2 at equilibrator/membrane in wet air"
 
     def compute_temperature_correction(self):
         """Correct pCO2 from equilibrator temperature to in-situ SST.
@@ -70,37 +76,39 @@ class DataProcessor:
         Takahashi et al. (2009), doi:10.1016/j.dsr2.2008.12.009
         """
         from oceanpack.utils.helpers import temperature_correction
+
         CO2_var = "pCO2_wet_equ"
-        T_equ_var = "SBE45Temp"     # equilibrator temperature (approximated by internal SBE45)
-        T_target_var = "SST"        # in-situ sea surface temperature (SST)
+        T_equ_var = "SBE45Temp"  # equilibrator temperature (approximated by internal SBE45)
+        T_target_var = "SST"  # in-situ sea surface temperature (SST)
         for var in [CO2_var, T_target_var, T_equ_var]:
             if var not in self.ds.variables:
-                log.warning(f"{var} variable not found. Skipping temperature correction.")
+                log.warning(f"⚠️  {var} variable not found. Skipping temperature correction.")
                 return
         CO2 = self.ds[CO2_var]
         T_target = self.ds[T_target_var]
         T_equ = self.ds[T_equ_var]
-        self.ds['pCO2_wet_sst'] = temperature_correction(
-            CO2=CO2,
-            T_out=T_target,
-            T_in=T_equ,
-            method='Takahashi2009'
+        self.ds["pCO2_wet_sst"] = temperature_correction(
+            CO2=CO2, T_out=T_target, T_in=T_equ, method="Takahashi2009"
         )
-        self.ds['pCO2_wet_sst'].attrs['unit'] = 'µatm'
-        self.ds['pCO2_wet_sst'].attrs['long_name'] = 'pCO2 at SST in wet air (temperature-corrected)'
+        self.ds["pCO2_wet_sst"].attrs["unit"] = "µatm"
+        self.ds["pCO2_wet_sst"].attrs["long_name"] = (
+            "pCO2 at SST in wet air (temperature-corrected)"
+        )
+
 
     def remove_non_operating_phases(self):
         """Set CO2 values in non-operating phases to NaN"""
         from oceanpack.utils.helpers import set_nonoperating_to_nan
+
         for var in self.ds.variables:
-            if 'CO2' in var and not var.endswith('original'):
-                if f'{var}_original' not in self.ds.variables:
-                    self.ds = self.ds.rename({var: f'{var}_original'})
-                df = self.ds[[f'{var}_original', 'STATUS']].to_pandas()
-                df = set_nonoperating_to_nan(df, status_var='STATUS',
-                                             col=f'{var}_original', 
-                                             buffer="20min")
-                self.ds[var] = df[f'{var}_original']
+            if "CO2" in var and not var.endswith("original"):
+                if f"{var}_original" not in self.ds.variables:
+                    self.ds = self.ds.rename({var: f"{var}_original"})
+                df = self.ds[[f"{var}_original", "STATUS"]].to_pandas()
+                df = set_nonoperating_to_nan(
+                    df, status_var="STATUS", col=f"{var}_original", buffer="20min"
+                )
+                self.ds[var] = df[f"{var}_original"]
 
     def to_netcdf(self, output_file):
         """Write the processed dataset to a netCDF file at `output_file`."""
@@ -120,7 +128,7 @@ class DataMerger:
     def __init__(self):
         self.merged = None
 
-    def merge(self, files, tolerance: str = '2min'):
+    def merge(self, files, tolerance: str = "2min"):
         """Merge multiple netCDF files into a single dataset."""
         from tqdm.auto import tqdm
         import xarray as xr

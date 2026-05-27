@@ -26,31 +26,31 @@ class FileHandlerInterface(ABC):
     @classmethod
     def parse_header(cls, file_path):
         """Parse the header of the log file to extract metadata information such as variable names, units, and sensors."""
-        header_dict = {'nrows': 0}
-        with open(file_path, 'r', encoding='Windows 1252') as f:
+        header_dict = {"nrows": 0}
+        with open(file_path, encoding="Windows 1252") as f:
             while True:
                 line = f.readline()
-                header_dict['nrows'] += 1
+                header_dict["nrows"] += 1
 
-                if line.startswith('$PSDS0'):
-                    header_dict['$PSDS0'] = None
+                if line.startswith("$PSDS0"):
+                    header_dict["$PSDS0"] = None
                     break
 
-                elif line.startswith('@RATE') : 
+                elif line.startswith("@RATE"):
                     break
 
-                elif line.startswith('@NAME'):
-                    names = line.strip().split(',')
-                    header_dict['names'] = [x.replace('/', '_') for x in names]
+                elif line.startswith("@NAME"):
+                    names = line.strip().split(",")
+                    header_dict["names"] = [x.replace("/", "_") for x in names]
 
-                elif line.startswith('@UNIT'):
-                    header_dict['units'] = line.strip().split(',')
+                elif line.startswith("@UNIT"):
+                    header_dict["units"] = line.strip().split(",")
 
-                elif line.startswith('@SENSOR'):
-                    header_dict['sensors'] = line.strip().split(',')
+                elif line.startswith("@SENSOR"):
+                    header_dict["sensors"] = line.strip().split(",")
 
-                if header_dict['nrows'] > 15:
-                    log.warning(f'Could not find header in file {file_path}. Skip file.')
+                if header_dict["nrows"] > 15:
+                    log.warning(f"Could not find header in file {file_path}. Skip file.")
                     return None
         return header_dict
 
@@ -84,22 +84,27 @@ class InternalFileHandler(FileHandlerInterface):
         header = FileHandlerInterface.parse_header(file_path)
         if header is None:
             return pd.DataFrame(), pd.DataFrame()
-        
-        names = header['names']
-        units = header['units']
-        sensors = header['sensors']
 
-        data = pd.read_csv(file_path, sep=',', skiprows=header['nrows'], names=names,
-                         encoding='iso-8859-1',
-                         usecols=range(len(names)),
-                        )
-        data = data.where(data['@NAME']=='@DATA')
-        data.index = pd.to_datetime(data['DATE'] + ' ' + data['TIME'])
-        data.index.name = 'time'
-        data.drop(['@NAME', 'DATE', 'TIME', 'DATE_TIME'], axis=1, inplace=True, errors='ignore')
+        names = header["names"]
+        units = header["units"]
+        sensors = header["sensors"]
 
-        metadata = pd.DataFrame.from_records(list(zip(names, units, sensors))[1:], 
-                                             columns=['name', 'unit', 'device'])
+        data = pd.read_csv(
+            file_path,
+            sep=",",
+            skiprows=header["nrows"],
+            names=names,
+            encoding="iso-8859-1",
+            usecols=range(len(names)),
+        )
+        data = data.where(data["@NAME"] == "@DATA")
+        data.index = pd.to_datetime(data["DATE"] + " " + data["TIME"])
+        data.index.name = "time"
+        data.drop(["@NAME", "DATE", "TIME", "DATE_TIME"], axis=1, inplace=True, errors="ignore")
+
+        metadata = pd.DataFrame.from_records(
+            list(zip(names, units, sensors))[1:], columns=["name", "unit", "device"]
+        )
 
         return data, metadata
 
@@ -140,10 +145,13 @@ class StreamFileHandler(FileHandlerInterface):
             The log file data and metadata as pandas DataFrames.
         """
         metadata = StreamFileHandler.read_oceanview_variables()
-        data = pd.read_csv(file_path, names=metadata['name'],
-                         encoding='iso-8859-1',
-                         parse_dates={'datetime': ['date','time']})
-        data.set_index('datetime', inplace=True)
+        data = pd.read_csv(
+            file_path,
+            names=metadata["name"],
+            encoding="iso-8859-1",
+            parse_dates={"datetime": ["date", "time"]},
+        )
+        data.set_index("datetime", inplace=True)
         return data, metadata
 
     @staticmethod
@@ -156,6 +164,7 @@ class StreamFileHandler(FileHandlerInterface):
             The OceanView variables as a pandas DataFrame.
         """
         from pathlib import Path
+
         this_dir = Path(__file__).resolve().parents[0]
-        file_path = this_dir/'oceanview_variables.csv'
-        return pd.read_csv(file_path, index_col='ID')
+        file_path = this_dir / "oceanview_variables.csv"
+        return pd.read_csv(file_path, index_col="ID")

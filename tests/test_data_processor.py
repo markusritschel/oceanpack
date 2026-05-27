@@ -29,7 +29,7 @@ def test_pCO2_wet_equ_unit_label():
     dp = DataProcessor()
     dp.ds = _make_ds()
     dp.compute_pCO2_wet_equ()
-    assert dp.ds['pCO2_wet_equ'].attrs.get('unit') == 'µatm'
+    assert dp.ds["pCO2_wet_equ"].attrs.get("unit") == "µatm"
 
 
 def _make_processor(pCO2_wet_equ, SBE45Temp, SST):

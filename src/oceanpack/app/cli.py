@@ -5,6 +5,7 @@
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #
 """Command-line interface for OceanPack, providing commands to convert, process, and merge instrument log files."""
+
 import click
 from colorama import Fore
 
@@ -36,9 +37,9 @@ def main(ctx):
 
 
 @main.command
-@click.argument('path', type=click.Path(exists=True))
-@click.option('--source-type', '-t', type=click.Choice(['Analyzer', 'NetDI', 'Stream']))
-@click.argument('output_file', type=click.Path())
+@click.argument("path", type=click.Path(exists=True))
+@click.option("--source-type", "-t", type=click.Choice(["Analyzer", "NetDI", "Stream"]))
+@click.argument("output_file", type=click.Path())
 def convert_data(path, source_type, output_file):
     """
     Process OceanPack log file(s) from PATH, clean the data, and export to OUTPUT_FILE.
@@ -48,10 +49,12 @@ def convert_data(path, source_type, output_file):
     controller.load_data(path)
     controller.display()
     controller.generate_output(output_file)
-    click.echo("As a next step, run `merge-data` to merge the converted files into a single dataset. "
-               "Consider providing a netCDF file with additional variables such as GPS coordinates"
-               "or `SST` measured outside the ship near the water intake. See the documentation for"
-               "more information about this.")
+    click.echo(
+        "As a next step, run `merge-data` to merge the converted files into a single dataset. "
+        "Consider providing a netCDF file with additional variables such as GPS coordinates"
+        "or `SST` measured outside the ship near the water intake. See the documentation for"
+        "more information about this."
+    )
 
 
 @main.command
@@ -68,14 +71,14 @@ def merge_data(files, output_file, tolerance, keep_all):
     Unless --keep-all is set, the output is trimmed to a curated set of scientifically
     relevant variables. The merged dataset is written to OUTPUT_FILE in netCDF format.
     """
-    kwargs = {'keep_all': keep_all}
+    kwargs = {"keep_all": keep_all}
     controller = DataMergeController()
     controller.merge(files, tolerance=tolerance, **kwargs)
     controller.generate_output(output_file)
 
 
 @main.command
-@click.argument('path', type=click.Path(exists=True))
+@click.argument("path", type=click.Path(exists=True))
 def process_data(path):
     """
     Run the physical-variable processing pipeline on the merged netCDF file at PATH.

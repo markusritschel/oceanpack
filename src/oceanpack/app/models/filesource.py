@@ -19,10 +19,10 @@ log = logging.getLogger(__name__)
 class FileSourceType(Enum):
     """Enumeration class of supported data source types, each mapping to a dedicated file handler."""
 
-    INTERNAL = 'Internal'
-    ANALYZER = 'Analyzer'
-    NETDI    = 'NetDI'
-    STREAM   = 'Stream'
+    INTERNAL = "Internal"
+    ANALYZER = "Analyzer"
+    NETDI = "NetDI"
+    STREAM = "Stream"
 
     @staticmethod
     def isvalid(source_type: str) -> bool:

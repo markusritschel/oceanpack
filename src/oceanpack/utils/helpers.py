@@ -127,20 +127,17 @@ def compute_salinity(C, T, p, units=None):
 
 def _conductivity_unit_handling(C, units=None):
     # 1. auto-detect from xarray DataArray attribute
-    if units is None and isinstance(C, xr.DataArray) and 'units' in C.attrs:
-        units = C.attrs['units']
+    if units is None and isinstance(C, xr.DataArray) and "units" in C.attrs:
+        units = C.attrs["units"]
         log.info("Conductivity units auto-detected from DataArray attribute: '%s'", units)
 
     if units is not None:
-        units_norm = units.strip().lower().replace(' ', '')
-        if units_norm in ('s/m', 'siemens/m', 'siemens/meter'):
+        units_norm = units.strip().lower().replace(" ", "")
+        if units_norm in ("s/m", "siemens/m", "siemens/meter"):
             C = C * 10  # S/m → mS/cm (PSS-78 requires mS/cm)
             log.info("Conductivity converted from S/m to mS/cm for PSS-78 formula")
-        elif units_norm not in ('ms/cm', 'millisiemens/cm', 'millisiemens/centimeter'):
-            raise ValueError(
-                f"Unknown conductivity units '{units}'. "
-                "Expected 'mS/cm' or 'S/m'."
-            )
+        elif units_norm not in ("ms/cm", "millisiemens/cm", "millisiemens/centimeter"):
+            raise ValueError(f"Unknown conductivity units '{units}'. Expected 'mS/cm' or 'S/m'.")
     else:
         # heuristic: seawater mS/cm is ~20–70 (OOM 1–2); S/m is ~2–7 (OOM 0–1)
         c_vals = np.asarray(C, dtype=float).ravel()
@@ -241,7 +238,7 @@ def order_of_magnitude(x):
     array(2.)
     >>> order_of_magnitude(1)
     array(0.)
-    >>> order_of_magnitude(.15)
+    >>> order_of_magnitude(0.15)
     array(-1.)
     >>> order_of_magnitude(np.array([24.13, 254.2]))
     array([1., 2.])
@@ -255,8 +252,6 @@ def order_of_magnitude(x):
     oom = np.floor(np.log10(x))
     # oom = (np.int32(np.log10(np.abs(x))) + 1)
     return np.array(oom).squeeze()
-
-
 
 
 # Ocean/atmospheric temperatures never exceed ~50 °C, so any value at or above
@@ -306,7 +301,7 @@ def temperature2C(T):  # noqa: N802
     return T
 
 
-def ppm2uatm(xCO2,p_equ,input='wet',T=None,S=None):
+def ppm2uatm(xCO2, p_equ, input="wet", T=None, S=None):
     r"""Convert mole fraction concentration (in ppm) into partial pressure (in µatm) following :cite:t:`dickson_guide_2007`
 
     .. math::
@@ -338,7 +333,7 @@ def ppm2uatm(xCO2,p_equ,input='wet',T=None,S=None):
         raise KeyError("Input must be either 'dry' or 'wet'.")
 
     pCO2_wet_equ = xCO2 * (p_equ - pH2O)
-    
+
     return pCO2_wet_equ
 
 
@@ -360,7 +355,7 @@ def compute_water_vapor_pressure(T, S):
     return pH2O
 
 
-def temperature_correction(CO2, T_out=None, T_in=None, method='Takahashi2009', **kwargs):
+def temperature_correction(CO2, T_out=None, T_in=None, method="Takahashi2009", **kwargs):
     r"""Apply a temperature correction. This might be necessary when the temperatures at the water intake
     (often outside the ship) and at the OceanPack CTD differ. The correction used here follows :cite:t:`takahashi_climatological_2009`:
 
@@ -386,8 +381,10 @@ def temperature_correction(CO2, T_out=None, T_in=None, method='Takahashi2009', *
     method: str
         Either "Takahashi2009" or "Takahashi1993", describing the method of the respectively published paper by Takahashi et al.
     """
-    if T_out is None: T_out = kwargs.pop('T_insitu')
-    if T_in is None: T_in = kwargs.pop('T_equ')
+    if T_out is None: 
+        T_out = kwargs.pop("T_insitu")
+    if T_in is None: 
+        T_in = kwargs.pop("T_equ")
     if method=="Takahashi2009":
         CO2_out = CO2 * np.exp(0.0433*(T_out - T_in) - 4.35e-5*(T_out**2 - T_in**2))
     elif method=="Takahashi1993":
@@ -406,7 +403,7 @@ def fugacity(pCO2, p_equ, SST, xCO2=None):
        (fCO_2)^\\text{wet}_\\text{SST} = (pCO_2)^\\text{wet}_\\text{SST} \\cdot
             \\exp{\\Big(p_\\text{equ}\\cdot\\frac{\\left[ B(CO_2,SST) + 2\\,\\left(1-(xCO_2)^\\text{wet}_{SST}\\right)^2 \\, \\delta(CO_2,SST)\\right]}{R\\cdot SST}\\Big)}
 
-    where :math:`SST` is the sea surface temperature in K, :math:`R` the gas constant and :math:`B(CO_2,SST)` and 
+    where :math:`SST` is the sea surface temperature in K, :math:`R` the gas constant and :math:`B(CO_2,SST)` and
     :math:`\\delta(CO_2,SST)` are the virial coefficients for :math:`CO_2` (both in :math:`\\text{cm}^3\\,\\text{mol}^{-1}`), which are given as
 
     .. math::
@@ -441,29 +438,31 @@ def fugacity(pCO2, p_equ, SST, xCO2=None):
     δ_CO2 = 57.7 - 0.118*SST
 
     # gas constant
-    R = 8.2057366080960e-2 	        # L⋅atm⋅K−1⋅mol−1
-    R *= 1000                       # cm³⋅atm⋅K−1⋅mol−1
+    R = 8.2057366080960e-2 	# L⋅atm⋅K−1⋅mol−1
+    R *= 1000               # cm³⋅atm⋅K−1⋅mol−1
 
     if xCO2 is None:
         x_c = 1
     else:
-        x_c = (1 - xCO2*1e-6)       # can be and is often neglected in literature
+        x_c = (1 - xCO2*1e-6)  # can be and is often neglected in literature
 
     A = p_equ*(B_CO2 + 2 * δ_CO2 * x_c**2)
     B = R*SST
-    f = pCO2 * np.exp(A / B)        # same unit as pCO2 (µatm)
+    f = pCO2 * np.exp(A / B)   # same unit as pCO2 (µatm)
 
     return f
 
 
-def set_nonoperating_to_nan(data, col='CO2', buffer='30min', status_var='ANA_state'):
+def set_nonoperating_to_nan(data, col="CO2", buffer="30min", status_var="ANA_state"):
     """Set all values from each period, which is ranging from the begin of a certain phase
     (indicated by the status flag) to the end of the phase, plus a given buffer to NaN.
     """
     grouped_by_status = data.groupby((data[status_var] != data[status_var].shift()).cumsum())
 
     # get the first and last index of all periods which are not in operating status
-    non_operating = [(g.index[0], g.index[-1]) for i, g in grouped_by_status if g[status_var].unique() != 5]
+    non_operating = [
+        (g.index[0], g.index[-1]) for i, g in grouped_by_status if g[status_var].unique() != 5
+    ]
     if not non_operating:
         return data
 
@@ -487,8 +486,8 @@ def find_nearest(items: list, pivot: float) -> float:
 
     Examples
     --------
-    >>> result = find_nearest(np.array([2,4,5,7,9,10]), 4.6)
-    >>> int(result)   # Account for type conflicts when testing with pytest
+    >>> result = find_nearest(np.array([2, 4, 5, 7, 9, 10]), 4.6)
+    >>> int(result)  # Account for type conflicts when testing with pytest
     5
     """
     return min(items, key=lambda x: abs(x - pivot))
@@ -513,16 +512,18 @@ def centered_bins(x):
     return x - differences
 
 
-def compress_xarray(data: xr.Dataset | xr.DataArray, complevel: int = 5) -> xr.Dataset | xr.DataArray:
+def compress_xarray(
+    data: xr.Dataset | xr.DataArray, complevel: int = 5
+) -> xr.Dataset | xr.DataArray:
     """Compress :class:`xarray.Dataset` or :class:`xarray.DataArray`.
-    
+
     Parameters
     ----------
     data:
         Data to compress.
     complevel:
         Compression level.
-    
+
     Returns
     -------
     xarray.Dataset | xarray.DataArray

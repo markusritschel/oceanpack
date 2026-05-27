@@ -17,8 +17,8 @@ class DataConversionView:
     @staticmethod
     def display(model: FileSourceModel):
         """Print a summary of the data source, including type and time range."""
-        print( "-------------+------------------------")
+        print("-------------+------------------------")
         print(f" Data source : {model.source_type.value}")
         print(f" Start date  : {pd.to_datetime(model.ds.time[0].values)}")
         print(f" End date    : {pd.to_datetime(model.ds.time[-1].values)}")
-        print( "-------------+------------------------")
+        print("-------------+------------------------")
