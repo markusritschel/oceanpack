@@ -16,7 +16,7 @@ log = logging.getLogger(__name__)
 
 
 class FileSourceType(Enum):
-    """This class determines the file source."""
+    """Enumeration class of supported data source types, each mapping to a dedicated file handler."""
 
     INTERNAL = 'Internal'
     ANALYZER = 'Analyzer'
@@ -25,12 +25,14 @@ class FileSourceType(Enum):
 
     @staticmethod
     def isvalid(source_type: str) -> bool:
-        """Checks if the source type is valid. Returns True if the source type is found."""
+        """Checks if the source type is valid.
+        Return True if the given string matches one of the known source type values.
+        """
         source_types = [member.value for member in FileSourceType]
         return source_type in source_types
     
     def get_filehandler(self):
-        """Get the file handler for the respective source."""
+        """Return the file handler class associated with the determined source type."""
         if self == FileSourceType.ANALYZER:
             from .filehandler import AnalyzerFileHandler
             return AnalyzerFileHandler
@@ -48,6 +50,9 @@ class FileSourceType(Enum):
     
     @classmethod
     def from_string(cls, value: str):
+        """Determines the source type from a string.
+        Looks up and returns the enum member whose value matches the given string.
+        """
         for source in cls:
             if source.value == value:
                 return source
@@ -55,6 +60,7 @@ class FileSourceType(Enum):
 
     @classmethod
     def from_header(cls, file_path):
+        """Infer the source type by inspecting the file header content and the parent directory name."""
         from .filehandler import FileHandlerInterface
         print('Try to estimate source type from header...')
         file_path = Path(file_path)
@@ -78,7 +84,15 @@ class FileSourceType(Enum):
 
 
 class FileSourceModel:
+    """Orchestrates reading, cleaning, and processing of OceanPack log files.
+
+    Resolves the appropriate file handler for the configured source type, reads all
+    log files into a pandas DataFrame, and exposes the result as an xarray Dataset.
+    The source type can be set explicitly or inferred automatically from the file header.
+    """
+
     def __init__(self, source_type: FileSourceType = None) -> None:
+        """Initialize the model, optionally setting the source type and resolving the file handler."""
         self._filehandler = None
         self._source_type = None
         self.source_type = source_type
@@ -89,10 +103,12 @@ class FileSourceModel:
 
     @property
     def source_type(self) -> FileSourceType | None:
+        """The active source type used to select the file handler."""
         return self._source_type
 
     @source_type.setter
     def source_type(self, value: str):
+        """Validate and set the source type, resolving the corresponding file handler."""
         if value is None:
             log.warning("Source type not specified. Need to estimate from header during execution of `load_data`.")
             return None
@@ -107,6 +123,7 @@ class FileSourceModel:
             self._filehandler = self._source_type.get_filehandler()
 
     def load_data(self, path: str):
+        """Collect all log files at the given path and read them into a single DataFrame."""
         all_files = collect_files(path)
 
         if self._source_type is None:
@@ -126,14 +143,14 @@ class FileSourceModel:
         self.history += f'{len(all_files)} files loaded; '
 
     def clean_data(self):
-        """Remove duplicates and NaN values from the data."""
+        """Drops rows with a missing index value and removes duplicate timestamps, keeping the first occurrence."""
         df = self.df
         df = df.loc[df.index.dropna()]
         self.df = df[~df.index.duplicated(keep='first')]
         self.history += 'Removed duplicates; '
 
     def process_data(self):
-        """Convert data to numeric"""
+        """Casts all columns to numeric, drops any that cannot be converted, sorts by index, and builds the xarray Dataset."""
         df = self.df
         for col in df.columns:
             try:
@@ -149,12 +166,14 @@ class FileSourceModel:
 
 
     def _pandas_to_xarray(self):
+        """Converts the internal DataFrame to an xarray Dataset and stores it in ``self.ds``."""
         ds = self.df.to_xarray()
         ds.attrs['source_type'] = self.source_type.value
         self.ds = ds
         self.history += 'Converted pd.DataFrame to xr.Dataset; '
 
     def _add_metadata_to_xarray(self):
+        """Attaches per-variable metadata from the parsed file header as xarray variable attributes."""
         meta = self._metadata.set_index('name')
         for var in self.ds.variables:
             if str(var) in meta.index.values:
@@ -164,6 +183,7 @@ class FileSourceModel:
 
 
     def to_netcdf(self, output_file):
+        """Writes the xarray Dataset to a NetCDF file at the specified path."""
         self.ds.to_netcdf(output_file)
 
 

@@ -22,10 +22,12 @@ class DataProcessor:
         self.ds = None
 
     def load_data(self, file):
+        """Load raw data from `file`."""
         import xarray as xr
         self.ds = xr.open_dataset(file)
 
     def convert_coordinates(self):
+        """Convert longitude and latitude from DDDMM.MMM format to decimal degrees."""
         from oceanpack.utils.helpers import convert_coordinates
         if not all(var in self.ds for var in ['Longitude', 'Latitude']):
             log.warning("Longitude and Latitude variables not found. Skipping coordinate conversion.")
@@ -99,6 +101,7 @@ class DataProcessor:
                 self.ds[var] = df[f'{var}_original']
 
     def to_netcdf(self, output_file):
+        """Write the processed dataset to a netCDF file at `output_file`."""
         try:
             self.ds.load()
         finally:
@@ -107,11 +110,16 @@ class DataProcessor:
 
 
 class DataMerger:
+    """A class that merges multiple netCDF files into a single dataset. This is useful
+    when data from multiple sources (e.g., GPS coordinates, SST from a different sensor, etc.)
+    should be merged into a single dataset for further processing.
+    """
+
     def __init__(self):
         self.merged = None
 
     def merge(self, files, tolerance: str = '2min'):
-        import xarray as xr
+        """Merge multiple netCDF files into a single dataset."""
         from tqdm.auto import tqdm
 
         all_ds = []
@@ -128,6 +136,7 @@ class DataMerger:
         self.merged = xr.merge(all_ds, join="inner", combine_attrs="drop_conflicts")
 
     def select_variables(self):
+        """Select the variables to be kept."""
         vars2keep = [
             "time",
             "CO2",
@@ -151,4 +160,5 @@ class DataMerger:
         self.merged = self.merged.drop_vars(vars2drop, errors="ignore")
 
     def to_netcdf(self, output_file):
+        """Generate output file in netCDF format at `output_file`."""
         self.merged.to_netcdf(output_file)

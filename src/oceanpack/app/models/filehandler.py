@@ -14,8 +14,7 @@ log = logging.getLogger(__name__)
 
 
 class FileHandlerInterface(ABC):
-    def __init__(self):
-        pass
+    """Interface for file handlers that read log files from the OceanPack Analyzer or NetDI unit."""
 
     @staticmethod
     @abstractmethod
