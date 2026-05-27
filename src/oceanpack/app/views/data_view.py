@@ -5,8 +5,8 @@
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #
 import pandas as pd
-from oceanpack.app.models.filesource import FileSourceModel
 
+from oceanpack.app.models.filesource import FileSourceModel
 
 
 class DataConversionView:

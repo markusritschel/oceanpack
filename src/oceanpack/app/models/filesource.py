@@ -5,12 +5,11 @@
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #
 from enum import Enum, IntEnum
-import pandas as pd
-from tqdm.auto import tqdm
 import logging
-
 from pathlib import Path
 
+import pandas as pd
+from tqdm.auto import tqdm
 
 log = logging.getLogger(__name__)
 

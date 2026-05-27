@@ -6,11 +6,15 @@
 #
 """Console script for oceanpack."""
 import click
-from colorama import Fore, Back, Style
-from oceanpack.app.controllers.data_controller import DataConversionController, DataMergeController, DataProcessingController
+from colorama import Fore
 
+from oceanpack.app.controllers.data_controller import (
+    DataConversionController,
+    DataMergeController,
+    DataProcessingController,
+)
 
-welcome_msg = Fore.BLUE + """
+welcome_msg = Fore.BLUE + r"""
                                                 __  
   ____  ________  ____ _____  ____  ____ ______/ /__
  / __ \/ ___/ _ \/ __ `/ __ \/ __ \/ __ `/ ___/ //_/

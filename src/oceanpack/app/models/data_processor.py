@@ -6,7 +6,6 @@
 #
 import logging
 
-
 log = logging.getLogger(__name__)
 
 
@@ -18,6 +17,7 @@ class DataProcessor:
         - Compute fugacity
         - ...
     """
+
     def __init__(self):
         self.ds = None
 
@@ -44,7 +44,7 @@ class DataProcessor:
         self.ds['PressEqu'].attrs['unit'] = 'atm'
         self.ds['PressEqu'].attrs['long_name'] = 'Pressure at equilibrator/membrane'
 
-    def compute_pCO2_wet_equ(self):
+    def compute_pCO2_wet_equ(self):  # noqa: N802
         """Compute pCO2 at the equilibrator in wet air."""
         from oceanpack.utils.helpers import ppm2uatm
         self.ds['pCO2_wet_equ'] = ppm2uatm(self.ds['CO2'], self.ds['PressEqu'])
@@ -121,6 +121,7 @@ class DataMerger:
     def merge(self, files, tolerance: str = '2min'):
         """Merge multiple netCDF files into a single dataset."""
         from tqdm.auto import tqdm
+        import xarray as xr
 
         all_ds = []
         for i, file in enumerate(tqdm(files)):
