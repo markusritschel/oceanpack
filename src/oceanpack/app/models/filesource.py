@@ -4,6 +4,8 @@
 # Date:   2024-06-12
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #
+"""File source model and source type enumeration for managing OceanPack log file ingestion."""
+
 from enum import Enum, IntEnum
 import logging
 from pathlib import Path

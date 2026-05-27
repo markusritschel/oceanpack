@@ -4,6 +4,8 @@
 # Date:   2024-06-13
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #
+"""File handler implementations for parsing OceanPack instrument log files from different source formats."""
+
 from abc import ABC, abstractmethod
 import logging
 

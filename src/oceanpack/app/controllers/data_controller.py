@@ -4,6 +4,8 @@
 # Date:   2024-06-13
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #
+"""Controllers that coordinate loading, processing, and exporting of OceanPack sensor data."""
+
 import logging
 
 from oceanpack.app.models.data_processor import DataMerger, DataProcessor
