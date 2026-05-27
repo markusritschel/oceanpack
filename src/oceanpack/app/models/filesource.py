@@ -6,7 +6,7 @@
 #
 """File source model and source type enumeration for managing OceanPack log file ingestion."""
 
-from enum import Enum, IntEnum
+from enum import Enum
 import logging
 from pathlib import Path
 
