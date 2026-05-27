@@ -4,6 +4,8 @@
 # Date:   2024-07-08
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #
+"""Data processing routines for computing derived oceanographic quantities such as CO2 concentration, pCO2, and fugacity."""
+
 import logging
 
 log = logging.getLogger(__name__)

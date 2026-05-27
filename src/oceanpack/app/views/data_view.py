@@ -4,6 +4,8 @@
 # Date:   2024-06-14
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #
+"""View components for displaying summaries and exporting processed OceanPack data."""
+
 import pandas as pd
 
 from oceanpack.app.models.filesource import FileSourceModel

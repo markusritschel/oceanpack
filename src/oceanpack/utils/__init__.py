@@ -4,8 +4,9 @@
 # Date:   2024-06-14
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #
-import logging
+"""General-purpose utility functions shared across the application."""
 
+import logging
 
 log = logging.getLogger(__name__)
 

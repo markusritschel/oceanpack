@@ -4,7 +4,7 @@
 # Date:   2024-06-13
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #
-"""Console script for oceanpack."""
+"""Command-line interface for OceanPack, providing commands to convert, process, and merge instrument log files."""
 import click
 from colorama import Fore
 

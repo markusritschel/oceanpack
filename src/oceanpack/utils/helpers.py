@@ -4,6 +4,8 @@
 # Date:   2024-06-14
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #
+"""Helper utilities for coordinate conversion, unit handling, and common data transformations."""
+
 from copy import copy
 import logging
 import warnings
