@@ -4,9 +4,8 @@
 # Date:   2024-06-13
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #
-import logging
 from abc import ABC, abstractmethod
-from typing import Tuple
+import logging
 
 import pandas as pd
 
@@ -60,6 +59,7 @@ class InternalFileHandler(FileHandlerInterface):
     read_file(file_path)
         Reads the log file and returns a data and metadata as :class:`pandas.DataFrame`, respectively.
     """
+
     @staticmethod
     def read_file(file_path) -> tuple[pd.DataFrame, pd.DataFrame]:
         """
@@ -135,7 +135,6 @@ class StreamFileHandler(FileHandlerInterface):
         tuple[pd.DataFrame, pd.DataFrame]
             The log file data and metadata as pandas DataFrames.
         """
-
         metadata = StreamFileHandler.read_oceanview_variables()
         data = pd.read_csv(file_path, names=metadata['name'],
                          encoding='iso-8859-1',

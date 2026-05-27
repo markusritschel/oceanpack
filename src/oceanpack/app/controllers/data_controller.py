@@ -5,18 +5,20 @@
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #
 import logging
-from oceanpack.app.models.data_processor import DataMerger, DataProcessor
-from oceanpack.app.views.data_view import DataConversionView
-from oceanpack.app.models.filesource import FileSourceModel
 
+from oceanpack.app.models.data_processor import DataMerger, DataProcessor
+from oceanpack.app.models.filesource import FileSourceModel
+from oceanpack.app.views.data_view import DataConversionView
 
 log = logging.getLogger(__name__)
 
 
 class DataConversionController:
     """A class that controlls the conversion from raw log files retrieved from the OceanPack to
-    netCDF format."""
-    def __init__(self, source_type: str = None):
+    netCDF format.
+    """
+
+    def __init__(self, source_type: str | None = None):
         self.model = FileSourceModel(source_type)
         self.view = DataConversionView()
 
@@ -62,6 +64,7 @@ class DataMergeController:
 
 class DataProcessingController:
     """A class that controls the processing of variables in a netCDF file."""
+
     def __init__(self):
         self.model = DataProcessor()
 
@@ -80,4 +83,3 @@ class DataProcessingController:
     def generate_output(self, path):
         """Generate output file in netCDF format at `path`."""
         self.model.to_netcdf(path)
-

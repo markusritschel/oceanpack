@@ -4,13 +4,13 @@
 # Date:   2024-06-14
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #
+from copy import copy
 import logging
 import warnings
+
 import numpy as np
 import pandas as pd
 import xarray as xr
-from copy import copy
-
 
 log = logging.getLogger(__name__)
 
@@ -262,7 +262,7 @@ def order_of_magnitude(x):
 _CELSIUS_KELVIN_THRESHOLD = 200.0
 
 
-def temperature2K(T):
+def temperature2K(T):  # noqa: N802
     """Convert temperatures given in °C into Kelvin.
 
     Uses a heuristic: values below :data:`_CELSIUS_KELVIN_THRESHOLD` are treated
@@ -284,7 +284,7 @@ def temperature2K(T):
     return T
 
 
-def temperature2C(T):
+def temperature2C(T):  # noqa: N802
     """Convert temperatures given in Kelvin into °C.
 
     Uses a heuristic: values above :data:`_CELSIUS_KELVIN_THRESHOLD` are treated
@@ -305,7 +305,7 @@ def temperature2C(T):
 
 
 def ppm2uatm(xCO2,p_equ,input='wet',T=None,S=None):
-    """Convert mole fraction concentration (in ppm) into partial pressure (in µatm) following :cite:t:`dickson_guide_2007`
+    r"""Convert mole fraction concentration (in ppm) into partial pressure (in µatm) following :cite:t:`dickson_guide_2007`
 
     .. math::
         pCO_2 = xCO_2 \\cdot p_\\text{equ}
@@ -333,7 +333,7 @@ def ppm2uatm(xCO2,p_equ,input='wet',T=None,S=None):
     elif input == "wet":
         pH2O = 0
     else:
-        raise IOError("Input must be either 'dry' or 'wet'.")
+        raise KeyError("Input must be either 'dry' or 'wet'.")
 
     pCO2_wet_equ = xCO2 * (p_equ - pH2O)
     
@@ -359,7 +359,7 @@ def compute_water_vapor_pressure(T, S):
 
 
 def temperature_correction(CO2, T_out=None, T_in=None, method='Takahashi2009', **kwargs):
-    r"""Apply a temperature correction. This might be necessary when the temperatures at the water intake 
+    r"""Apply a temperature correction. This might be necessary when the temperatures at the water intake
     (often outside the ship) and at the OceanPack CTD differ. The correction used here follows :cite:t:`takahashi_climatological_2009`:
 
     .. math::
@@ -391,7 +391,7 @@ def temperature_correction(CO2, T_out=None, T_in=None, method='Takahashi2009', *
     elif method=="Takahashi1993":
         CO2_out = CO2 * np.exp(0.0423*(T_out - T_in))
     else:
-        raise IOError("Unknown method for temperature conversion.")
+        raise KeyError("Unknown method for temperature conversion.")
 
     return CO2_out
 
@@ -455,10 +455,9 @@ def fugacity(pCO2, p_equ, SST, xCO2=None):
 
 
 def set_nonoperating_to_nan(data, col='CO2', buffer='30min', status_var='ANA_state'):
-    """Set all values from each period, which is ranging from the begin of a certain phase 
+    """Set all values from each period, which is ranging from the begin of a certain phase
     (indicated by the status flag) to the end of the phase, plus a given buffer to NaN.
     """
-
     grouped_by_status = data.groupby((data[status_var] != data[status_var].shift()).cumsum())
 
     # get the first and last index of all periods which are not in operating status
