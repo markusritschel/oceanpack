@@ -20,10 +20,12 @@ class FileHandlerInterface(ABC):
     @staticmethod
     @abstractmethod
     def read_file(file_path) -> tuple[pd.DataFrame, pd.DataFrame]:
+        """Reads the log file and returns data and metadata as :class:`pandas.DataFrame`, respectively."""
         pass
 
     @classmethod
     def parse_header(cls, file_path):
+        """Parse the header of the log file to extract metadata information such as variable names, units, and sensors."""
         header_dict = {'nrows': 0}
         with open(file_path, 'r', encoding='Windows 1252') as f:
             while True:
