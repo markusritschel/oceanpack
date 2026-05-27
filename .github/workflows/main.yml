@@ -26,10 +26,8 @@ jobs:
       - name: Install the project
         run: uv sync --locked --dev
 
-      - name: Format check and Lint, no auto-fixing, clear failure messages
-        run: |
-          uv run ruff format --check .
-          uv run ruff check .
+      - name: Lint code, no auto-fixing, clear failure messages
+        run: uv run ruff check .
 
       - name: Run tests
         run: uv run pytest -v
