@@ -87,6 +87,27 @@ def test_compute_salinity_invalid_units():
         compute_salinity(C=35.67560, T=8.0583, p=0.357, units='kg/m3')
 
 
+def test_compute_salinity_units_case_normalisation():
+    """Upper-case variant 'S/M' should be treated identically to 'S/m'."""
+    sal_lower = compute_salinity(C=3.567560, T=8.0583, p=0.357, units='S/m')
+    sal_upper = compute_salinity(C=3.567560, T=8.0583, p=0.357, units='S/M')
+    assert sal_lower == sal_upper
+
+
+def test_compute_salinity_units_alias_siemens_meter():
+    """Alias 'Siemens/Meter' should convert the same as 'S/m'."""
+    sal_alias = compute_salinity(C=3.567560, T=8.0583, p=0.357, units='Siemens/Meter')
+    sal_sm = compute_salinity(C=3.567560, T=8.0583, p=0.357, units='S/m')
+    assert sal_alias == sal_sm
+
+
+def test_compute_salinity_xarray_unrecognised_units():
+    """A DataArray with an unknown units attribute must raise ValueError."""
+    C_da = xr.DataArray(35.67560, attrs={'units': 'kg/m3'})
+    with pytest.raises(ValueError, match="Unknown conductivity units"):
+        compute_salinity(C=C_da, T=8.0583, p=0.357)
+
+
 def test_order_of_magnitude():
     assert order_of_magnitude(0) == None
     assert order_of_magnitude(2) == 0

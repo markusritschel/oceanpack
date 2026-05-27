@@ -89,7 +89,7 @@ def compute_salinity(C, T, p, units=None):
     else:
         # heuristic: seawater mS/cm is ~20–70 (OOM 1–2); S/m is ~2–7 (OOM 0–1)
         c_vals = np.asarray(C, dtype=float).ravel()
-        c_vals = c_vals[np.isfinite(c_vals)]
+        c_vals = c_vals[np.isfinite(c_vals) & (c_vals > 0)]
         if len(c_vals) > 0:
             oom_vals = order_of_magnitude(c_vals)
             if oom_vals is not None:
@@ -103,7 +103,14 @@ def compute_salinity(C, T, p, units=None):
                         UserWarning,
                         stacklevel=2,
                     )
-        log.info("Conductivity assumed to be in mS/cm (no units provided or detected)")
+                    log.warning(
+                        "Conductivity OOM suggests S/m input but no units were given; "
+                        "salinity result may be wrong"
+                    )
+                else:
+                    log.info("Conductivity assumed to be in mS/cm (no units provided or detected)")
+        else:
+            log.info("Conductivity assumed to be in mS/cm (no units provided or detected)")
     # --- end unit handling ---
 
     p = pressure2mbar(p) / 100  # convert hPa (mbar) -> dbar
