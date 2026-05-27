@@ -41,21 +41,21 @@ class DataConversionController:
 
 class DataMergeController:
     """A class that controls the merging of multiple netCDF files into a single dataset. This is useful
-    when data from multiple sources (e.g., GPS coordinates, SST from a different sensor, etc.) should be 
+    when data from multiple sources (e.g., GPS coordinates, SST from a different sensor, etc.) should be
     merged into a single dataset for further processing.
     """
 
     def __init__(self):
         self.model = DataMerger()
 
-    def merge(self, files, tolerance: str = '2min', **kwargs):
+    def merge(self, files, tolerance: str = "2min", **kwargs):
         """Merge multiple netCDF files into a single dataset.
-        The `tolerance` parameter determines the maximum time difference allowed when aligning timestamps 
-        across input files. The `keep_all` parameter determines whether to keep all variables from the 
+        The `tolerance` parameter determines the maximum time difference allowed when aligning timestamps
+        across input files. The `keep_all` parameter determines whether to keep all variables from the
         input files or to select only a subset of important variables after merging.
         """
         self.model.merge(files, tolerance=tolerance)
-        if kwargs.pop('keep_all') is False:
+        if kwargs.pop("keep_all") is False:
             log.info("Remove variables that are not important for further analysis.")
             self.model.select_variables()
 
