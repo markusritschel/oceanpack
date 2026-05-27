@@ -70,51 +70,9 @@ def compute_salinity(C, T, p, units=None):
     >>> compute_salinity(C=52, T=25, p=1013)
     34.20810771080768
     """
-    # --- unit handling ---
-    # 1. auto-detect from xarray DataArray attribute
-    if units is None and isinstance(C, xr.DataArray) and 'units' in C.attrs:
-        units = C.attrs['units']
-        log.info("Conductivity units auto-detected from DataArray attribute: '%s'", units)
-
-    if units is not None:
-        units_norm = units.strip().lower().replace(' ', '')
-        if units_norm in ('s/m', 'siemens/m', 'siemens/meter'):
-            C = C * 10  # S/m → mS/cm (PSS-78 requires mS/cm)
-            log.info("Conductivity converted from S/m to mS/cm for PSS-78 formula")
-        elif units_norm not in ('ms/cm', 'millisiemens/cm', 'millisiemens/centimeter'):
-            raise ValueError(
-                f"Unknown conductivity units '{units}'. "
-                "Expected 'mS/cm' or 'S/m'."
-            )
-    else:
-        # heuristic: seawater mS/cm is ~20–70 (OOM 1–2); S/m is ~2–7 (OOM 0–1)
-        c_vals = np.asarray(C, dtype=float).ravel()
-        c_vals = c_vals[np.isfinite(c_vals) & (c_vals > 0)]
-        if len(c_vals) > 0:
-            oom_vals = order_of_magnitude(c_vals)
-            if oom_vals is not None:
-                median_oom = float(np.nanmedian(oom_vals))
-                if median_oom < 1:
-                    warnings.warn(
-                        f"Conductivity values have a median order of magnitude of "
-                        f"{median_oom:.0f}, which looks like S/m rather than mS/cm. "
-                        "PSS-78 requires mS/cm. Pass units='S/m' to convert "
-                        "automatically, or units='mS/cm' to suppress this warning.",
-                        UserWarning,
-                        stacklevel=2,
-                    )
-                    log.warning(
-                        "Conductivity OOM suggests S/m input but no units were given; "
-                        "salinity result may be wrong"
-                    )
-                else:
-                    log.info("Conductivity assumed to be in mS/cm (no units provided or detected)")
-        else:
-            log.info("Conductivity assumed to be in mS/cm (no units provided or detected)")
-    # --- end unit handling ---
-
-    p = pressure2mbar(p) / 100  # convert hPa (mbar) -> dbar
+    C = _conductivity_unit_handling(C, units)
     T = temperature2C(T)
+    p = pressure2mbar(p) / 100  # convert hPa (mbar) -> dbar
 
     a0 = 0.008
     a1 = -0.1692
@@ -163,6 +121,51 @@ def compute_salinity(C, T, p, units=None):
     salinity = a0 + a1*ξ + a2*ξ**2 + a3*ξ**3 + a4*ξ**4 + a5*ξ**5 + dSal
 
     return float(salinity)
+
+
+def _conductivity_unit_handling(C, units=None):
+    # 1. auto-detect from xarray DataArray attribute
+    if units is None and isinstance(C, xr.DataArray) and 'units' in C.attrs:
+        units = C.attrs['units']
+        log.info("Conductivity units auto-detected from DataArray attribute: '%s'", units)
+
+    if units is not None:
+        units_norm = units.strip().lower().replace(' ', '')
+        if units_norm in ('s/m', 'siemens/m', 'siemens/meter'):
+            C = C * 10  # S/m → mS/cm (PSS-78 requires mS/cm)
+            log.info("Conductivity converted from S/m to mS/cm for PSS-78 formula")
+        elif units_norm not in ('ms/cm', 'millisiemens/cm', 'millisiemens/centimeter'):
+            raise ValueError(
+                f"Unknown conductivity units '{units}'. "
+                "Expected 'mS/cm' or 'S/m'."
+            )
+    else:
+        # heuristic: seawater mS/cm is ~20–70 (OOM 1–2); S/m is ~2–7 (OOM 0–1)
+        c_vals = np.asarray(C, dtype=float).ravel()
+        c_vals = c_vals[np.isfinite(c_vals) & (c_vals > 0)]
+        if len(c_vals) > 0:
+            oom_vals = order_of_magnitude(c_vals)
+            if oom_vals is not None:
+                median_oom = float(np.nanmedian(oom_vals))
+                if median_oom < 1:
+                    warnings.warn(
+                        f"Conductivity values have a median order of magnitude of "
+                        f"{median_oom:.0f}, which looks like S/m rather than mS/cm. "
+                        "PSS-78 requires mS/cm. Pass units='S/m' to convert "
+                        "automatically, or units='mS/cm' to suppress this warning.",
+                        UserWarning,
+                        stacklevel=2,
+                    )
+                    log.warning(
+                        "Conductivity OOM suggests S/m input but no units were given; "
+                        "salinity result may be wrong"
+                    )
+                else:
+                    log.info("Conductivity assumed to be in mS/cm (no units provided or detected)")
+        else:
+            log.info("Conductivity assumed to be in mS/cm (no units provided or detected)")
+    # --- end unit handling ---
+    return C
 
 
 def pressure2atm(p):
@@ -356,7 +359,7 @@ def compute_water_vapor_pressure(T, S):
 
 
 def temperature_correction(CO2, T_out=None, T_in=None, method='Takahashi2009', **kwargs):
-    """Apply a temperature correction. This might be necessary when the temperatures at the water intake 
+    r"""Apply a temperature correction. This might be necessary when the temperatures at the water intake 
     (often outside the ship) and at the OceanPack CTD differ. The correction used here follows :cite:t:`takahashi_climatological_2009`:
 
     .. math::
@@ -394,7 +397,7 @@ def temperature_correction(CO2, T_out=None, T_in=None, method='Takahashi2009', *
 
 
 def fugacity(pCO2, p_equ, SST, xCO2=None):
-    """Calculate the fugacity of CO2. Can be done either before or after a :func:`temperature_correction`.
+    r"""Calculate the fugacity of CO2. Can be done either before or after a :func:`temperature_correction`.
     The formulas follow :cite:t:`dickson_guide_2007`, mainly SOP 5, Chapter 8. "Calculation and expression of results".
 
     .. math::
