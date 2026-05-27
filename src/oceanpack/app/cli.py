@@ -48,6 +48,10 @@ def convert_data(path, source_type, output_file):
     controller.load_data(path)
     controller.display()
     controller.generate_output(output_file)
+    click.echo("As a next step, run `merge-data` to merge the converted files into a single dataset. "
+               "Consider providing a netCDF file with additional variables such as GPS coordinates"
+               "or `SST` measured outside the ship near the water intake. See the documentation for"
+               "more information about this.")
 
 
 @main.command
