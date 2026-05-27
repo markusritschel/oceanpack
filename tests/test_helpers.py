@@ -4,11 +4,14 @@
 # Date:   2024-06-12
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #
+import warnings
 import numpy as np
+import pytest
+import xarray as xr
 
-from oceanpack.utils.helpers import (_split_degrees_minutes, convert_coordinates, 
+from oceanpack.utils.helpers import (_split_degrees_minutes, convert_coordinates,
                                      compute_salinity, order_of_magnitude,
-                                     pressure2atm, temperature2K, 
+                                     pressure2atm, temperature2K,
                                      find_nearest, centered_bins)
 
 
@@ -27,6 +30,61 @@ def test_cond2sal_converter():
     assert np.isclose(salinity_ctd, salinity_computed, rtol=1e-4), \
         "The calculated value deviates too much from the true value!" \
         "Relative tolerance exceeds 1e-4."
+
+
+def test_compute_salinity_explicit_mscm_unchanged():
+    """Explicit units='mS/cm' must produce the same result as the default (no units)."""
+    sal_default = compute_salinity(C=35.67560, T=8.0583, p=0.357)
+    sal_explicit = compute_salinity(C=35.67560, T=8.0583, p=0.357, units='mS/cm')
+    assert sal_default == sal_explicit
+
+
+def test_compute_salinity_sm_matches_mscm():
+    """S/m input multiplied by 10 should give the same salinity as the mS/cm value."""
+    sal_mscm = compute_salinity(C=35.67560, T=8.0583, p=0.357)
+    sal_sm = compute_salinity(C=3.567560, T=8.0583, p=0.357, units='S/m')
+    assert np.isclose(sal_mscm, sal_sm, rtol=1e-9)
+
+
+def test_compute_salinity_sm_warns_without_units():
+    """Values that look like S/m (OOM < 1) must raise a UserWarning when units are not given."""
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always")
+        compute_salinity(C=3.5676, T=8.0583, p=0.357)
+    assert len(caught) == 1
+    assert issubclass(caught[0].category, UserWarning)
+    assert "S/m" in str(caught[0].message)
+
+
+def test_compute_salinity_mscm_no_warning():
+    """Values in the normal mS/cm range must not trigger a warning."""
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always")
+        compute_salinity(C=35.67560, T=8.0583, p=0.357)
+    unit_warnings = [w for w in caught if issubclass(w.category, UserWarning)]
+    assert len(unit_warnings) == 0
+
+
+def test_compute_salinity_xarray_sm_autodetect():
+    """xr.DataArray with units='S/m' should auto-convert and match the mS/cm result."""
+    C_da = xr.DataArray(3.567560, attrs={'units': 'S/m'})
+    sal_auto = compute_salinity(C=C_da, T=8.0583, p=0.357)
+    sal_expected = compute_salinity(C=35.67560, T=8.0583, p=0.357)
+    assert np.isclose(sal_auto, sal_expected, rtol=1e-9)
+
+
+def test_compute_salinity_xarray_mscm_autodetect():
+    """xr.DataArray with units='mS/cm' should not convert and must match the plain float result."""
+    C_da = xr.DataArray(35.67560, attrs={'units': 'mS/cm'})
+    sal_auto = compute_salinity(C=C_da, T=8.0583, p=0.357)
+    sal_expected = compute_salinity(C=35.67560, T=8.0583, p=0.357)
+    assert np.isclose(sal_auto, sal_expected, rtol=1e-9)
+
+
+def test_compute_salinity_invalid_units():
+    """An unrecognized units string must raise ValueError."""
+    with pytest.raises(ValueError, match="Unknown conductivity units"):
+        compute_salinity(C=35.67560, T=8.0583, p=0.357, units='kg/m3')
 
 
 def test_order_of_magnitude():
