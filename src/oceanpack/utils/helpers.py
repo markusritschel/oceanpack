@@ -5,6 +5,7 @@
 # %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 #
 import logging
+import warnings
 import numpy as np
 import pandas as pd
 import xarray as xr
@@ -45,14 +46,66 @@ def _split_degrees_minutes(x):
     return degrees, minutes
 
 
-def compute_salinity(C, T, p):
+def compute_salinity(C, T, p, units=None):
     """Compute salinity from conductivity, according to :cite:t:`lewis_practical_1981`.
-    
+
+    Parameters
+    ----------
+    C : float or array-like or xr.DataArray
+        Conductivity. The PSS-78 formula requires mS/cm. If ``C`` is an
+        :class:`xarray.DataArray` with a ``units`` attribute the unit is detected
+        automatically. Pass ``units='S/m'`` to convert S/m input explicitly.
+    T : float
+        Temperature (°C or K; converted internally).
+    p : float
+        Pressure (hPa, Pa or atm; converted internally).
+    units : str, optional
+        Conductivity units: ``'mS/cm'`` or ``'S/m'``.  When *None* the function
+        first checks for a DataArray ``units`` attribute, then falls back to an
+        order-of-magnitude heuristic and emits a :class:`UserWarning` when the
+        values look like S/m.
+
     Example
     -------
     >>> compute_salinity(C=52, T=25, p=1013)
     34.20810771080768
     """
+    # --- unit handling ---
+    # 1. auto-detect from xarray DataArray attribute
+    if units is None and isinstance(C, xr.DataArray) and 'units' in C.attrs:
+        units = C.attrs['units']
+        log.info("Conductivity units auto-detected from DataArray attribute: '%s'", units)
+
+    if units is not None:
+        units_norm = units.strip().lower().replace(' ', '')
+        if units_norm in ('s/m', 'siemens/m', 'siemens/meter'):
+            C = C * 10  # S/m → mS/cm (PSS-78 requires mS/cm)
+            log.info("Conductivity converted from S/m to mS/cm for PSS-78 formula")
+        elif units_norm not in ('ms/cm', 'millisiemens/cm', 'millisiemens/centimeter'):
+            raise ValueError(
+                f"Unknown conductivity units '{units}'. "
+                "Expected 'mS/cm' or 'S/m'."
+            )
+    else:
+        # heuristic: seawater mS/cm is ~20–70 (OOM 1–2); S/m is ~2–7 (OOM 0–1)
+        c_vals = np.asarray(C, dtype=float).ravel()
+        c_vals = c_vals[np.isfinite(c_vals)]
+        if len(c_vals) > 0:
+            oom_vals = order_of_magnitude(c_vals)
+            if oom_vals is not None:
+                median_oom = float(np.nanmedian(oom_vals))
+                if median_oom < 1:
+                    warnings.warn(
+                        f"Conductivity values have a median order of magnitude of "
+                        f"{median_oom:.0f}, which looks like S/m rather than mS/cm. "
+                        "PSS-78 requires mS/cm. Pass units='S/m' to convert "
+                        "automatically, or units='mS/cm' to suppress this warning.",
+                        UserWarning,
+                        stacklevel=2,
+                    )
+        log.info("Conductivity assumed to be in mS/cm (no units provided or detected)")
+    # --- end unit handling ---
+
     p = pressure2mbar(p) / 100  # convert hPa (mbar) -> dbar
     T = temperature2C(T)
 
@@ -85,8 +138,6 @@ def compute_salinity(C, T, p):
     B4 = -3.107e-3
 
     R = C / 42.914  # units: mS/cm
-    # TODO: check input units of Conductivity! "If you are working in conductivity units of Siemens/meter (S/m), multiply your conductivity values by 10 before using the PSS 1978 equations. "
-    # maybe use units from log file for auto-conversion and print a hint or so (this could be already done during the read routine)
 
     rT = c0 + c1*T + c2*T**2 + c3*T**3 + c4*T**4
 
