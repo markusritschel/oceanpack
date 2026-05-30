@@ -53,6 +53,7 @@ ignore = [
     "E701",  # multiple statements    — formatter handles this
     "W291",  # trailing whitespace    — stripped automatically by the formatter
     "W293",  # whitespace blank lines — harmless and stripped by the formatter
+    "N802", # function name should be lowercase — often intentional for mathematical functions/constants
 
     # Q (flake8-quotes) is intentionally not selected: quote style is owned by `ruff format`
     # (quote-style = "double"). Enabling Q alongside the formatter causes conflicts.

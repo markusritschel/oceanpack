@@ -259,7 +259,7 @@ def order_of_magnitude(x):
 _CELSIUS_KELVIN_THRESHOLD = 200.0
 
 
-def temperature2K(T):  # noqa: N802
+def temperature2K(T):
     """Convert temperatures given in °C into Kelvin.
 
     Uses a heuristic: values below :data:`_CELSIUS_KELVIN_THRESHOLD` are treated
@@ -281,7 +281,7 @@ def temperature2K(T):  # noqa: N802
     return T
 
 
-def temperature2C(T):  # noqa: N802
+def temperature2C(T):
     """Convert temperatures given in Kelvin into °C.
 
     Uses a heuristic: values above :data:`_CELSIUS_KELVIN_THRESHOLD` are treated
