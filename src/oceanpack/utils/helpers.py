@@ -193,7 +193,7 @@ def pressure2atm(p):
     elif -1 <= np.nanmedian(np.rint(order_of_magnitude(p))) <= 1:
         log.info("Pressure is assumed to be already in atm (no conversion)")
     else:
-        raise IOError("Pressure must be given in hPa, Pa or atm")
+        raise ValueError("Pressure must be given in hPa, Pa or atm")
     return p
 
 
@@ -223,7 +223,7 @@ def pressure2mbar(p):
         log.info("Pressure is assumed to be in atm and was converted to mbar (hPa)")
         p *= 1013.25
     else:
-        raise IOError("Pressure must be given in hPa, Pa or atm")
+        raise ValueError("Pressure must be given in hPa, Pa or atm")
     return p
 
 
@@ -330,7 +330,7 @@ def ppm2uatm(xCO2, p_equ, input="wet", T=None, S=None):
     elif input == "wet":
         pH2O = 0
     else:
-        raise KeyError("Input must be either 'dry' or 'wet'.")
+        raise ValueError("Input must be either 'dry' or 'wet'.")
 
     pCO2_wet_equ = xCO2 * (p_equ - pH2O)
 
@@ -390,7 +390,7 @@ def temperature_correction(CO2, T_out=None, T_in=None, method="Takahashi2009", *
     elif method=="Takahashi1993":
         CO2_out = CO2 * np.exp(0.0423*(T_out - T_in))
     else:
-        raise KeyError("Unknown method for temperature conversion.")
+        raise ValueError("Unknown method for temperature conversion.")
 
     return CO2_out
 
