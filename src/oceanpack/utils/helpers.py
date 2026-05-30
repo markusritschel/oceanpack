@@ -276,6 +276,10 @@ def temperature2K(T):
         if (T >= _CELSIUS_KELVIN_THRESHOLD).any():
             log.warning("Some values seem to be already in Kelvin")
         T.loc[T < _CELSIUS_KELVIN_THRESHOLD] += 273.15
+    elif isinstance(T, xr.DataArray):
+        if (T >= _CELSIUS_KELVIN_THRESHOLD).any():
+            log.warning("Some values seem to be already in Kelvin")
+        T = T.where(T >= _CELSIUS_KELVIN_THRESHOLD, T + 273.15)
     elif T < _CELSIUS_KELVIN_THRESHOLD:
         T += 273.15
     return T
