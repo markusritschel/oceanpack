@@ -106,32 +106,9 @@ The OceanPack's analyzer measures the xCO2 concentration in wet air.
 Note that $p_\text{equ}$ must be in units of Pa!
 
 
-### Temperature correction
-:::{warning}
-This is not implemented yet.
-:::
-
-Often, when doing measurements at sea, the temperature at the equilibrator and the temperature at the water intake differ.
-This can be taken into account by correcting the xCO2 concentration to the sea surface temperature (SST).
-The correction used here follows {cite:t}`takahashi_climatological_2009`:
-
-$$
-\begin{equation*}
-{(xCO_2)}_{SST} = {(xCO_2)}_{T_\text{equ}} \cdot \exp{\Big(0.0433\cdot(SST - T_\text{equ}) - 4.35\times 10^{-5}\cdot(SST^2 - T_\text{equ}^2)\Big)}
-\end{equation*}
-$$
-
-```{tip}
-If the measurements were taken onboard a ship, the way for the water from the intake to the OceanPack might be quite long. In that case, one should first perform a lag analysis and correct the time series of the intake temperature accordingly.
-```
-
-
 ### Compute the fugacity
-:::{warning}
-This is not implemented yet.
-:::
 
-Finally, we compute the fugacity by hands of the before calculated partial pressure, the pressure at the equilibrator, and the SST.
+Finally, we compute the fugacity by hands of the before calculated partial pressure, the pressure at the equilibrator, and the corresponding temperature.
 
 According to {cite:t}`dickson_guide_2007` (e.g. the example in SOP 24, page 4 f.), the fugacity can be calculated via
 
@@ -160,3 +137,22 @@ $$
 
 following {cite:t}`weiss_carbon_1974`.
 Again, $p_\text{equ}$ is in units of Pa.
+
+
+### Temperature correction
+
+Often, when doing measurements at sea, the temperature at the equilibrator and the temperature at the water intake differ.
+This can be taken into account by correcting the xCO2 concentration to the sea surface temperature (SST).
+The correction used here follows {cite:t}`takahashi_climatological_2009`:
+
+$$
+\begin{equation*}
+{(xCO_2)}_{SST} = {(xCO_2)}_{T_\text{equ}} \cdot \exp{\Big(0.0433\cdot(SST - T_\text{equ}) - 4.35\times 10^{-5}\cdot(SST^2 - T_\text{equ}^2)\Big)}
+\end{equation*}
+$$
+
+`xCO2` can be either `pCO2` or `fCO2` in wet air, and the correction is applied to both variables.
+
+```{tip}
+If the measurements were taken onboard a ship, the way for the water from the intake to the OceanPack might be quite long. In that case, one should first perform a lag analysis and correct the time series of the intake temperature accordingly.
+```
