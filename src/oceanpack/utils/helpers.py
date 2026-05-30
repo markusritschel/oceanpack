@@ -385,9 +385,9 @@ def temperature_correction(CO2, T_out=None, T_in=None, method="Takahashi2009", *
     method: str
         Either "Takahashi2009" or "Takahashi1993", describing the method of the respectively published paper by Takahashi et al.
     """
-    if T_out is None: 
+    if T_out is None:
         T_out = kwargs.pop("T_insitu")
-    if T_in is None: 
+    if T_in is None:
         T_in = kwargs.pop("T_equ")
     if method=="Takahashi2009":
         CO2_out = CO2 * np.exp(0.0433*(T_out - T_in) - 4.35e-5*(T_out**2 - T_in**2))
