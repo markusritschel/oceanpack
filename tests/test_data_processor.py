@@ -8,7 +8,6 @@ import numpy as np
 import xarray as xr
 
 from oceanpack.app.models.data_processor import DataProcessor
-from oceanpack.utils.helpers import fugacity
 
 
 def _make_ds(**overrides):
