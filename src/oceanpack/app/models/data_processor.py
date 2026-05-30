@@ -51,7 +51,7 @@ class DataProcessor:
         self.ds["PressEqu"].attrs["unit"] = "atm"
         self.ds["PressEqu"].attrs["long_name"] = "Pressure at equilibrator/membrane"
 
-    def compute_pCO2_wet_equ(self):  # noqa: N802
+    def compute_pCO2_wet_equ(self):
         """Compute pCO2 at the equilibrator in wet air."""
         from oceanpack.utils.helpers import ppm2uatm
 
