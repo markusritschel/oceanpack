@@ -28,22 +28,22 @@ git clone https://github.com/markusritschel/oceanpack
 Then, in the new directory (`cd oceanpack/`) install the package via:
 
 ```bash
-pip install .
+uv sync
 ```
 
-or via
+or, if you also want the development dependencies:
 
 ```bash
-pip install -e .
+uv sync --dev
 ```
-
-if you plan to make changes to the code.
 
 Alternatively, install directly from GitHub via
 
 ```bash
-pip install 'git+https://github.com/markusritschel/oceanpack.git'
+uv add 'git+https://github.com/markusritschel/oceanpack.git'
 ```
+
+to add to an existing project.
 
 ## Examples
 
@@ -51,10 +51,10 @@ In the subdirectory `notebooks` one can also find a [Jupyter Notebook](https://g
 
 ## Testing
 
-Run `make tests` in the source directory to test the code.
+Run `just test` in the source directory to test the code.
 This will execute both the unit tests and docstring examples (using `pytest`).
 
-Run `make lint` to check code style consistency.
+Run `just lint` to check code style consistency.
 
 ## Contact & Issues
 
