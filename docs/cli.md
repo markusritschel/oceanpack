@@ -59,7 +59,7 @@ This command will perform the following steps:
 3. Pressure at the equilibrator
 4. Compute the pCO2 at the equilibrator in wet air
 5. Temperature correction
-6. Compute the fugacity (not implemented yet)
+6. Compute the fugacity
 
 
 ```{warning}

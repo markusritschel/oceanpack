@@ -55,12 +55,52 @@ class DataProcessor:
         """Compute pCO2 at the equilibrator in wet air."""
         from oceanpack.utils.helpers import ppm2uatm
 
-        self.ds["pCO2_wet_equ"] = ppm2uatm(self.ds["CO2"], self.ds["PressEqu"])
+        _required_variables = ["CO2", "PressEqu"]
+        if any(var not in self.ds.variables for var in _required_variables):
+            log.warning(
+                "⚠️  pCO2 calculation skipped. The following variables were not found but are required for the pCO2 calculation:\n"
+                f"\t{', '.join([var for var in _required_variables if var not in self.ds.variables])}"
+            )
+            return
+
+        self.ds["pCO2_wet_equ"] = ppm2uatm(
+            self.ds["CO2"], 
+            self.ds["PressEqu"]
+        )
         self.ds["pCO2_wet_equ"].attrs["unit"] = "µatm"
         self.ds["pCO2_wet_equ"].attrs["long_name"] = "pCO2 at equilibrator/membrane in wet air"
 
-    def compute_temperature_correction(self):
-        """Correct pCO2 from equilibrator temperature to in-situ SST.
+    def compute_fCO2_wet_equ(self):
+        """Compute fugacity of CO2 at the equilibrator."""
+        from oceanpack.utils.helpers import fugacity
+
+        _required_variables = ["pCO2_wet_equ", "PressEqu", "SBE45Temp"]
+        if any(var not in self.ds.variables for var in _required_variables):
+            log.warning(
+                "⚠️  Fugacity calculation skipped. The following variables were not found but are required for the fugacity calculation:\n"
+                f"\t{', '.join([var for var in _required_variables if var not in self.ds.variables])}"
+            )
+            return
+
+        self.ds["fCO2_wet_equ"] = fugacity(
+            self.ds["pCO2_wet_equ"],
+            self.ds["PressEqu"],
+            self.ds["SBE45Temp"],
+            xCO2=self.ds["CO2"]
+        )
+        self.ds["fCO2_wet_equ"].attrs["unit"] = "µatm"
+        self.ds["fCO2_wet_equ"].attrs["long_name"] = "fCO2 at equilibrator/membrane in wet air"
+
+    def compute_pCO2_wet_sst(self):
+        """Compute pCO2 at in-situ sea surface temperature (SST) in wet air."""
+        self._apply_temperature_correction("pCO2_wet_equ")
+    
+    def compute_fCO2_wet_sst(self):
+        """Compute fugacity of CO2 at in-situ sea surface temperature (SST) in wet air."""
+        self._apply_temperature_correction("fCO2_wet_equ")
+
+    def _apply_temperature_correction(self, xCO2_var):
+        """Correct xCO2 from equilibrator temperature to in-situ SST.
 
         Applies the Takahashi correction formula.
         T_equ is approximated by waterTemp (internal SBE45 temperature).
@@ -77,24 +117,27 @@ class DataProcessor:
         """
         from oceanpack.utils.helpers import temperature_correction
 
-        CO2_var = "pCO2_wet_equ"
+        # xCO2_var ∈ {"pCO2_wet_equ" or "fCO2_wet_equ"}
         T_equ_var = "SBE45Temp"  # equilibrator temperature (approximated by internal SBE45)
         T_target_var = "SST"  # in-situ sea surface temperature (SST)
-        for var in [CO2_var, T_target_var, T_equ_var]:
-            if var not in self.ds.variables:
-                log.warning(f"⚠️  {var} variable not found. Skipping temperature correction.")
-                return
-        CO2 = self.ds[CO2_var]
-        T_target = self.ds[T_target_var]
-        T_equ = self.ds[T_equ_var]
-        self.ds["pCO2_wet_sst"] = temperature_correction(
-            CO2=CO2, T_out=T_target, T_in=T_equ, method="Takahashi2009"
+        _required_variables = [xCO2_var, "SBE45Temp", "SST"]
+        if any(var not in self.ds.variables for var in _required_variables):
+            log.warning(
+                "⚠️  Temperature correction skipped. The following variables were not found but are required for the temperature correction:\n"
+                f"\t{', '.join([var for var in _required_variables if var not in self.ds.variables])}"
+            )
+            return
+        xCO2_target_var = xCO2_var.replace("equ", "sst")
+        self.ds[xCO2_target_var] = temperature_correction(
+            CO2=self.ds[xCO2_var], 
+            T_out=self.ds[T_target_var], 
+            T_in=self.ds[T_equ_var], 
+            method="Takahashi2009"
         )
-        self.ds["pCO2_wet_sst"].attrs["unit"] = "µatm"
-        self.ds["pCO2_wet_sst"].attrs["long_name"] = (
-            "pCO2 at SST in wet air (temperature-corrected)"
+        self.ds[xCO2_target_var].attrs["unit"] = "µatm"
+        self.ds[xCO2_target_var].attrs["long_name"] = (
+            f"{xCO2_target_var} at SST in wet air (temperature-corrected)"
         )
-
 
     def remove_non_operating_phases(self):
         """Set CO2 values in non-operating phases to NaN"""
