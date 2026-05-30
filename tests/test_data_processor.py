@@ -53,7 +53,7 @@ def test_temperature_correction_normal_case():
     pco2 = 400.0
 
     proc = _make_processor(pco2, t_equ, sst)
-    proc.compute_temperature_correction()
+    proc.compute_pCO2_wet_sst()
 
     expected = pco2 * np.exp(0.0433 * (sst - t_equ) - 4.35e-5 * (sst**2 - t_equ**2))
     result = float(proc.ds["pCO2_wet_sst"].values[0])
@@ -69,7 +69,7 @@ def test_temperature_correction_sst_equals_tequ():
     pco2 = 380.0
 
     proc = _make_processor(pco2, temp, temp)
-    proc.compute_temperature_correction()
+    proc.compute_pCO2_wet_sst()
 
     result = float(proc.ds["pCO2_wet_sst"].values[0])
     assert np.isclose(result, pco2, rtol=1e-12), (
@@ -80,7 +80,7 @@ def test_temperature_correction_sst_equals_tequ():
 def test_temperature_correction_output_attributes():
     """Output variable must carry correct unit and long_name attributes."""
     proc = _make_processor(400.0, 20.0, 18.0)
-    proc.compute_temperature_correction()
+    proc.compute_pCO2_wet_sst()
 
     attrs = proc.ds["pCO2_wet_sst"].attrs
     assert attrs.get("unit") == "µatm"
