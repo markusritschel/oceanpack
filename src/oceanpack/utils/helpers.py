@@ -247,7 +247,7 @@ def order_of_magnitude(x):
     """
     x = np.asarray(x)
     if np.all(x == 0):
-        return None
+        return np.zeros(len(x))
     x = x[x != 0]
     oom = np.floor(np.log10(x))
     # oom = (np.int32(np.log10(np.abs(x))) + 1)
