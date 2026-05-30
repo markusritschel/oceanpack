@@ -119,7 +119,7 @@ def test_compute_salinity_xarray_unrecognised_units():
 
 
 def test_order_of_magnitude():
-    assert order_of_magnitude(0) == None
+    assert order_of_magnitude(0) == 0
     assert order_of_magnitude(2) == 0
     assert order_of_magnitude(10) == 1
     assert order_of_magnitude(300) == 2
