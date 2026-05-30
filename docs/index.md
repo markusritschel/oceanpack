@@ -20,7 +20,7 @@ It provides continuous real-time data on a variety of parameters such as tempera
 Data are usually stored on an SD card but can also be streamed to a computer.
 ```
 
-The routines in this package contain routines for conversion of xCO2 to pCO2, for applying temperature corrections, computing the fugacity, etc.
+The package provides routines for conversion of xCO2 to pCO2, for applying temperature corrections, computing the fugacity, etc.
 
 A full description of the functions and the underlying algorithms can be found in the Module Reference.
 
@@ -28,33 +28,26 @@ A full description of the functions and the underlying algorithms can be found i
 
 ### Installation
 
-#### Install via pip
-
-The easiest way to install the package is via pip directly from this repository:
-
-```bash
-$ pip install git+https://github.com/markusritschel/oceanpack.git
-```
-
-#### Clone repo and install locally
-
-Alternatively, clone the repo and use the *Make* targets provided.
-First, run
+After cloning the repository, you can install the package in your environment.
+The recommended way to install is via [`uv`](https://docs.astral.sh/uv/):
 
 ```bash
-make conda-env
-# or alternatively
-make install-requirements
+uv sync
 ```
 
-to install the required packages either via `conda` or `pip`, followed by
+This installs all dependencies and makes the project's source code (located in `src`) available for import.
+Then activate the virtual environment:
 
 ```bash
-make src-available
+source .venv/bin/activate
 ```
 
-to make the project's routines (located in `src`) available for import.
-This will also give you access to a command line interface (CLI) that can be used for some basic tasks.
+Alternatively, add directly from GitHub to an existing project:
+
+```bash
+uv add git+https://github.com/markusritschel/oceanpack.git
+```
+
 
 ### Usage
 
@@ -74,31 +67,9 @@ oceanpack --help
 
 You can run
 ```bash
-make tests
+just test
 ```
-to run the tests via `pytest`.
-
-
-## Getting Started
-
-### Installation
-
-I recommend to use `uv` as a dependency manager (read here for the details).
-Then, getting set up is as simple as 
-```bash
-uv sync
-```
-to install dependencies and make the project's source code (located in `src`) available for import.
-
-👉 Activate your virtual environment:
-```bash
-source .venv/bin/activate
-```
-You can verify that you're using the environment's Python executable by checking if
-```bash
-which python
-```
-points to `.venv/bin/activate`.
+to run the tests.
 
 
 ## Contact
