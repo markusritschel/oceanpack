@@ -80,7 +80,9 @@ class DataProcessingController:
         self.model.remove_non_operating_phases()
         self.model.compute_equilibrator_pressure()
         self.model.compute_pCO2_wet_equ()
-        self.model.compute_temperature_correction()
+        self.model.compute_fCO2_wet_equ()
+        self.model.compute_pCO2_wet_sst()
+        self.model.compute_fCO2_wet_sst()
 
     def generate_output(self, path):
         """Generate output file in netCDF format at `path`."""
