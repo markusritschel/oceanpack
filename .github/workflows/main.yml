@@ -39,4 +39,4 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Auto-apply labels
-        uses: actions/labeler@v6
+        uses: actions/labeler@v7
