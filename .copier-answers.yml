@@ -1,0 +1,15 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: cfda6529d06a08c5f4402b1444ec3accab94a22d
+_src_path: gh:markusritschel/cookiecutter-pyproject
+user_name: Markus Ritschel
+user_email: git@markusritschel.de
+github_user: markusritschel
+project_name: Oceanpack
+project_slug: oceanpack
+package_name: oceanpack
+is_research_project: false
+project_description: A boilerplate for scientific projects using Python
+project_version: 0.1.0
+command_line_interface: Click
+project_license: MIT license
+docs_engine: Sphinx
