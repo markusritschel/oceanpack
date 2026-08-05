@@ -199,3 +199,65 @@ class TestTemperatureCorrectionPath:
         model.compute_pCO2_wet_equ()
         with pytest.raises(ValueError, match="no-op"):
             model.compute_temperature_correction(sst_var=DataProcessor.T_EQU_VAR)
+
+
+class TestReprocessing:
+    """`process-data` writes its output back over its input file, so re-running it on an
+    already-processed netCDF is a normal user action (e.g. after pulling a fix). These tests
+    assert that doing so is safe and idempotent.
+    """
+
+    @staticmethod
+    def _process_in_place(path):
+        from oceanpack.app.controllers.data_controller import DataProcessingController
+
+        ctrl = DataProcessingController()
+        ctrl.load_data(str(path))
+        ctrl.process_data()
+        ctrl.generate_output(str(path))
+
+    @pytest.fixture
+    def processed_copy(self, converted_nc, tmp_path):
+        import shutil
+        import warnings
+
+        warnings.filterwarnings("ignore")
+        proc = tmp_path / "reprocess.nc"
+        shutil.copy(converted_nc, proc)
+        self._process_in_place(proc)
+        return proc
+
+    def test_reprocessing_does_not_copy_derived_variables_to_original(self, processed_copy):
+        """`remove_non_operating_phases` matches any variable whose name contains 'CO2',
+        which on a second run also matches the derived `pCO2_wet_equ` / `fCO2_wet_equ`.
+        They are then renamed to `*_original`, so the output contract changes with every
+        run even though the values do not.
+        """
+        self._process_in_place(processed_copy)
+        with xr.open_dataset(str(processed_copy)) as ds:
+            spurious = sorted(
+                v for v in ds.data_vars
+                if v.endswith("_original") and ("pCO2" in v or "fCO2" in v)
+            )
+        assert spurious == [], f"re-running process-data added {spurious}"
+
+    def test_process_data_can_be_run_three_times(self, processed_copy):
+        """The third run raises PermissionError: `to_netcdf` writes back over the file that
+        `load_data` still holds open. It survives runs 1 and 2 only because
+        `remove_non_operating_phases` calls `Dataset.rename`, which replaces `self.ds` and
+        lets the file-backed Dataset be garbage-collected. Once every CO2 variable already
+        has an `_original` counterpart no rename happens, the handle stays open, and the
+        write fails.
+        """
+        self._process_in_place(processed_copy)  # run 2
+        self._process_in_place(processed_copy)  # run 3
+
+    def test_reprocessing_leaves_the_computed_values_unchanged(self, processed_copy):
+        with xr.open_dataset(str(processed_copy)) as ds:
+            before = {v: ds[v].values.copy() for v in
+                      ("PressEqu", "pCO2_wet_equ", "fCO2_wet_equ", "CO2")}
+        self._process_in_place(processed_copy)
+        with xr.open_dataset(str(processed_copy)) as ds:
+            for var, expected in before.items():
+                np.testing.assert_allclose(ds[var].values, expected, equal_nan=True,
+                                           err_msg=f"{var} drifted on reprocessing")
