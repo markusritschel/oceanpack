@@ -28,7 +28,10 @@ class DataProcessor:
 
     def load_data(self, file):
         import xarray as xr
-        self.ds = xr.open_dataset(file)
+        # read everything into memory and close the file handle: `process-data` writes its
+        # output back over its input, which fails on an open netCDF
+        with xr.open_dataset(file) as ds:
+            self.ds = ds.load()
 
     def convert_coordinates(self):
         from oceanpack.utils.helpers import convert_coordinates
@@ -125,10 +128,17 @@ class DataProcessor:
         }
 
     def remove_non_operating_phases(self):
-        """Set CO2 values in non-operating phases to NaN"""
+        """Set CO2 values in non-operating phases to NaN.
+
+        Only the raw analyzer channels are masked — they all start with 'CO2' (`CO2`,
+        `CO2abs`, `CO2raw`, `CO2ref`, `CO2kzero`, `CO2kspan*`). Matching 'CO2' anywhere in
+        the name would also catch the derived `pCO2_*` / `fCO2_*`, which `process-data`
+        writes back into its own input file: on a second run they would be renamed to
+        `*_original` too, changing the output contract on every run.
+        """
         from oceanpack.utils.helpers import set_nonoperating_to_nan
         for var in self.ds.variables:
-            if 'CO2' in var and not var.endswith('original'):
+            if var.startswith('CO2') and not var.endswith('original'):
                 if f'{var}_original' not in self.ds.variables:
                     self.ds = self.ds.rename({var: f'{var}_original'})
                 df = self.ds[[f'{var}_original', 'STATUS']].to_pandas()
@@ -140,7 +150,6 @@ class DataProcessor:
                 self.ds[var].attrs = dict(self.ds[f'{var}_original'].attrs)
 
     def to_netcdf(self, output_file):
-        self.ds.load()   # necessary to be able to overwrite the netCDF
         self.ds.to_netcdf(output_file)
 
 
