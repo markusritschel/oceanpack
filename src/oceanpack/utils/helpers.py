@@ -344,7 +344,7 @@ def fugacity(pCO2, p_equ, SST, xCO2=None):
     and
 
     .. math::
-       \\delta(CO_2,T) = 57.7 - 0.188\\,T
+       \\delta(CO_2,T) = 57.7 - 0.118\\,T
 
 
     Parameters

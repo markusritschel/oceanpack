@@ -58,14 +58,18 @@ This command will perform the following steps:
 2. Remove non-operating phases
 3. Pressure at the equilibrator
 4. Compute the pCO2 at the equilibrator in wet air
-5. Temperature correction (not implemented yet)
-6. Compute the fugacity (not implemented yet)
+5. Temperature correction (skipped unless an independent in-situ temperature is available)
+6. Compute the fugacity
 
 
 ```{warning}
 Keep in mind that this command will overwrite the input file.
 However, it will only create new variables in the file, so you can always get back to the original data.
 ```
+
+The variables added to the file are `lat`, `lon`, `PressEqu`, `pCO2_wet_equ` and `fCO2_wet_equ`.
+Where an independent in-situ temperature is available (see [Temperature correction](#temperature-correction)), `pCO2_wet_sst` and `fCO2_wet_sst` are written instead of `fCO2_wet_equ`.
+The name of every derived variable states the temperature it refers to, and each carries a `temperature_variable` attribute naming the record it was derived from.
 
 ### Coordinate conversion
 
@@ -96,7 +100,16 @@ $$
 
 However, the pressure at the equilibrator is not registered by the OceanPack.
 Instead, the OceanPack registers the pressure in the measurement cell (`CellPress`) and the difference pressure to the equilibrator (`DPressInt`).
-Here, to estimate the pressure at the equilibrator/membrane, we build a 2-minutes rolling mean of the `DPressInt` and subtract it from the `CellPress`.
+Here, to estimate the pressure at the equilibrator/membrane, we build a 2-minutes rolling mean of the `DPressInt` and subtract it from the `CellPress`, i.e. `DPressInt` is read as (cell − equilibrator).
+
+:::{warning}
+**The sign convention of `DPressInt` is not confirmed against the instrument documentation.**
+`DPressInt` is negative throughout the example transect (median −11.4 mbar), so the subtraction above puts the equilibrator *above* the measurement cell; reading the sensor the other way round would put it below. On `tests/example_op.log` the two readings differ by 22.8 mbar, i.e. about 7 µatm (~2 %) in the resulting pCO2 — well above the ±2 µatm target of {cite:t}`dickson_guide_2007`, SOP 5.
+
+The question cannot be settled from the data: ambient pressure off Brest on 2019-05-09 was 1006–1007 hPa (ERA5/CERRA reanalysis), while `CellPress` itself reads 1035.9 mbar, so the OceanPack gas loop runs some 30 mbar above ambient and *neither* reading of `DPressInt` puts the equilibrator near the barometric pressure. Deciding it requires the SubCtech sensor/NMEA protocol document, which is not part of the public OceanView manual.
+
+Until that is confirmed, treat `PressEqu` — and the pCO2/fCO2 derived from it — as carrying a possible ~2 % pressure bias.
+:::
 
 
 ### Compute the pCO2 at the equilibrator in wet air
@@ -107,8 +120,18 @@ Note that $p_\text{equ}$ must be in units of Pa!
 
 
 ### Temperature correction
-:::{warning}
-This is not implemented yet.
+:::{note}
+This step is **skipped unless an independent in-situ temperature is available**, and it is not available in a plain Analyzer log.
+
+The only water temperature such a log carries is `waterTemp` (the internal SS_CTD48), which sits at the equilibrator — `CellTemp` is the heated LI-840 detector cell (~51 °C) and is never a valid equilibrator temperature. Correcting `waterTemp` to `waterTemp` is $\exp(0) = 1$, so rather than write out an identity under a "temperature-corrected" label, `process-data` leaves the correction out and `pCO2_wet_equ` stays the equilibrator-temperature value.
+
+To enable it, merge a hull-intake temperature record into the dataset (e.g. with `merge-data`) and pass its variable name:
+
+```python
+processor.compute_temperature_correction(sst_var="SST_intake")
+```
+
+This writes `pCO2_wet_sst`, and `compute_fCO2()` then derives `fCO2_wet_sst` from it instead of `fCO2_wet_equ`.
 :::
 
 Often, when doing measurements at sea, the temperature at the equilibrator and the temperature at the water intake differ.
@@ -127,9 +150,6 @@ If the measurements were taken onboard a ship, the way for the water from the in
 
 
 ### Compute the fugacity
-:::{warning}
-This is not implemented yet.
-:::
 
 Finally, we compute the fugacity by hands of the before calculated partial pressure, the pressure at the equilibrator, and the SST.
 
@@ -154,7 +174,7 @@ and
 
 $$
 \begin{equation*}
-\delta(CO_2,T) = 57.7 - 0.188\,T
+\delta(CO_2,T) = 57.7 - 0.118\,T
 \end{equation*}
 $$
 

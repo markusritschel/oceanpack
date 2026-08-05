@@ -18,6 +18,11 @@ class DataProcessor:
         - Compute fugacity
         - ...
     """
+    #: Variable holding the temperature at the equilibrator/membrane. In the Analyzer this is
+    #: the internal CTD (SS_CTD48), which sits at the equilibrator. `CellTemp` is the heated
+    #: LI-840 detector cell (~51 °C) and must never be used here.
+    T_EQU_VAR = 'waterTemp'
+
     def __init__(self):
         self.ds = None
 
@@ -29,6 +34,12 @@ class DataProcessor:
         from oceanpack.utils.helpers import convert_coordinates
         self.ds['lon'] = convert_coordinates(self.ds['Longitude'])
         self.ds['lat'] = convert_coordinates(self.ds['Latitude'])
+        # xarray propagates the attributes of the source variable, whose `unit` still
+        # describes the raw NMEA format the values have just been converted away from.
+        self.ds['lon'].attrs['unit'] = 'degrees_east'
+        self.ds['lat'].attrs['unit'] = 'degrees_north'
+        self.ds['lon'].attrs['long_name'] = 'Longitude'
+        self.ds['lat'].attrs['long_name'] = 'Latitude'
 
     def compute_equilibrator_pressure(self):
         """Obtain pressure at the equilibrator/membrane."""
@@ -45,35 +56,73 @@ class DataProcessor:
         self.ds['pCO2_wet_equ'] = ppm2uatm(self.ds['CO2'], self.ds['PressEqu'])
         self.ds['pCO2_wet_equ'].attrs['unit'] = 'uatm'
         self.ds['pCO2_wet_equ'].attrs['long_name'] = 'pCO2 at equilibrator/membrane in wet air'
+        self.ds['pCO2_wet_equ'].attrs['temperature_variable'] = self.T_EQU_VAR
+        self.ds['pCO2_wet_equ'].attrs['device'] = 'LI840'
 
-    def compute_temperature_correction(self):
-        """Correct pCO2 from equilibrator temperature to in-situ SST (Takahashi et al. 2009).
+    def compute_temperature_correction(self, sst_var: str | None = None):
+        """Correct pCO2 from the equilibrator temperature to the in-situ SST
+        (:func:`~oceanpack.utils.helpers.temperature_correction`, Takahashi et al. 2009).
 
-        T_equ is approximated by waterTemp (SBE45 intake temperature). CellTemp is the
-        LI-840 detector cell (~51 °C) and must NOT be used here.
+        The correction is only meaningful when the in-situ SST comes from a *different*
+        sensor than the equilibrator temperature — typically a hull-intake thermosalinograph
+        upstream of the OceanPack. Analyzer logs do not carry such a record: their only water
+        temperature is the internal CTD (`waterTemp`, SS_CTD48), which sits at the
+        equilibrator. Passing it as both arguments would make the Takahashi factor exp(0) = 1
+        and ship an identity under a "temperature-corrected" label, so when no separate SST
+        variable is given, **no correction is applied and no `pCO2_wet_sst` is written**:
+        `pCO2_wet_equ` already refers to the temperature the sample was measured at.
+
+        To enable the correction, merge a hull-intake temperature record into the dataset
+        (e.g. via ``merge-data``) and pass its variable name as `sst_var`.
+
+        Parameters
+        ----------
+        sst_var: str, optional
+            Name of the variable holding the in-situ sea surface temperature. Must be a
+            different variable than :attr:`T_EQU_VAR`.
         """
         from oceanpack.utils.helpers import temperature_correction
-        T_equ = self.ds['waterTemp']    # equilibrator ≈ water intake temperature
-        T_sst = self.ds['waterTemp']    # in-situ SST (same sensor; ΔT ≈ 0 for this dataset)
+        if sst_var is None:
+            log.info("No in-situ SST variable given — skipping the temperature correction. "
+                     "pCO2_wet_equ refers to the equilibrator temperature (%s).", self.T_EQU_VAR)
+            return
+        if sst_var == self.T_EQU_VAR:
+            raise ValueError(
+                f"sst_var={sst_var!r} is the equilibrator temperature ({self.T_EQU_VAR}); "
+                "correcting a temperature to itself is a no-op. Pass an independent in-situ "
+                "temperature record or omit sst_var."
+            )
         self.ds['pCO2_wet_sst'] = temperature_correction(
-            self.ds['pCO2_wet_equ'], T_out=T_sst, T_in=T_equ
+            self.ds['pCO2_wet_equ'], T_out=self.ds[sst_var], T_in=self.ds[self.T_EQU_VAR]
         )
-        self.ds['pCO2_wet_sst'].attrs['unit'] = 'uatm'
-        self.ds['pCO2_wet_sst'].attrs['long_name'] = 'pCO2 at SST in wet air (temperature-corrected)'
+        self.ds['pCO2_wet_sst'].attrs = {
+            'unit': 'uatm',
+            'long_name': f'pCO2 in wet air, corrected from {self.T_EQU_VAR} to {sst_var}',
+            'temperature_variable': sst_var,
+            'method': 'Takahashi2009',
+            'device': 'LI840',
+        }
 
-    def compute_fCO2_wet_sst(self):
-        """Compute fugacity of CO2 at SST."""
+    def compute_fCO2(self):
+        """Compute the fugacity of CO2 from the most corrected pCO2 available.
+
+        Uses `pCO2_wet_sst` if :meth:`compute_temperature_correction` produced one, else
+        `pCO2_wet_equ`, and names the output accordingly (`fCO2_wet_sst` / `fCO2_wet_equ`)
+        so that the variable name states which temperature the fugacity refers to.
+        """
         from oceanpack.utils.helpers import fugacity
-        df = self.ds[['pCO2_wet_sst', 'PressEqu', 'waterTemp', 'CO2']].to_pandas()
-        fco2 = fugacity(
-            df['pCO2_wet_sst'],
-            df['PressEqu'],
-            df['waterTemp'],
-            xCO2=df['CO2'],
-        )
-        self.ds['fCO2_wet_sst'] = fco2
-        self.ds['fCO2_wet_sst'].attrs['unit'] = 'uatm'
-        self.ds['fCO2_wet_sst'].attrs['long_name'] = 'fCO2 at SST in wet air'
+        pco2_var = 'pCO2_wet_sst' if 'pCO2_wet_sst' in self.ds else 'pCO2_wet_equ'
+        fco2_var = pco2_var.replace('pCO2', 'fCO2')
+        temp_var = self.ds[pco2_var].attrs['temperature_variable']
+        # pandas Series rather than DataArrays: temperature2K branches on a scalar comparison
+        df = self.ds[[pco2_var, 'PressEqu', temp_var, 'CO2']].to_pandas()
+        self.ds[fco2_var] = fugacity(df[pco2_var], df['PressEqu'], df[temp_var], xCO2=df['CO2'])
+        self.ds[fco2_var].attrs = {
+            'unit': 'uatm',
+            'long_name': f'fCO2 in wet air at {temp_var}',
+            'temperature_variable': temp_var,
+            'device': 'LI840',
+        }
 
     def remove_non_operating_phases(self):
         """Set CO2 values in non-operating phases to NaN"""
@@ -84,9 +133,11 @@ class DataProcessor:
                     self.ds = self.ds.rename({var: f'{var}_original'})
                 df = self.ds[[f'{var}_original', 'STATUS']].to_pandas()
                 df = set_nonoperating_to_nan(df, status_var='STATUS',
-                                             col=f'{var}_original', 
+                                             col=f'{var}_original',
                                              buffer="20min")
                 self.ds[var] = df[f'{var}_original']
+                # assigning a pandas Series drops the attributes of the source variable
+                self.ds[var].attrs = dict(self.ds[f'{var}_original'].attrs)
 
     def to_netcdf(self, output_file):
         self.ds.load()   # necessary to be able to overwrite the netCDF

@@ -14,6 +14,12 @@ log = logging.getLogger(__name__)
 
 
 class FileHandlerInterface(ABC):
+    #: Some Analyzer firmware writes the degree sign into the log as the UTF-8 replacement
+    #: character (bytes ``EF BF BD``); read back as Windows-1252 it becomes 'ï¿½C'. The
+    #: original byte is unrecoverable, so restore the sign for the only degree-bearing
+    #: units these logs use ('°C' and the bare '°' of the magnetic variation).
+    DEGREE_MOJIBAKE = '\xef\xbf\xbd'
+
     def __init__(self):
         pass
 
@@ -42,7 +48,8 @@ class FileHandlerInterface(ABC):
                     header_dict['names'] = [x.replace('/', '_') for x in names]
 
                 elif line.startswith('@UNIT'):
-                    header_dict['units'] = line.strip().split(',')
+                    units = line.strip().split(',')
+                    header_dict['units'] = [x.replace(cls.DEGREE_MOJIBAKE, '°') for x in units]
 
                 elif line.startswith('@SENSOR'):
                     header_dict['sensors'] = line.strip().split(',')
